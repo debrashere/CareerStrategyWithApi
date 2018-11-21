@@ -1,0 +1,33 @@
+{
+  "name": "careerstrategywithapi",
+  "version": "1.0.0",
+  "description": "Career job seach tools",
+  "main": "server.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/debrashere/CareerStrategyWithApi.git"
+  },
+  "keywords": [
+    "mocha"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/debrashere/CareerStrategyWithApi/issues"
+  },
+  "homepage": "https://github.com/debrashere/CareerStrategyWithApi#readme",
+  "dependencies": {
+    "express": "^4.16.3"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-http": "^4.2.0",
+    "mocha": "^5.2.0"
+  }
+}
