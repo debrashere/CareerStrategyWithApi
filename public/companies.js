@@ -1,291 +1,69 @@
 'use strict'
 
-let MOCK_ROLES = {
-    "roles": [
-        {
-            "id": "5bef0a6aaeb22c022c594cec",
-            "title": "Reporter",
-            "accessLevel": "reporter"
-        },
-        {
-            "id": "5bef0a6aaeb22c022c594ceb",
-            "title": "SuperUser",
-            "accessLevel": "all"
-        },
-        {
-            "id": "5bef0a6aaeb22c022c594ced",
-            "title": "User",
-            "accessLevel": "user"
-        }
-    ]
-}
-let MOCK_USER =    {
-  "user": {
-    "username": "thisusername",
-    "firstName": "thisuserfirstName",
-    "lastName": "ThisUserLastName"
-  }
-};
+const CAREER_STRATEGY_URL = 'http://localhost:8080/api';
 
 let MOCK_COMPANIES = {
-  "companies": [
-      {
-          "id": "5bef0e0eaeb22c022c594cf3",
-          "title": "Carvana",
-          "description": "Carvana is a technology business start-up founded by Ernie Garcia and his son. Operations are based in Tempe, Arizona. It is an online-only used car dealer that allows customers to shop, finance, and trade in cars ",
-          "state": "AZ",
-          "zip": "85302",
-          "links": [
-              {
-                  "keywords": "Carvana, Company",
-                  "linktype": "",
-                  "url": "https://www.carvana.com/",
-                  "_id": "5bef0e0eaeb22c022c594cf4",
-                  "title": "Carvana site"
-              }
-          ]
-      },
-      {
-          "id": "5bf1dbca3672ef1af46256d2",
-          "title": "SRP",
-          "description": "Carvana is a technology business start-up founded by Ernie Garcia and his son. Operations are based in Tempe, Arizona. It is an online-only used car dealer that allows customers to shop, finance, and trade in cars ",
-          "state": "AZ",
-          "zip": "85302",
-          "links": [
-              {
-                  "keywords": "SRP, Company",
-                  "linktype": "",
-                  "url": "https://www.SRP.com/",
-                  "_id": "5bf1dbca3672ef1af46256d3",
-                  "title": "SRP site"
-              }
-          ]
-      },
-      {
-          "id": "5bf1ec277b378e2e6814a511",
-          "title": "Cox",
-          "description": "Cox is a technology business start-up founded by Ernie Garcia and his son. Operations are based in Tempe, Arizona. It is an online-only used car dealer that allows customers to shop, finance, and trade in cars ",
-          "state": "AZ",
-          "zip": "85302",
-          "links": [
-              {
-                  "keywords": "Cox, Company",
-                  "linktype": "",
-                  "url": "https://www.SRP.com/",
-                  "_id": "5bf1ec277b378e2e6814a512",
-                  "title": "Cox site"
-              }
-          ]
-      }
-  ]
-};
-
-let MOCK_USER_PROFILES = {
-    "profiles": [
-      {
-          "id": "5bf447b7118b1f34dcfa111d",
-          "firstName": "jane",
-          "lastName": "doe",
-          "email": "janede@email.com",
-          "phone": "222-222-2222",
-          "employer": "APS",
-          "links": {},
-          "skills": [
-              {
-                  "_id": "5bf447b7118b1f34dcfa111f",
-                  "skill": "5bf445466db0534d690c2c07",
-                  "monthsOfExperince": 2,
-                  "yearsOfExperince": 2
-              },
-              {
-                  "_id": "5bf447b7118b1f34dcfa111e",
-                  "skill": "5bf4457d6db0534d690c2c1b",
-                  "monthsOfExperince": 2,
-                  "yearsOfExperince": 2
-              }
-          ],
-          "roles": [
-              {
-                  "_id": "5bef0a6aaeb22c022c594cec",
-                  "title": "Reporter",
-                  "accessLevel": "reporter",
-                  "__v": 0
-              }
-          ]
-      }
-  ]
-};
-
-let MOCK_JOB_PROSPECTS = {
-    prospects: [
-        {        
-            "id": "5bf590130d05a31758434cde",
-            "what": "Senior Full Stack Developer",
-            "where": "5bef0e0eaeb22c022c594cf3",
-            "when": "2018-11-01T07:00:00.000Z",
-            "source": "LinkedIn",
-            "sourceUrl": "https://www.indeed.com/jobs?q=web%20developer&l=Phoenix%2C%20AZ&vjk=292d3b57b8f73f51",
-            "dayToDay": "Day to day responsibilities",
-            "contacts": [
+    "companies": [
+        {
+            "id": "5bef0e0eaeb22c022c594cf3",
+            "title": "Carvana",
+            "description": "Carvana is a technology business start-up founded by Ernie Garcia and his son. Operations are based in Tempe, Arizona. It is an online-only used car dealer that allows customers to shop, finance, and trade in cars ",
+            "state": "AZ",
+            "zip": "85302",
+            "links": [
                 {
-                    "title": "title",
-                    "phone": "111-111-1111",
-                    "contactType": "Recruiter",
-                    "datesContacted": [],
-                    "_id": "5bf590130d05a31758434cdf",
-                    "firstName": "firstname",
-                    "lastName": "lastname",
-                    "companyName": "Apex Reurting",
-                    "links": [
-                        {
-                            "keywords": "Recuriting",
-                            "linktype": "Company Site",
-                            "url": "https://www.apexsystems.com/Pages/default.aspx",
-                            "_id": "5bf590130d05a31758434ce0",
-                            "title": "Apex Recruiting"
-                        }
-                    ],
-                    "comments": []
-                }
-            ],
-            "comments": [
-                {
-                    "_id": "5bf590130d05a31758434ce1",
-                    "comment": "well qualifed for this position",
-                    "commentDate": "2018-11-02T07:00:00.000Z"
-                }
-            ],
-            "details": "Details",
-            "status": "applied",
-            "outcome": "",
-            "interviews": [
-                {
-                    "phone": "333-333-3333",
-                    "email": "JohnTewes@test.com",
-                    "outcome": "scheduled for f2f interview",
-                    "_id": "5bf590130d05a31758434ce2",
-                    "firstName": "John",
-                    "lastName": "Tewes",
-                    "title": "Recruiter",
-                    "interviewType": "pre screening",
-                    "dateInterviewed": "2018-11-10T07:00:00.000Z",
-                    "comments": [
-                        {
-                            "_id": "5bf590130d05a31758434ce3",
-                            "comment": "went well",
-                            "commentDate": "2018-11-02T07:00:00.000Z"
-                        }
-                    ]
-                }
-            ],
-            "jobSkills": [
-                {
-                    "_id": "5bf590130d05a31758434ce5",
-                    "name": "C#",
-                    "required": true,
-                    "niceToHave": false,
-                    "yearsOfExperience": 3
-                },
-                {
-                    "_id": "5bf590130d05a31758434ce4",
-                    "name": "javascript",
-                    "required": true,
-                    "niceToHave": false,
-                    "yearsOfExperience": 4
+                    "keywords": "Carvana, Company",
+                    "linktype": "",
+                    "url": "https://www.carvana.com/",
+                    "_id": "5bef0e0eaeb22c022c594cf4",
+                    "title": "Carvana site"
                 }
             ]
         },
         {
-            "id": "5bf590130d05a31758434cde",
-            "what": "Senior Full Stack Developer",
-            "where": "5bef0e0eaeb22c022c594cf3",
-            "when": "2018-11-01T07:00:00.000Z",
-            "source": "LinkedIn",
-            "sourceUrl": "https://www.indeed.com/jobs?q=web%20developer&l=Phoenix%2C%20AZ&vjk=292d3b57b8f73f51",
-            "dayToDay": "Day to day responsibilities",
-            "contacts": [
+            "id": "5bf1dbca3672ef1af46256d2",
+            "title": "SRP",
+            "description": "Carvana is a technology business start-up founded by Ernie Garcia and his son. Operations are based in Tempe, Arizona. It is an online-only used car dealer that allows customers to shop, finance, and trade in cars ",
+            "state": "AZ",
+            "zip": "85302",
+            "links": [
                 {
-                    "title": "title",
-                    "phone": "111-111-1111",
-                    "contactType": "Recruiter",
-                    "datesContacted": [],
-                    "_id": "5bf590130d05a31758434cdf",
-                    "firstName": "firstname",
-                    "lastName": "lastname",
-                    "companyName": "Apex Reurting",
-                    "links": [
-                        {
-                            "keywords": "Recuriting",
-                            "linktype": "Company Site",
-                            "url": "https://www.apexsystems.com/Pages/default.aspx",
-                            "_id": "5bf590130d05a31758434ce0",
-                            "title": "Apex Recruiting"
-                        }
-                    ],
-                    "comments": []
+                    "keywords": "SRP, Company",
+                    "linktype": "",
+                    "url": "https://www.SRP.com/",
+                    "_id": "5bf1dbca3672ef1af46256d3",
+                    "title": "SRP site"
                 }
-            ],
-            "comments": [
+            ]
+        },
+        {
+            "id": "5bf1ec277b378e2e6814a511",
+            "title": "Cox",
+            "description": "Cox is a technology business start-up founded by Ernie Garcia and his son. Operations are based in Tempe, Arizona. It is an online-only used car dealer that allows customers to shop, finance, and trade in cars ",
+            "state": "AZ",
+            "zip": "85302",
+            "links": [
                 {
-                    "_id": "5bf590130d05a31758434ce1",
-                    "comment": "well qualifed for this position",
-                    "commentDate": "2018-11-02T07:00:00.000Z"
-                }
-            ],
-            "details": "Details",
-            "status": "applied",
-            "outcome": "",
-            "interviews": [
-                {
-                    "phone": "333-333-3333",
-                    "email": "JohnTewes@test.com",
-                    "outcome": "scheduled for f2f interview",
-                    "_id": "5bf590130d05a31758434ce2",
-                    "firstName": "John",
-                    "lastName": "Tewes",
-                    "title": "Recruiter",
-                    "interviewType": "pre screening",
-                    "dateInterviewed": "2018-11-10T07:00:00.000Z",
-                    "comments": [
-                        {
-                            "_id": "5bf590130d05a31758434ce3",
-                            "comment": "went well",
-                            "commentDate": "2018-11-02T07:00:00.000Z"
-                        }
-                    ]
-                }
-            ],
-            "jobSkills": [
-                {
-                    "_id": "5bf590130d05a31758434ce5",
-                    "name": "C#",
-                    "required": true,
-                    "niceToHave": false,
-                    "yearsOfExperience": 3
-                },
-                {
-                    "_id": "5bf590130d05a31758434ce4",
-                    "name": "javascript",
-                    "required": true,
-                    "niceToHave": false,
-                    "yearsOfExperience": 4
+                    "keywords": "Cox, Company",
+                    "linktype": "",
+                    "url": "https://www.SRP.com/",
+                    "_id": "5bf1ec277b378e2e6814a512",
+                    "title": "Cox site"
                 }
             ]
         }
     ]
-};
-
-
-const CAREER_STRATEGY_URL = 'http://localhost:8080/api';
+  };  
 
 /*    
   Retrieve data from Career Strategy API
 */
 function submitCareerStrategyAPI(callbackFn, queryString) {
 
-    setTimeout(function(){ callbackFn(MOCK_COMPANIES)}, 100);
+  setTimeout(function(){ callbackFn(MOCK_COMPANIES)}, 100);
 
-    /*
+  /*
+  console.log("submitCareerStrategyAPI", queryString);
   $('#js-error-message').empty();
   $('#js-error-message').prop("hidden", true);
   const encodedQuery = encodeURIComponent(queryString);
@@ -303,6 +81,7 @@ function submitCareerStrategyAPI(callbackFn, queryString) {
     $('#js-error-message').prop("hidden", false);
     $('#js-error-message').text(`Something went wrong: ${error}`);
   }); 
+
   */
 } 
  
@@ -373,7 +152,7 @@ function showJobProspectDetails(thisContributor) {
   Generate the links that appear within the recipe search results, when clicked will
   add the recipe to the menu
 */
-function generateProspectsLinks(recipeId) {  
+function generateLinks(recipeId) {  
   let coursesOption = "";
   MENU.courses.map( function(courses) {
    coursesOption+=`<a class="add-recipe-to js-add-recipe-to" id="add-${courses.course}-${recipeId}" href=#>${courses.course}</a>, `;   
@@ -384,40 +163,38 @@ function generateProspectsLinks(recipeId) {
 /*
   Using the results from the recipe search, render the results
 */
-function renderJobProspect(data) {
-  console.log("renderJobProspect", "start") ;
-  console.log("renderJobProspect data.prospects", data.prospects) ;
-  console.log("renderJobProspect data.prospects.prospects", data.prospects.prospects) ;
-
+function renderCompany(data) {
+  console.log("renderCompany", "start") ;
+  console.log("renderCompany data.companies", data.companies) ;
   $( ".js-slider-gallery" ).html('');
 
-  let slideCount = 1; 
   let leftArrow  = '<div class="Aligner"><div class="Aligner-item-arrow"><a href="#"class="paging-icon js-page-prev" alt="Previous"><img src="images/icon-arrow-left.png" alt="left arrow page previous" /></a></div></div>';
   let rightArrow = '<div class="Aligner"><div class="Aligner-item-arrow"><a href="#" class="paging-icon js-page-next" alt="Previous"><img src="images/icon-arrow-right.png" alt="righ arrow page next" /></a></div></div>';
   let thumbs = "";
+  let skills = "";
+  let slideCount = 1;
+  let tabIdx = 0;
+ 
+  data.companies.map( function(company) {          
+    const companyId = `company${slideCount}`;
+    let links  = "<ul>";
+    company.links.map( function(link) {               
+        links += `<li><a href="${link.url}", target="_blank">${link.title}</a></li>`;       
+    }); 
+    links+="</ul>"    
 
-  console.log("renderJobProspect", "data.prospect.map") ;
-
-  data.prospects.map( function(prospect) {    
-    const prospectId = `prospect${slideCount}`;
-    const jobPosting = prospect.sourceUrl.length >0 
-          ? `<a href='${prospect.sourceUrl}', _target=blank>${prospect.source}</a>`          
-          : `${prospect.source}`;
-    //const coursesLinks = generateProspectsLinks(prospect.links);
     let thumb =  
-      `<div class="flex-item">
-          <span class="title">
-            <span class="recipejs-${prospectId}" role="title">${prospect.what}</span> </br>
-            <span><em>${prospect.where}</em></span>  </br>
-            <span>${prospect.dayToDay}</span>  </br>
-            <span>${jobPosting}</span>  </br> 
-            <span>${prospect.status}</span>  </br> 
-            <span class="js-add-prospect"><strong>View details</strong></span> </br>             
-          </span>            
-      </div> `; 
-      console.log("renderJobProspect thumb", thumb) ;
-      thumbs += thumb;
-      slideCount++; 
+    `<div>
+    <span class="title">
+        <span><em>${company.title}</em></span>  </br>
+        <span>${company.description}</span>  </br>          
+        <span>${company.state}</span>  </br>
+        <span>${company.zip}</span>  </br>  
+        <span>${links}</span>            
+    </span>            
+    </div> `;   
+    thumbs += thumb;
+    slideCount++; 
   });  
 
   if ( $(".flex-item").css("max-width") == "260px")  {
@@ -435,16 +212,14 @@ function renderJobProspect(data) {
   Execute the Recipe API and check for invalid results
   If results returned the execute functions to render the results
 */
-function displayCareerStrategyResults(data, query) {  
+function displayCareerStrategyResults(data) {  
   console.log("displayCareerStrategyResults data", data );
-  console.log("displayCareerStrategyResults data.prospects", data.prospects) ;
-  console.log("displayCareerStrategyResults data.prospects[0]", data.prospects[0]) ;
-  if (data == null || data.prospects == null || data.prospects.length == 0) {
+  if (data == null || data.companies == null || data.companies.length == 0) {
         $('#js-error-message').text("No recipes found");
         $('#js-error-message').prop("hidden", false);
   }
   else { 
-    renderJobProspect(data);
+    renderCompany(data);
   }       
 }
  
@@ -508,12 +283,12 @@ function updateJobDetails() {
   }
 }
   
-function refreshJobProspects() {       
+function refreshCompanies() {       
     $( ".thumbs" ).html("");
     $( ".slide" ).html("");
     $(".js-slider").prop("hidden", true); 
     //const query = $(".js-query").val();
-    const query  = "prospects";
+    const query  = "companies";
     submitCareerStrategyAPI(displayCareerStrategyResults, query);
 }
 
@@ -568,7 +343,20 @@ function generateJobProspects() {
   watchEditLinkClick(); 
 }  
 
- 
+/*
+    Function to add selected recipe to the menu
+*/
+function andLinkToJobProspect(id) {
+  const course = id.split('-')[1];
+  const recipeId = `js-${id.split('-')[2]}`;
+  let thisCourse = MENU.courses.filter( c => c.course == course);
+
+  let clonedobj = jQuery.extend({}, thisCourse[0].menuItems[0]); 
+  clonedobj.menuItem = $(`.${recipeId}`).html();
+  clonedobj.contributors =  [ { contributor: "Open"}];
+  thisCourse[0].menuItems.push(clonedobj);
+  generateJobProspects();  
+}
 
 /*
   Handle event when edit link next to event name is clicked
@@ -607,7 +395,7 @@ function watchSearchButtonClick() {
     $(".js-slider").prop("hidden", true); 
     food2Fork_data.page = 0;
     const query = $(".js-query").val();
-    submitAPIForRecipes("displayCareerStrategyResults",query);
+    submitAPIForRecipes(query);
   });  
 }
 
@@ -618,7 +406,7 @@ function watchSubmitEventButtonClick() {
   });  
 }
 function setupHandleEvents() {  
-  refreshJobProspects();  
+  refreshCompanies();  
   /*
   watchSubmitEventButtonClick();
   watchResetEventButtonClick();

@@ -16,5 +16,5 @@ describe("index page", function() {
       .then(function(res) {
         expect(res).to.have.status(200);
       });
-  });
+  });    
 });
