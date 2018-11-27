@@ -49,7 +49,7 @@ let MOCK_COMPANIES = {
       {
           "id": "5bf1dbca3672ef1af46256d2",
           "title": "SRP",
-          "description": "Carvana is a technology business start-up founded by Ernie Garcia and his son. Operations are based in Tempe, Arizona. It is an online-only used car dealer that allows customers to shop, finance, and trade in cars ",
+          "description": "SRP is a technology business start-up founded by Ernie Garcia and his son. Operations are based in Tempe, Arizona. It is an online-only used car dealer that allows customers to shop, finance, and trade in cars ",
           "state": "AZ",
           "zip": "85302",
           "links": [
@@ -72,7 +72,7 @@ let MOCK_COMPANIES = {
               {
                   "keywords": "Cox, Company",
                   "linktype": "",
-                  "url": "https://www.SRP.com/",
+                  "url": "https://www.COX.com/",
                   "_id": "5bf1ec277b378e2e6814a512",
                   "title": "Cox site"
               }
@@ -129,14 +129,14 @@ let MOCK_JOB_PROSPECTS = {
             "dayToDay": "Building workflow management systems (e.g., helping our employees automate themselves)  Building connected services (e.g., integrating with providers like Twilio)           Creating beautiful dashboards for both managers and staff           Understanding and optimizing our processes through data and analytics",
             "contacts": [
                 {
-                    "title": "title",
+                    "title": "Head Recruiter",
                     "phone": "111-111-1111",
                     "contactType": "Recruiter",
                     "datesContacted": [],
                     "_id": "5bf590130d05a31758434cdf",
-                    "firstName": "firstname",
-                    "lastName": "lastname",
-                    "companyName": "Apex Reurting",
+                    "firstName": "Jason",
+                    "lastName": "Aliot",
+                    "companyName": "Apex Recruiters",
                     "links": [
                         {
                             "keywords": "Recuriting",
@@ -146,48 +146,59 @@ let MOCK_JOB_PROSPECTS = {
                             "title": "Apex Recruiting"
                         }
                     ],
-                    "comments": []
+                    "comments": [
+                        {
+                            "_id": "5bf590130d05a31758434ce1",
+                            "comment": "Initial call from Recruiter",
+                            "commentDate": "2018-11-03T07:00:00.000Z"
+                        },
+                        {
+                            "_id": "5bf590130d05a31758434ce1",
+                            "comment": "Technical interview from Recruting company",
+                            "commentDate": "2018-11-13T07:00:00.000Z"
+                        }
+                    ]
                 }
-            ],
+            ],                
             "comments": [
                 {
                     "_id": "5bf590130d05a31758434ce1",
-                    "comment": "Passed first phone interview",
+                    "comment": "Recruter called",
                     "commentDate": "2018-11-03T07:00:00.000Z"
                 },
                 {
                     "_id": "5bf590130d05a31758434ce2",
-                    "comment": "well qualifed for this position",
+                    "comment": "I seem to meet the qualifications for this position",
                     "commentDate": "2018-11-15T07:00:00.000Z"
                 }
             ],
             "details": `Professional Health Care Network is hiring a full-time Software Developer to help us double the size of our business. Our developers report directly to the CTO and will be critical to us achieving our operational goals over the coming years. 
-   \n        What you’ll be working on   
-   \n  PHCN is building our infrastructure in-house from scratch. We work with the latest technologies and are always interested in the right tool for the job, regardless of platform or stack. Expect to be able to work with React, TypeScript, .NET, .NET Core, Redis, SQL Server, Microsoft Azure, Amazon AWS, and more.
+            What you’ll be working on   
+     PHCN is building our infrastructure in-house from scratch. We work with the latest technologies and are always interested in the right tool for the job, regardless of platform or stack. Expect to be able to work with React, TypeScript, .NET, .NET Core, Redis, SQL Server, Microsoft Azure, Amazon AWS, and more.
             
-   \n "What you’ll be doing
+     "What you’ll be doing
             
-   \n Building workflow management systems (e.g., helping our employees automate themselves)*
-   \n Building connected services (e.g., integrating with providers like Twilio)**
-   \n  Creating beautiful dashboards for both managers and staff**
-   \n Understanding and optimizing our processes through data and analytics*
-   \n What we offer
+     Building workflow management systems (e.g., helping our employees automate themselves)*
+     Building connected services (e.g., integrating with providers like Twilio)**
+     Creating beautiful dashboards for both managers and staff**
+    Understanding and optimizing our processes through data and analytics*
+    What we offer
             
-   \n We’re a small company focused on growth. You’ll be on the ground floor, in a position to influence our future and work directly with our leadership team. Additionally, we offer:
+    We’re a small company focused on growth. You’ll be on the ground floor, in a position to influence our future and work directly with our leadership team. Additionally, we offer:
             
-   \n Competitive pay
-   \n High quality medical, dental, and vision coverage
-   \n Brand new equipment
-   \n  Private, quiet working environment
-   \n About you
+    Competitive pay
+    High quality medical, dental, and vision coverage
+    Brand new equipment
+     Private, quiet working environment
+    About you
             
-   \n We’re looking for a smart, eager developer who can learn on their feet and pay attention to the details. We don’t care about your exact experience if you’re the type of person who can learn and adapt quickly.
+    We’re looking for a smart, eager developer who can learn on their feet and pay attention to the details. We don’t care about your exact experience if you’re the type of person who can learn and adapt quickly.
             
-   \n We’d prefer you to have a BS in Computer Science or a similar technical field.
+    We’d prefer you to have a BS in Computer Science or a similar technical field.
             
-   \n Job Type: Full-time
+   Job Type: Full-time
             
-   \n Salary: $70,000.00 to $90,000.00 /year`,
+    Salary: $70,000.00 to $90,000.00 /year`,
             "status": "applied",
             "outcome": "",
             "interviews": [
@@ -231,7 +242,50 @@ let MOCK_JOB_PROSPECTS = {
                     "required": true,
                     "niceToHave": true,
                     "yearsOfExperience": 4
+                },
+                {
+                    "_id": "5bf590130d05a31758434ce5",
+                    "name": ".Net",
+                    "required": true,
+                    "niceToHave": false,
+                    "yearsOfExperience": 3
+                },
+                {
+                    "_id": "5bf590130d05a31758434ce4",
+                    "name": ".Net Core",
+                    "required": true,
+                    "niceToHave": false,
+                    "yearsOfExperience": 4
+                },
+                {
+                    "_id": "5bf590130d05a31758434ce5",
+                    "name": "Reac",
+                    "required": true,
+                    "niceToHave": true,
+                    "yearsOfExperience": 4
+                },
+                {
+                    "_id": "5bf590130d05a31758434ce5",
+                    "name": "SQL",
+                    "required": true,
+                    "niceToHave": false,
+                    "yearsOfExperience": 3
+                },
+                {
+                    "_id": "5bf590130d05a31758434ce4",
+                    "name": "Lava",
+                    "required": true,
+                    "niceToHave": false,
+                    "yearsOfExperience": 4
+                },
+                {
+                    "_id": "5bf590130d05a31758434ce5",
+                    "name": "LavaII",
+                    "required": true,
+                    "niceToHave": true,
+                    "yearsOfExperience": 4
                 }
+
             ]
         },
         {
@@ -348,7 +402,7 @@ function submitCareerStrategyAPI(callbackFn, queryString) {
 
 function displayProspectSummary(data) {
     let counter = 0;
-    let skillHeader = '<div class="table flex-item"><div class="tr th"> <div class="td">Skill</div></div>';
+    let skillHeader = '<div class="table flex-item skillset"><div class="tr th"> <div class="td">Skill</div></div>';
     let prospects = skillHeader;
    
     if (data == null || data.prospects == null || data.prospects.length == 0) {
@@ -540,30 +594,111 @@ function updateJobComments(prospect) {
     }
 
 function renderSkillsRequirements(prospect) {
-    $( ".js-prospect-skills-contacts" ).html('');  
-    let counter = 1; 
-    let thumbs = "";
-  
-    let niceToHave = "";
-    prospect.jobSkills.map( function(skill, index){
-        niceToHave = skill.niceToHave ? " - nice to have" : "";
-        let thumb =  
-        `<div class="flex-item">
-            <span class="skill-${counter}" role="title">${skill.name}${niceToHave}</span>                        
-        </div> `; 
-        thumbs += thumb;
-        counter++;       
-    })
-   
-    if ( $(".flex-item").css("max-width") == "260px")  {
-      $( ".js-prospect-skills-contacts" ).append(`<div>${thumbs}</div>`);  
-    }
-    else {  
-      $( ".js-prospect-skills-contacts" ).append(`${thumbs}`); 
-    }
-    $(".js-prospect-skills-contacts").prop("hidden", false);
-  } 
+    $( ".js-prospect-skills" ).html('');
+    $('.js-user-profile').html('');
 
+    let thumbs = "";  
+    let skillCount = 1;
+    let counter = 0;
+    let skillHeader = 
+    `<div class="table flex-item-comments">
+        <div class="tr th"> 
+            <div class="td-jobSkill">Skill</div> 
+            <div class="td-skillRequired">Required</div>
+            <div class="td-commentEdit"></div>
+            <div class="td-commentDelete"></div>
+    </div>`;
+    let skills = skillHeader;
+   
+      
+    let required = "";
+    prospect.jobSkills.map( function(skill, index){
+        let radioChecked   = `<input type="checkbox"  checked="true" aria-checked="false" />` 
+        let radioUnchecked = `<input type="checkbox"  checked="false" aria-checked="false" />` 
+        required = skill.niceToHave ? radioUnchecked : radioChecked;
+        skills +=
+        `<div class="tr">  
+           <div class="td-jobSkill" id="skill-${skillCount}" data-header="Skill">${skill.name}</div>
+           <div class="td-skillRequired" data-header="Required">${required}</div>
+           <div class="td-commentEdit" data-header=""><a id="EditSkill" href=# class="js-edit-skill"><img alt="edit skill" src="./images/icon-edit.png" /></a></div>
+           <div class="td-commentDelete" data-header=""><a id="DeleteSkill-${skillCount}" href=# class="js-delete-skill"><img alt="delete skill" src="./images/icon-delete.png" /></a></div>
+         </div>`;
+         skillCount++; 
+         counter++
+         if (counter == 4)   
+         {
+           skills += '</div>';
+           skills += skillHeader;
+           counter = 0;
+         }
+      });
+      skills += '</div>';    
+     
+      $('.js-prospect-skills').append(`${skills}`);  
+      $('.js-prospect-skills').prop("hidden", false); 
+  
+      $('.js-user-profile').append(`${thumbs}`);  
+      $('.js-user-profile').prop("hidden", false); 
+      watchDeleteSkillButtonClick();
+}
+ 
+function renderJobContacts(prospect) {
+    $( ".js-prospect-contacts" ).html('');
+    let counter = 1;
+    let contacts = "";
+
+    let commentsHeader = 
+    `<div class="table flex-item-comments">
+        <div class="tr th"> 
+            <div class="td-commentDate">Date</div> 
+            <div class="td-commentText">Comment</div>
+            <div class="td-commentEdit"></div>
+            <div class="td-commentDelete"></div>
+    </div>`;
+    let comments = commentsHeader;
+
+        function custom_sort(a, b) {
+        return new Date(a.when).getTime() - new Date(b.commentDate).getTime();
+    }
+    
+    prospect.contacts.map( function(contact, index){       
+        const sortedComments = contact.comments.sort(custom_sort);
+        sortedComments.map( function(comment){        
+            let date = new Date(comment.commentDate);
+            let formattedDate =  (date.getMonth() + 1) + '/' + date.getDate() + '/' +  date.getFullYear();      
+                
+            comments +=
+            `<div class="tr">  
+                <div class="td-commentDate" data-header="CommentDate">${formattedDate}</div>           
+                <div class="td-commentText" data-header="Comment">${comment.comment}</div>    
+                <div class="td-commentEdit" data-header=""><a id="EditComment" href=# class="js-edit-comment"><img alt="edit comment" src="./images/icon-edit.png" /></a></div>
+                <div class="td-commentDelete" data-header=""><a id="DeleteComment" href=# class="js-delete-comment"><img alt="delete comment" src="./images/icon-delete.png" /></a></div>
+            </div>`;
+            counter++;            
+            });
+            comments += '</div>';                 
+        
+        contacts +=
+        `<div>
+            <span>
+              <span><b>First Name:</b> ${contact.firstName}</span> </br>
+              <span><b>Last Name:</b> <em>${contact.lastName}</em></span>  </br>
+              <span><b>Contact Type:</b> ${contact.contactType}</span>  </br>
+              <span><b>Phone:</b> ${contact.phone}</span>  </br>         
+            </span>            
+        </div> `;
+
+        contacts +=
+        `<div>
+            <span>
+              <span><b>Comments:</b> ${comments}</span>          
+            </span>            
+        </div> `; 
+        comments = commentsHeader;
+    });
+    $( ".js-contacts" ).append(`${contacts}`); 
+    $(".js-prospect-contacts").prop("hidden", false);    
+}
    
 function renderProspectComments(prospect) {
     $( ".js-prospect-comments" ).html('');  
@@ -586,12 +721,37 @@ function renderProspectComments(prospect) {
         thumbs += thumb;
         counter++;       
     })
+
+    let commentsHeader = `<div class="table flex-item-comments">
+    <div class="tr th"> 
+        <div class="td-commentDate">Date</div> 
+        <div class="td-commentText"experience">Comment</div>
+        <div class="td-commentEdit"></div>
+        <div class="td-commentDelete"</div>
+    </div>`;
+    let comments = commentsHeader;
+
+    sortedComments.map( function(comment) {          
+        let date = new Date(comment.commentDate);
+        let formattedDate =  (date.getMonth() + 1) + '/' + date.getDate() + '/' +  date.getFullYear();      
+         
+          comments +=
+           `<div class="tr">  
+              <div class="td-commentDate" data-header="CommentDate">${formattedDate}</div>           
+              <div class="td-commentText" data-header="Comment">${comment.comment}</div>    
+              <div class="td-commentEdit" data-header=""><a id="EditComment" href=# class="js-edit-comment"><img alt="edit comment" src="./images/icon-edit.png" /></a></div>
+              <div class="td-commentDelete" data-header=""><a id="DeleteComment" href=# class="js-delete-comment"><img alt="delete comment" src="./images/icon-delete.png" /></a></div>
+            </div>`;
+            counter++;            
+         });
+         comments += '</div>';     
+    
    
     if ( $(".flex-item").css("max-width") == "260px")  {
-      $( ".js-prospect-comments" ).append(`<div>${thumbs}</div>`);  
+      $( ".js-prospect-comments" ).append(`<div>${comments}</div>`);  
     }
     else {  
-      $( ".js-prospect-comments" ).append(`${thumbs}`); 
+      $( ".js-prospect-comments" ).append(`${comments}`); 
     }
     $(".js-prospect-comments").prop("hidden", false);
   } 
@@ -630,6 +790,7 @@ function displayJobProspectResults(data, query) {
     else { 
     renderJobProspect(data);
     renderSkillsRequirements(data);
+    renderJobContacts(data);
     renderProspectComments(data);
     renderProspectDetails(data);
     }       
@@ -692,8 +853,72 @@ function watchEditDetailsClick() {
     });  
 }
 
+
+function  watchAddSkillButtonClick() {       
+    $('#addNewSkill').click(event => {  
+      event.preventDefault();
+      let skill = $('#newSkill').val();
+      let required = $('#skillRequired').val();
+      
+      // Check if this skill already exists for this job?     
+      let skillFound = false;
+      for (let i = 0; i < MOCK_JOB_PROSPECTS.prospects[0].jobSkills.length; i++){      
+          if (MOCK_JOB_PROSPECTS.prospects[0].jobSkills[i].name == skill){
+              skillFound = true;
+              break;
+          }
+      }
+      if (skillFound) {
+          
+     
+      }
+      else{   
+          let jobSkill = JSON.parse(
+            `{
+                "_id": "5bf590130d05a31758434ce5",
+                "name": "${skill}",
+                "required": "${required}",
+                "niceToHave": false,
+                "yearsOfExperience": 3
+            }`);
+          MOCK_JOB_PROSPECTS.prospects[0].jobSkills.push(jobSkill);                
+      }
+      // Clear out the input fields
+      $('#jobSkill').html();
+      $('#skillRequired').html();
+  
+      refreshJobProspects();
+    });  
+  }
+
+function  watchDeleteSkillButtonClick() {       
+    $('.js-delete-skill').click(event => {  
+        event.preventDefault();
+        console.log("watchDeleteSkillButtonClick event.currentTarget.id", event.currentTarget.id)
+        const deleteItem = event.currentTarget.id.split('-')[1]; 
+        const skillId = `#skill-${deleteItem}`;
+        const skill = $(skillId).html();
+        console.log("watchDeleteSkillButtonClick skill", skill);
+
+        // find the index for this skill in the prospects jobSkills list
+        let index = -1;
+        for (let i = 0; i < MOCK_JOB_PROSPECTS.prospects[0].jobSkills.length; i++){      
+            if (MOCK_JOB_PROSPECTS.prospects[0].jobSkills[i].name == skill){
+                index = i;
+                break;
+            }
+        } 
+
+       // delete this skill from the required job skills list          
+         MOCK_JOB_PROSPECTS.prospects[0].jobSkills.splice(index, 1)                    
+        refreshJobProspects();
+    });  
+}
+  
 function setupHandleEvents() {  
   refreshJobProspects(); 
+  watchAddSkillButtonClick();
+  watchDeleteSkillButtonClick();
   watchEditSummaryClick(); 
   watchEditCommentsClick();
   watchEditDetailsClick();

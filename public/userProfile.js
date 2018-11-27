@@ -468,13 +468,12 @@ function renderUserProfile(data) {
 
     $('.js-user-profile').append(`${thumbs}`);  
     $('.js-user-profile').prop("hidden", false); 
- // watchAddLToLinkClick(); 
 } 
 
 
 function displayCareerStrategyResults(data) {  
   if (data == null || data.profiles == null || data.profiles.length == 0) {
-        $('#js-error-message').text("No recipes found");
+        $('#js-error-message').text("No profiles found");
         $('#js-error-message').prop("hidden", false);
   }
   else { 
@@ -514,7 +513,6 @@ function displaySkillsMasterList(data) {
 
     $('.js-masterlist-skills').append(`${skills}`);  
     $('.js-masterlist-skills').prop("hidden", false); 
- // watchAddLToLinkClick(); 
 }  
 
 function displayProspectsSummary(data) {
@@ -564,7 +562,6 @@ sortedProspects.map( function(prospect) {
 
     $('.js-job-prospects').append(`${prospects}`);  
     $('.js-job-prospects').prop("hidden", false); 
- // watchAddLToLinkClick(); 
 } 
 
 function refreshUserProfile() {       
@@ -578,27 +575,7 @@ function refreshUserProfile() {
     query  = "prospects";
     submitCareerStrategyAPI(displayProspectsSummary, query);
 }
-
-
-/*
-  Handle event when edit icon on skill row is clicked
-*/
-function watchEditLinkClick() {       
-  $('.js-edit-skill').click(event => {
-    event.preventDefault();  
-    const editItem = event.currentTarget.id; 
-    if (editItem == "EditHost") {
-       showEditHostForm();
-    }
-    else if  (editItem =="showMenu") {    
-      generateMenu();   
-    }
-    else if  (editItem.substring(0, 10) == "conDetails") {    
-      showContributorDetails(editItem.split('-')[1]);    
-    }
-  });  
-}
-  
+ 
 function addMasterSkill(skill){ 
     let masterSkill = JSON.parse(`
     {       
@@ -623,9 +600,7 @@ function getMasterSkill(skill){
       }
     return masterSkill;
 }
-/*
-    Disregard event edit when cancel button is clicked
-*/
+ 
 function  watchAddSkillButtonClick() {       
   $('#addNewSkill').click(event => {  
     event.preventDefault();

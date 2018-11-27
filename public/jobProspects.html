@@ -12,6 +12,7 @@
     <div class="row">      
       <div class="header">  
         <h1  tabindex="0" class="centered">Job Strategy Planner</h1> 
+        <img src="./images/JobSearch.jpg" alt="job search image" />
        </div>        
         <div class="col-6">                  
             <output><div id="js-error-message" class="error-message" aria-live="assertive" hidden> </div></output>                               
@@ -27,7 +28,21 @@
             <h2>Prospect Summary <a id="editSummary" href=#>edit</a></h2>  
                 <div class="js-prospect-summary"> </div>                            
             <h2>Skills Requested</h2>  
-                <div class="flex-container js-prospect-skills-contacts"> </div> 
+                <div class="table flex-item-comments">
+                    <div class="tr th"> 
+                        <div class="td-jobSkill">Skill</div> 
+                        <div class="td-skillRequired">Required</div>
+                        <div class="td-commentEdit"></div>                        
+                </div>
+                <div class="tr">  
+                    <div class="td-jobSkill" data-header="Skill"><input type="text" id="newSkill"></input></div>
+                    <div class="td-skillRequired" data-header="Required"> <input type="checkbox" id="skillRequired"></input></div>
+                    <div class="td-commentEdit" data-header=""><a id="AddSkill" href="#" class="js-add-skill"><img id="addNewSkill" alt="add skill" src="./images/icon-add.png"></a></div>
+                    </div>
+                </div>
+                <div class="flex-container js-prospect-skills"> </div> 
+            <h2>Contacts</h2>  
+                <div class="js-contacts"> </div>                 
             <h2>Comments</h2>              
                 <div class="flex-container js-prospect-comments"> </div> 
             <h2>Details <a id="editDetails" href=#>edit</a></h2>              

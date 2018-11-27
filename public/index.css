@@ -121,6 +121,17 @@
   
   }
   
+  .flex-item-comments {
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: auto;
+    background: white;
+    border: solid darkgrey 1px;
+    max-width: 90%;
+    margin-bottom: 5px;
+   
+   }
+  
   .event-hosts {
     justify-content: center;
   }
@@ -410,7 +421,7 @@
   .tr {
     width: 100%;
     display: flex;
-    flex-flow: row nowrap;
+    flex-flow: row wrap;
   }
   
   .tr:nth-of-type(even) {
@@ -423,7 +434,7 @@
   
   .td {
     display: flex;
-    flex-flow: row nowrap;
+    flex-flow: row wrap;
     flex-grow: 1;
     flex-basis: 0;
     padding: 0.5em;
@@ -431,6 +442,90 @@
     overflow: hidden;
     text-overflow: ellipsis;
     min-width: 0px;
+    white-space: nowrap;
+    border-bottom: 1px solid #d0d0d0;  
+  }
+
+
+  .td-jobSkill {
+    display: flex;
+    flex-flow: row wrap;
+    flex-grow: 1;
+    flex-basis: 0;
+    padding: 0.5em;
+    word-break: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0px;
+    max-width: 300px;
+    white-space: nowrap;
+    border-bottom: 1px solid #d0d0d0;
+  }
+
+  .td-skillRequired {
+    display: flex;
+    flex-flow: row wrap;
+    flex-grow: 1;
+    flex-basis: 0;
+    padding: 0.5em;
+    word-break: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0px;
+    max-width: 50px;
+    white-space: nowrap;
+    border-bottom: 1px solid #d0d0d0;
+  }
+
+  .td-commentDate {
+    display: flex;
+    flex-flow: row wrap;
+    flex-grow: 1;
+    flex-basis: 0;
+    padding: 0.5em;
+    min-width: 0px;
+    max-width: 150px;
+  }
+
+  .td-commentText {
+    display: flex;
+    flex-flow: row wrap;
+    flex-grow: 1;
+    flex-basis: 0;
+    padding: 0.5em;
+    word-break: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0px;
+    white-space: nowrap;
+    border-bottom: 1px solid #d0d0d0;
+  }
+
+  .td-commentEdit {
+    display: flex;
+    flex-flow: row wrap;
+    flex-grow: 1;
+    flex-basis: 0;
+    padding: 0.5em;
+    word-break: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0px;
+    max-width: 50px;
+    white-space: nowrap;
+    border-bottom: 1px solid #d0d0d0;
+  }
+  .td-commentDelete {
+    display: flex;
+    flex-flow: row wrap;
+    flex-grow: 1;
+    flex-basis: 0;
+    padding: 0.5em;
+    word-break: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0px;
+    max-width: 50px;
     white-space: nowrap;
     border-bottom: 1px solid #d0d0d0;
   }
