@@ -1,3 +1,4 @@
+
 * {
     box-sizing: border-box;
     font-size: 18px;  
@@ -17,13 +18,17 @@
     padding-bottom: 5px; 
     margin-bottom: 20px; 
   }
-  
-  .introduction, .futureFeatures {
-    width: 90%;
-    margin-top: 10px;
-    margin-bottom: 10px;
+  .prospect-container{
+    border: 2px solid black;
   }
-  
+  .prospect-header{
+    border: 1px solid black;
+    background-color: lightgray;
+  }
+
+  .user-skills{
+    border: 2px solid black;
+  }
   .header {  
     text-align: center;
     vertical-align: top;
@@ -75,39 +80,43 @@
     margin: 0;
     display: inline-block;
   }
-  
-  .hostsAndLocation {
-    max-width: 290px;
-    border-radius: 3px; 
-    background: white;
-  }
-  
-  .eventLocation {
-    align-items: center;
-    justify-content: center;
-    display: block;
-    padding: 5px;
-    min-width: 200px; 
-  }
+
   .skill {
     width:  150px;
   }
   .experience {
     width:  25px;
   }
-  .user-profile ul{
-    list-style: none;
-  }
-  .user-profile li{
-    display: inline;
-  }
+   
 
+/*
+    TEST HORIZONTAL FLEX LIST ITEMS
+*/
+
+.items {
+	display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+}
+.items .item {
+	flex: 1 0 25%;
+  box-sizing: border-box;
+  background: #e0ddd5;
+  color: #171e42;
+  padding: 10px;
+}
+   
+/*
+    FLEX Container
+*/
   .flex-container {
-    display: flex; 
+    display: flex;
+    display: inline; 
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-evenly;
     align-items: stretch;
+    max-width: 700px;
   }
   
   .flex-item {
@@ -115,90 +124,44 @@
    flex-shrink: 1;
    flex-basis: auto;
    background: white;
-   border: solid darkgrey 1px;
-   max-width: 290px;
+   border: solid darkgrey 1px;  
    margin-bottom: 5px;
   
   }
+/*
+  .flex-container-prospects {
+    display: flex;
+    display: inline; 
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    align-items: stretch;
+    max-width: 300px;
+  }
+  */
   
-  .flex-item-comments {
+  .flex-container-skills {
+    display: flex;
+    display: inline; 
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    align-items: stretch;
+    max-width: 80%;
+  }
+
+  .flex-item-skills {
     flex-grow: 1;
     flex-shrink: 1;
     flex-basis: auto;
     background: white;
     border: solid darkgrey 1px;
-    max-width: 90%;
+    max-width: 80%;
     margin-bottom: 5px;
    
    }
   
-  .event-hosts {
-    justify-content: center;
-  }
-  
-  .map-canvas {
-    border: none;
-  }
-  
-  .menuHeader {
-    width: 100%;
-    text-align: center;
-    background-color: whitesmoke;
-    border-radius: 3px;
-    padding: 2px;   
-    height: 30px; 
-  }
-  
-  .contributor-menuHeader {
-    height: 60px; 
-  }
-  
-  
-  
-  .courseAndMenu{
-    border: 1px solid darkgray;
-    width: 290px;
-    border-radius: 3px; 
-    background: white;
-  }
-  
-  .menu {
-    background-color: lightgray; 
-    vertical-align: top;  
-  }
-  
-  .menuItems {
-    margin-top: 40px;
-    max-width: 290px;  
-  }
-  
-  
-  .menuItem {
-    padding-left: 5px;
-    padding-right: 5px;
-    max-width: 290px;  
-  }
-  
-  .course, .host { 
-    text-align: center;
-    vertical-align: center;
-    border: 1px solid darkgrey;
-    width: 100%;
-    float: right;
-    background: lightgrey;
-    border-radius: 3px;
-    padding: 2px;   
-  }
-  
-  .event {
-    border: 1px solid darkgrey;
-    margin-bottom: 2px;
-  }
-  
-  .event, .course {
-    vertical-align: top;  
-  }
-  
+ 
   .title {
       clear: left;
       display:block;
@@ -224,40 +187,7 @@
     object-fit: cover;
     border: solid blue 2px;
     text-decoration: none;
-  }
-  
-  .search {
-    height: 30px;
-    text-align: center;
-  }
-  .searchBox {
-    background-color: lightgray; 
-    margin-top: 5px;
-    margin-bottom: 5px;
-  }
-  
-  /* links */
-  
-  .football-vslot {
-    width: 10px;
-    background: cyan;
-    vertical-align: center;
-    text-align: center;
-  }
-  .football-hslot {
-    width: 10px;
-    background: yellow;
-    vertical-align: center;
-    text-align: center;
-  }
-  
-  .football-slot {
-    text-decoration: none;
-    width: 20px;
-    background: lightblue;
-    vertical-align: center;
-    text-align: center;
-  }
+  }   
   
   .prospectLink {
     text-decoration: none;
@@ -277,126 +207,6 @@
     background-color:darkgrey;
   }
   
-  .contributor:link, .contributor:visited {
-    background-color: white;
-    color: black;
-    padding: 5px 5px;
-    text-align: center; 
-    display: inline-block;
-    text-decoration: none;
-    font: bold;
-    border-radius: 15px;
-    border: 2px solid black 
-  }
-  
-  .contributor:hover, .contributor:active {
-    background-color:lightgray;
-    border-radius: 15px; 
-    border: 2px solid black
-  }
-  
-  .noContributor:link, .noContributor:visited {
-    background-color: yellow;
-    color: black;
-    padding: 5px 5px;
-    text-align: center; 
-    display: inline-block;
-    text-decoration: none;
-    font: bold;
-    border-radius: 15px;
-    border: 2px solid black
-  }
-  
-  .noContributor:hover, .contributor:active {
-    background-color:lightgray;
-    border-radius: 15px; 
-    border: 2px solid black
-  }
-  
-  /*  Search navigation buttons for Prev and Next */
-  .Aligner {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .Aligner-item {
-    max-width: 50%;
-  }
-  .Aligner-item-arrow {
-    max-width: 50%;
-  }
-  
-  .Aligner-item--top {
-    align-self: flex-start;
-  }
-  
-  .Aligner-item--bottom {
-    align-self: flex-end;
-  }
-  
-  /* Extra small devices (phones, 600px and down) */
-  @media only screen and (max-width: 600px) {
-    .flex-item { max-width: 260px;  } 
-    .course {float: left;}
-    * {font-size: 16px;}
-    .searchBox {height:60px;
-    }
-    .Aligner-item-arrow::after
-    .Aligner-item-arrow::before
-     {display: block; width: 100%;    flex-basis: 0; order: 1;} 
-     .Aligner-item-arrow
-    {display: block; width: 100%;    flex-basis: 0; order: 1;}
-  }
-  
-  /* Small devices (portrait tablets and large phones, 600px and up) */
-  @media only screen and (min-width: 600px) {
-    .flex-item { max-width: 260px;  }
-    .course {float: left;}
-    * {font-size: 16px;}
-    .Aligner-item::before {display: block; width: 100%;  }  
-  }
-  
-  /* Medium devices (landscape tablets, 768px and up) */
-  @media only screen and (min-width: 768px) {
-    .flex-item { max-width: 290px;  }
-    .search-prev, .search-next { 
-      width: 200px;
-      height: 35px;
-      line-height: 30px;
-    }
-    * {font-size: 20px;}
-  } 
-  
-  /* Large devices (laptops/desktops, 992px and up) */
-  @media only screen and (min-width: 992px) {
-    .flex-item { max-width: 290px;  }
-    .search-prev, .search-next { 
-      width: 200px;
-      height: 35px;
-      line-height: 30px;
-    }
-    * {font-size: 20px;}
-    .add-prospect-to { font-size: 20px;}
-    .search-prev, .search-next {  font-size: 20px;}
-    .hostsAndLocation { max-width: 700px; }
-  } 
-  
-  /* Extra large devices (large laptops and desktops, 1200px and up) */
-  @media only screen and (min-width: 1200px) {
-    .flex-item { max-width: 290px;  }
-    .search-prev, .search-next { 
-      width: 200px;
-      height: 35px;
-      line-height: 30px;
-    }  
-    * {font-size: 20px;}
-    .add-prospect-to { font-size: 20px;}
-    .search-prev, .search-next {  font-size: 20px;}
-    .hostsAndLocation { max-width: 700px; }
-  }
-
-
   .table {
     display: flex;
     flex-flow: column nowrap;
@@ -442,10 +252,68 @@
     overflow: hidden;
     text-overflow: ellipsis;
     min-width: 0px;
+    max-width: 80%;
     white-space: nowrap;
     border-bottom: 1px solid #d0d0d0;  
   }
 
+  .td-what {
+    display: flex;
+    flex-flow: row wrap;
+    flex-grow: 1;
+    flex-basis: 0;
+    padding: 0.5em;
+    word-break: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0px;
+    max-width: 300px;
+    white-space: nowrap;
+    border-bottom: 1px solid #d0d0d0;
+  }
+
+  .td-where {
+    display: flex;
+    flex-flow: row wrap;
+    flex-grow: 1;
+    flex-basis: 0;
+    padding: 0.5em;
+    word-break: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0px;
+    max-width: 300px;
+    white-space: nowrap;
+    border-bottom: 1px solid #d0d0d0;
+  }
+  .td-when {
+    display: flex;
+    flex-flow: row wrap;
+    flex-grow: 1;
+    flex-basis: 0;
+    padding: 0.5em;
+    word-break: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0px;
+    max-width: 150px;
+    white-space: nowrap;
+    border-bottom: 1px solid #d0d0d0;
+  }
+  .td-status {
+    display: flex;
+    flex-flow: row wrap;
+    flex-grow: 1;
+    flex-basis: 0;
+    padding: 0.5em;
+    word-break: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0px;
+    max-width: 150px;
+    white-space: nowrap;
+    border-bottom: 1px solid #d0d0d0;
+  }
 
   .td-jobSkill {
     display: flex;
@@ -528,4 +396,36 @@
     max-width: 50px;
     white-space: nowrap;
     border-bottom: 1px solid #d0d0d0;
+  }
+
+    
+  /* Extra small devices (phones, 600px and down) */
+  @media only screen and (max-width: 600px) {
+    .flex-item { max-width: 260px;  } 
+    * {font-size: 16px;}
+  }
+  
+  /* Small devices (portrait tablets and large phones, 600px and up) */
+  @media only screen and (min-width: 600px) {
+    .flex-item { max-width: 260px;  }
+  }
+  
+  /* Medium devices (landscape tablets, 768px and up) */
+  @media only screen and (min-width: 768px) {
+    .flex-item { max-width: 500px;  }
+    * {font-size: 20px;}
+  } 
+  
+  /* Large devices (laptops/desktops, 992px and up) */
+  @media only screen and (min-width: 992px) {
+    .flex-item { max-width: 500px;  }
+    * {font-size: 20px;}
+    .add-prospect-to { font-size: 20px;}
+  } 
+  
+  /* Extra large devices (large laptops and desktops, 1200px and up) */
+  @media only screen and (min-width: 1200px) {
+    .flex-item { max-width: 500px;  }
+    * {font-size: 20px;}
+    .add-prospect-to { font-size: 20px;}
   }

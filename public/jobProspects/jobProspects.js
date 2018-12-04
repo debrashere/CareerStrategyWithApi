@@ -88,9 +88,7 @@ let MOCK_USER_PROFILES = {
           "firstName": "jane",
           "lastName": "doe",
           "email": "janede@email.com",
-          "phone": "222-222-2222",
-          "employer": "APS",
-          "links": {},
+          "phone": "222-222-2222",        
           "skills": [
               {
                   "_id": "5bf447b7118b1f34dcfa111f",
@@ -373,12 +371,13 @@ let MOCK_JOB_PROSPECTS = {
 */
 function submitCareerStrategyAPI(callbackFn, queryString) {
 
+    /*
     if (queryString == "prospects")
         setTimeout(function(){ callbackFn(MOCK_JOB_PROSPECTS)}, 100);
     else if(queryString == "prospect") 
         setTimeout(function(){ callbackFn(MOCK_JOB_PROSPECTS.prospects[0])}, 100);
+    */
 
-    /*
   $('#js-error-message').empty();
   $('#js-error-message').prop("hidden", true);
   const encodedQuery = encodeURIComponent(queryString);
@@ -396,7 +395,7 @@ function submitCareerStrategyAPI(callbackFn, queryString) {
     $('#js-error-message').prop("hidden", false);
     $('#js-error-message').text(`Something went wrong: ${error}`);
   }); 
-  */
+
 } 
  
 

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Job Strategy Planner- User Profile</title> 
+  <meta name="description" content="Job Strategy Planner - User Profile"> 
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link  rel="stylesheet" href="../index.css" />  
+</head>
+<body>
+  <main>
+    <div class="row">      
+      <div class="header">  
+        <h1  tabindex="0" class="centered">Job Strategy Planner</h1> 
+        <img src="../images/JobSearch.jpg" alt="job search image" />
+       </div>        
+        <div class="col-6"> 
+         <section class="content">                 
+         <h2>User Profile</h2>  
+         </section> 
+         <output><div id="js-error-message" class="error-message" aria-live="assertive" hidden> </div></output>
+
+         <div class="flex-container js-section-user-profile">
+          <output class="user-profile js-user-profile" role="dialog" aria-hidden="true" hidden> </output>                   
+        </div>                                 
+
+         <form action="#" class="js-form"  id="editForm" name="editForm" aria-hidden="true" hidden>                   
+          <output id="editProfile" name="editProfile" class="edit-form js-edit-form js-edit-profile-form" aria-hidden="true" aria-live="assertive" hidden></output>      				          
+          <output id="editProspect" name="editProspect" class="edit-form js-edit-form js-job-prospects-form" role="dialog"  aria-hidden="true" aria-live="assertive" hidden> </output>                       
+          <button type="submit" id="submitEvent" class="js-edit-button" >Submit</button>  
+          <button type="reset"  id="resetEvent"  class="js-edit-button" >Reset</button> 
+          <button type="cancel" id="cancelEvent" class="js-edit-button" >Cancel</button>                                              
+        </form> 
+        
+        <div class="flex-container master-skills js-section-job-prospects" aria-hidden="true" hidden> 
+          <div class="user-profile js-job-prospects" role="dialog" aria-hidden="true" hidden> </div>                   
+        </div>
+
+        <div class="flex-container user-skills js-section-user-skills" aria-hidden="true" hidden>
+          <div class="flex-item prospect-header">Your Skills   <em>Icons </em>
+              <img id="addNewSkill" alt="add skill" src="../images/icon-add.png"> (add)
+              <img alt="edit skill" src="../images/icon-edit.png" />  (edit)   
+              <img alt="delete skill" src="../images/icon-delete.png" /> (delete)
+          </div>
+          <div class="table flex-item">
+            <div class="tr th"> 
+              <div class="td">Skill</div> 
+              <div class="td experience">Years</div>
+              <div class="td"> </div>     
+            </div>
+            <div class="tr">  
+              <div class="td" data-header="Skill"><input type="text" id="newSkill"></input></div>
+              <div class="td" data-header="Experience"> <input type="text" id="skillYears"></input></div>
+              <div class="td" data-header=""><a id="AddSkill" href="#" class="js-add-skill"><img id="addNewSkill" alt="add skill" src="../images/icon-add.png"></a></div>
+            </div>
+          </div>            
+          <div class="flex-item  flex-section-skills js-user-skills"></div>  
+        </div> 
+
+        <div class="flex-container master-skills js-section-master-skills" aria-hidden="true" hidden>                    
+            <div class="flex-item prospect-header">Master list of skills <em> (click on a skill to add it to your list of skills)</em></div>
+          <div class="flex-item js-masterlist-skills"></div>     
+        </div>
+       
+      </div>                
+    </div>
+    </main> 
+    <!-- JS ======================================================= --> 
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="userProfile.js"></script>      
+</body>
+</html>
