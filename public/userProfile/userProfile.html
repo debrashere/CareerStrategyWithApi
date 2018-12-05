@@ -31,35 +31,42 @@
           <button type="reset"  id="resetEvent"  class="js-edit-button" >Reset</button> 
           <button type="cancel" id="cancelEvent" class="js-edit-button" >Cancel</button>                                              
         </form> 
-        
-        <div class="flex-container master-skills js-section-job-prospects" aria-hidden="true" hidden> 
-          <div class="user-profile js-job-prospects" role="dialog" aria-hidden="true" hidden> </div>                   
+        <div> Job Prospects Icons           
+            <span> edit <a id="EditProspect-${counter}" href=# class="js-edit-prospect"><img alt="edit prospect" src="../images/icon-edit.png" /></a></span>
+            <span> delete <a id="DeleteProspect-${counter}" href=# class="js-delete-prospect"><img alt="delete prospect" src="../images/icon-delete.png" /></a></span>
+            <span> add <a id="AddProspect-${counter}" href=# class="js-add-prospect"><img alt="add prospect" src="../images/icon-add.png" /></a></span>
         </div>
-
+      
+        <div class="flex-container js-section-job-prospects" aria-hidden="true" hidden></div>                  
+        
         <div class="flex-container user-skills js-section-user-skills" aria-hidden="true" hidden>
-          <div class="flex-item prospect-header">Your Skills   <em>Icons </em>
-              <img id="addNewSkill" alt="add skill" src="../images/icon-add.png"> (add)
-              <img alt="edit skill" src="../images/icon-edit.png" />  (edit)   
-              <img alt="delete skill" src="../images/icon-delete.png" /> (delete)
-          </div>
-          <div class="table flex-item">
-            <div class="tr th"> 
-              <div class="td">Skill</div> 
-              <div class="td experience">Years</div>
-              <div class="td"> </div>     
+          <div>
+            <div class="prospect-header">Your Skills   <em>Icons </em>
+                <img id="addNewSkill" alt="add skill" src="../images/icon-add.png"> (add)
+                <img alt="edit skill" src="../images/icon-edit.png" />  (edit)   
+                <img alt="delete skill" src="../images/icon-delete.png" /> (delete)
             </div>
-            <div class="tr">  
-              <div class="td" data-header="Skill"><input type="text" id="newSkill"></input></div>
-              <div class="td" data-header="Experience"> <input type="text" id="skillYears"></input></div>
-              <div class="td" data-header=""><a id="AddSkill" href="#" class="js-add-skill"><img id="addNewSkill" alt="add skill" src="../images/icon-add.png"></a></div>
-            </div>
-          </div>            
-          <div class="flex-item  flex-section-skills js-user-skills"></div>  
+            <div class="table flex-item">
+              <div class="tr th"> 
+                <div class="td">Skill</div> 
+                <div class="td experience">Years</div>
+                <div class="td"> </div>     
+              </div>
+              <div class="tr">  
+                <div class="td" data-header="Skill"><input type="text" id="newSkill"></input></div>
+                <div class="td" data-header="Experience"> <input type="text" id="skillYears"></input></div>
+                <div class="td" data-header=""><a id="AddSkill" href="#" class="js-add-skill"><img id="addNewSkill" alt="add skill" src="../images/icon-add.png"></a></div>
+              </div>
+            </div>            
+            <div class="flex-item  flex-section-skills js-user-skills"></div> 
+          </div> 
         </div> 
 
         <div class="flex-container master-skills js-section-master-skills" aria-hidden="true" hidden>                    
-            <div class="flex-item prospect-header">Master list of skills <em> (click on a skill to add it to your list of skills)</em></div>
-          <div class="flex-item js-masterlist-skills"></div>     
+          <div flex-item>
+            <div class="skills-header">Master list of skills <em> (click on a skill to add it to your list of skills)</em></div>
+           <div class=" js-masterlist-skills"></div>     
+          </div>
         </div>
        
       </div>                

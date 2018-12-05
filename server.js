@@ -13,7 +13,6 @@ const userProfileRouter = require('./routes_folder/userProfileRouter');
 const prospectsRouter = require('./routes_folder/prospectsRouter');
 const rolesRouter = require('./routes_folder/rolesRouter')
 const skillsRouter = require('./routes_folder/skillsRouter');
-const companiesRouter = require('./routes_folder/companiesRouter');
 
 mongoose.Promise = global.Promise;
 
@@ -43,14 +42,12 @@ app.use('/api/userprofiles/', userProfileRouter);
 app.use('/api/prospects/', prospectsRouter);
 app.use('/api/skills/', skillsRouter);
 app.use('/api/roles/', rolesRouter);
-app.use('/api/companies/', companiesRouter);
 
 const jwtAuth = passport.authenticate('jwt', { session: false });
 
 app.use('*', (req, res) => {
   return res.status(404).json({ message: 'URL Not Found' });
 });
-
 
 // Referenced by both runServer and closeServer. closeServer
 // assumes runServer has run and set `server` to a server object
@@ -87,7 +84,6 @@ function closeServer() {
     });
   });
 }
-
 if (require.main === module) {
   runServer(DATABASE_URL).catch(err => console.error(err));
 }

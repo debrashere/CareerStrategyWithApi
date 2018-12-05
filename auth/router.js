@@ -30,7 +30,7 @@ router.post('/login', localAuth, (req, res) => {
       const profileId = !thisUser.userProfileId || thisUser.userProfileId == undefined
            ? "" : thisUser.userProfileId;
       const userAuth = JSON.parse(`{"authToken" : "${authToken}", "id": "${thisUser.id}", "profileId": "${profileId}"}`);      
-      console.log("bbbbbbb created token", authToken);
+      console.log("created token", authToken);
       res.json({userAuth});
     }
   })

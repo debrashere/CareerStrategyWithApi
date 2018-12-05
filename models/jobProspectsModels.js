@@ -1,11 +1,6 @@
 'use strict';
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
-
-const Link = require('./commonModels');
-const linkSchema = mongoose.model('Link').schema;
-const UserProfile = require('./userProfileModels');
-const userProfileSchema = mongoose.model('UserProfile').schema;
  
 const jobSkillsSchema = mongoose.Schema({
   skill: { type: String, required: true },
@@ -14,10 +9,10 @@ const jobSkillsSchema = mongoose.Schema({
 });
 
 const jobProspectSchema = mongoose.Schema({
-    what:  { type: String, required: true,  unique: true },
-    where: { type: String, required: true,  unique: true },
+    what:  { type: String, required: true},
+    where: { type: String, required: true },
     when:  { type: String, required: true},
-    userId: {type: String, required: true },
+    userId: {type: String, required: true},
     status: { type: String},
     source:   { type: String},
     sourceUrl:  { type: String},
@@ -31,7 +26,6 @@ const jobProspectSchema = mongoose.Schema({
 jobProspectSchema.methods.serialize = function() {
   return {
     id: this._id,
-    name: this.name|| '',
     what: this.what || '',
     where: this.where ||  {}, 
     when: this.when,

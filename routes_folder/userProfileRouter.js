@@ -8,14 +8,14 @@ mongoose.Promise = global.Promise;
 const bodyParser = require('body-parser');
 const router = express.Router();
 const jsonParser = bodyParser.json();
-const {User} = require('../users/models');
 const { Skill} = require('../models/skillsModels');
 const { UserProfile} = require('../models/userProfileModels');
 const passport = require('passport');
 const jwtAuth = passport.authenticate('jwt', { session: false });
 
 router.get("/:id", (req, res) => {
-    UserProfile.findOne({_id: req.params.id})     
+    UserProfile.findOne({_id: req.params.id})
+    //.populate('jobProspects').exec()    
     .then(userProfile => {
       if (!userProfile || userProfile.length == 0) {
         const message = `Id "${req.params.id}" not found`;
@@ -35,8 +35,8 @@ router.get("/:id", (req, res) => {
 
 router.get('/', (req, res) => {
   const authHeaders = req.get("Authorization");
-  console.log("2222 profile router authHeaders", authHeaders);
     UserProfile.find() 
+      //.populate('jobProspects').exec()    
       .then(userProfile => {
         res.json({
             userProfile: userProfile.map(profiles => profiles.serialize())
@@ -75,7 +75,8 @@ UserProfile
             phone:   req.body.phone,
             skills:  req.body.skills,
             roles:  req.body.roles,
-            userId: req.body.userId
+            userId: req.body.userId,   
+            jobProspects: req.body.jobProspects         
             })                      
         .then( userProfile => {
           const profileUser = userProfile.serialize();
@@ -93,8 +94,9 @@ UserProfile
     })        
 })
 
-router.put("/:id", jwtAuth, jsonParser, (req, res) => {
+router.put("/:id", jsonParser, (req, res) => {
     // ensure that the id in the request path and the one in request body match
+    console.log("profile put id, body id", req.params.id + "  -  " + req.body.id);
     if (!(req.params.id && req.body.id && req.params.id === req.body.id)) {
       const message =
         `Request path id (${req.params.id}) and request body id ` +
@@ -107,7 +109,7 @@ router.put("/:id", jwtAuth, jsonParser, (req, res) => {
     // if the user sent over any of the updatableFields, we udpate those values
     // in document
     const toUpdate = {};
-    const updateableFields = ["firstName", "lastName", "email", "links", "roles", "skills" ];
+    const updateableFields = ["firstName", "lastName", "email", "links", "roles", "skills", "jobProspects" ];
   
     updateableFields.forEach(field => {
       if (field in req.body) {
@@ -126,32 +128,40 @@ router.put("/:id", jwtAuth, jsonParser, (req, res) => {
 
     // check if skills are to be updated 
     // if so check if each skill is in the master list of skills and add it if not
-    console.log("userProfileRouter  req.body", req.body);
-    console.log("userProfileRouter  req.body.skills", req.body.skills);
-    req.body.skills.forEach(skillUpdate => {
-      Skill.find({ skill: skillUpdate.skill})
-      .then(thisSkill => {
-        if (!thisSkill || thisSkill.length == 0) {
-            Skill
-            .create({
-                skill: skillUpdate.skill,
-                description: "",
-                links: ""
-                })                      
-            .then( skill => res.status(201).json(skill.serialize()))                 
-            .catch( err => {
-                console.error(err);
-                res.status(500).json({ error: 'Something went wrong' });
-            })        
-          }        
-      })
-    });
-    
+    if (req.body.skills && req.body.skills.length > 0) {
+      req.body.skills.forEach(skillUpdate => {
+        Skill.find({ skill: skillUpdate.skill})
+        .then(thisSkill => {
+          if (!thisSkill || thisSkill.length == 0) {
+              Skill
+              .create({
+                  skill: skillUpdate.skill,
+                  description: "",
+                  links: ""
+                  })                      
+              .then( skill => res.status(201).json(skill.serialize()))                 
+              .catch( err => {
+                  console.error(err);
+                  res.status(500).json({ error: 'Something went wrong' });
+              })        
+            }        
+        })
+      });
+    }
+    console.log("profile put executing findByIdAndUpdate toUpdate", toUpdate);
     UserProfile
       // all key/value pairs in toUpdate will be updated -- that's what `$set` does
-      .findByIdAndUpdate(req.params.id, { $set: toUpdate })
-      .then(userProfile => res.status(204).end())
-      .catch(err => res.status(500).json({ message: "Internal server error" }));
+      .findByIdAndUpdate(req.params.id, { $set: toUpdate }, function(err, docs) {
+        if(err){
+            var errorMsg = "error: " + err.message;
+            console.log(errorMsg);  
+            res.status(500).json({ message: "Internal server error" })
+
+        } else {
+            console.log("success");
+            res.status(204).end()
+        }
+      })
   });
   
   router.delete("/:id", jwtAuth, (req, res) => {

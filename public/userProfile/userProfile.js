@@ -127,7 +127,7 @@ function renderUserProfile(data) {
   $( ".js-user-profile" ).html(''); 
 
   let profileContent =  
-    `<div class="flex-item prospect-container">
+    `<div class="flex-item">
           <div class="prospect-header"><em>${userProfile.firstName} ${userProfile.lastName}</em></div>
           <div> 
             <span>${userProfile.email}</span>  </br>          
@@ -164,7 +164,7 @@ function renderUserSkills(data) {
           <span  id="UserSkill-${counter}" class="js-user-skill js-user-skill-text" data-header="Skill">${skill.skill}</span>
           <span  id="UserExp-${counter}" class="js-user-skill js-user-skill-years" data-header="Experience">${skill.yearsOfExperience}</span>
           <span  data-header=""><a id="EditSkill-${counter}" href=# class="js-edit-skill"><img alt="edit skill" src="../images/icon-edit.png" /></a></span>
-          <span  data-header=""><a id="DeleteSkill-${counter}" href=# class="js-delete-skill"><img alt="delete skill" src="../images/icon-delete.png" /></a></span>
+          <span  data-header=""><a id="DeleteSkill-${counter}" href=# class="js-delete-skill"><img alt="delete skill" src="../images/icon-delete.png" /></a></span>           
         </li> `;
         counter++; 
      });
@@ -180,7 +180,7 @@ function renderUserSkills(data) {
 } 
 
 function displayCareerStrategyResults(data) {  
-  if (data == null || data == undefined) {
+  if (!data || !data.userProfile || data.userProfile.length == 0) {
       displayUserProfileForm(null);
   }
   else {   
@@ -223,27 +223,19 @@ function renderJobProspects(data) {
         displayProspectsSummaryForm()
       return;
     }    
-    $('.js-job-prospects').html();
+    $( ".js-section-job-prospects" ).html('');
 
-    let counter = 0;
-    let header = "<div flex-container-prospects>";      
-    let prospects = header;
+    let counter = 0;       
+    let prospects = "";
 
     function custom_sort(a, b) {
         return new Date(a.when).getTime() - new Date(b.when).getTime();
     }
     const sortedProspects = data.prospect.sort(custom_sort);
-
     sortedProspects.map( function(prospect) {          
       prospects +=
-       `<div class="flex-item prospect-container">
-            <div class="prospect-header"><span id="prospect${counter}">${prospect.what}</span>
-              <span>  
-               <a id="ViewProspect-${counter}" href=# class="js-view-prospect"><img alt="view prospect details" src="../images/icon-details.png" /></a>          
-               <a id="EditProspect-${counter}" href=# class="js-edit-prospect"><img alt="edit prospect" src="../images/icon-edit.png" /></a>
-               <a id="DeleteProspect-${counter}" href=# class="js-delete-prospect"><img alt="delete prospect" src="../images/icon-delete.png" /></a>
-             </span>
-            </div>
+       `<div flex-item-job-prospect>
+            <div class="prospect-header"><span id="prospect${counter}">${prospect.what}</span></div>
             <div class="td"><span><em>Where:</em> ${prospect.where}</span></div>            
             <div class="td"><span><em>When: </em>${prospect.when}</span></div>
             <div class="td"><span><em>Status:</em> ${prospect.status}</span></div>          
@@ -256,14 +248,14 @@ function renderJobProspects(data) {
       </div>
       `; 
        counter++;       
-     });
-     prospects += '</div>';       
+     });    
 
-    $('.js-job-prospects').append(`${prospects}`);  
-    $('.js-job-prospects').prop("hidden", false); 
+    $('.js-section-job-prospects').append(`${prospects}`);  
+    $('.js-section-job-prospects').prop("hidden", false); 
     $('.js-section-job-prospects').prop("hidden", false); 
     
     watchEditJobProspectClick();
+    watchAddJobProspectClick();
 }
 
 function displayUserProfileForm(data) { 
@@ -404,15 +396,15 @@ function refreshUserProfileOLD(id) {
 
 function refreshUserProfile(id) {   
   userId = localStorage.getItem('userId');
-  console.log("refreshUserProfile","start");
-  let queryPath = `"userId=${userId}`;    
+  console.log("refreshUserProfile","start");    
     
-    if (userId && userId != undefined &&  userId.length > 0) {
+    if (userId && userId.length > 0) {
+      const queryPath = `"userId=${userId}`;
       setTimeout(findCareerStrategyAPI(pathUserProfile, queryPath, "" , displayCareerStrategyResults)
       , 3000);
             
       setTimeout(findCareerStrategyAPI(pathJobProspects, queryPath, "", renderJobProspects)
-      , 3000);      
+     , 3000);      
     }
     else {
       displayCareerStrategyResults(null);
@@ -447,9 +439,9 @@ function validateProspectForm(prospectId) {
      const details =  $('#prospectDetails').val(); 
     
       // Creating new job prospect
-     if (prospectId && prospectId.length > 0) {
+     if (prospectId == null || prospectId == undefined) {
       const jobProspect = `{"what": "${what}", "when": "${when}", "where": "${where}", "status": "${status}", "userId": "${userId}","source":  "${source}", "sourceUrl": "${sourceUrl}","dayToDay":  "${dayToDay}", "contacts":  "${contacts}", "comments":  "${comments}", "details":   "${details}"}`;          
-      setTimeOut(postCareerStrategyAPI(pathJobProspects, 
+      setTimeout(postCareerStrategyAPI(pathJobProspects, 
         JSON.parse(jobProspect), userProfileId, function(data){  
           refreshUserProfile();
        }), 3000);  
@@ -469,7 +461,7 @@ function validateProspectForm(prospectId) {
 } 
 
 function  watchAddSkillButtonClick() {       
-  $('#addNewSkill').click(event => {  
+  $('.js-add-skill').click(event => {  
       event.preventDefault();
       let skill = $('#newSkill').val();
       let years = $('#skillYears').val();   
@@ -489,6 +481,13 @@ function  watchAddSkillButtonClick() {
       $('#skillYears').html();                                      
     });  
 } 
+
+function watchAddJobProspectClick(){
+  $('.js-add-prospect').click(event => {  
+    event.preventDefault();
+    displayProspectsSummaryForm(); 
+   }); 
+}
 
 function watchEditJobProspectClick(){
   $('.js-edit-prospect').click(event => {  
@@ -565,7 +564,7 @@ function watchFormSubmitButtonClick() {
             validateProfileForm();
             break;}
         case "editProspect": {
-            validateProspectForm();
+            validateProspectForm(null);
             break; }
         }       
     });    
@@ -580,6 +579,7 @@ function setupHandleEvents() {
   watchEditSkillButtonClick();
   watchFormSubmitButtonClick();
   watchEditJobProspectClick();
+  watchAddJobProspectClick();
 }
 
 $(setupHandleEvents);

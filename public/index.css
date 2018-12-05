@@ -14,12 +14,9 @@
     font-family: 'IBM Plex Sans', sans-serif;
     max-width: 90%;
     margin: 0 auto; 
-    background: white;  
+    background: beige;  
     padding-bottom: 5px; 
     margin-bottom: 20px; 
-  }
-  .prospect-container{
-    border: 2px solid black;
   }
   .prospect-header{
     border: 1px solid black;
@@ -111,57 +108,38 @@
 */
   .flex-container {
     display: flex;
-    display: inline; 
+    /*display: inline; */
     flex-direction: row;
     flex-wrap: wrap;
-    justify-content: space-evenly;
-    align-items: stretch;
-    max-width: 700px;
+    justify-content: space-evenly;   
+    /*align-items: stretch; */
+    align-items: center;
+    max-width: 100%; 
+    border: black 2px solid;  
   }
   
   .flex-item {
    flex-grow: 1;
    flex-shrink: 1;
    flex-basis: auto;
-   background: white;
-   border: solid darkgrey 1px;  
+   background: aqua;
    margin-bottom: 5px;
   
   }
-/*
-  .flex-container-prospects {
-    display: flex;
-    display: inline; 
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-evenly;
-    align-items: stretch;
-    max-width: 300px;
+  .flex-item-job-prospect {
+    max-width: 500px; 
+    border: black 2px solid;    
   }
-  */
-  
-  .flex-container-skills {
-    display: flex;
-    display: inline; 
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-evenly;
-    align-items: stretch;
-    max-width: 80%;
-  }
-
+ 
   .flex-item-skills {
     flex-grow: 1;
     flex-shrink: 1;
     flex-basis: auto;
     background: white;
-    border: solid darkgrey 1px;
     max-width: 80%;
-    margin-bottom: 5px;
-   
+    margin-bottom: 5px;   
    }
   
- 
   .title {
       clear: left;
       display:block;
@@ -175,6 +153,7 @@
   
   .content{
     border-radius: 20px;
+    width: 100%;
   }
   
   .tc-link {

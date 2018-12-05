@@ -2,8 +2,6 @@
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
-const {Link, Role} = require('./commonModels');
-const linkSchema = mongoose.model('Link').schema;
 
 const userSkillSchema = mongoose.Schema({    
     skill: { type: String, required: true },
@@ -27,16 +25,6 @@ userSkillSchema.pre('find', function(next) {
 
 userSkillSchema.pre('findOne', function(next) {
   this.populate('skill');
-  next();
-});
-
-userProfileSchema.pre('find', function(next) {
-  this.populate('skills');
-  next();
-});
-
-userProfileSchema.pre('findOne', function(next) {
-  this.populate('skills');
   next();
 });
 
