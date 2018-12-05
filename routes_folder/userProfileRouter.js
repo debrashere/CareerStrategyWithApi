@@ -22,7 +22,6 @@ router.get("/:id", (req, res) => {
         console.error(message);
         return res.status(204).send(message);
       }
-      console.log(`"found profile by id "${req.params.id}"`);
       res.json({
           userProfile: userProfile.serialize()
       });
@@ -49,7 +48,7 @@ router.get('/', (req, res) => {
   });
 
 router.post("/", jsonParser, (req, res) => {
-const requiredFields = ["firstName", "lastName", "email" ];
+const requiredFields = ["firstName", "lastName", "email", "userId" ];
 for (let i = 0; i < requiredFields.length; i++) {
     const field = requiredFields[i];
     if (!(field in req.body)) {
@@ -60,11 +59,10 @@ for (let i = 0; i < requiredFields.length; i++) {
 }
 
 UserProfile
-.find({ firstName: req.body.firstName, lastName: req.body.lastName })
+.find({ userId: req.body.userId })
 .then(userProfile => {
     if (userProfile && userProfile.length > 0) {   
-        console.log("USER PROFILE POST ",`UserProfile "${req.body.firstName}" already exists`);
-        res.status(500).json({ error: `UserProfile "${req.body.firstName}" already exists`})
+        res.status(500).json({ error: `UserProfile "${req.body.UserId}" already exists`})
      }
      else {           
         UserProfile
@@ -79,8 +77,7 @@ UserProfile
             jobProspects: req.body.jobProspects         
             })                      
         .then( userProfile => {
-          const profileUser = userProfile.serialize();
-          console.log("aaaaaa profile router profileUser", profileUser);                
+          const profileUser = userProfile.serialize();              
                res.status(201).json(profileUser) })    
         .catch( err => {
             console.error(err);
@@ -96,7 +93,6 @@ UserProfile
 
 router.put("/:id", jsonParser, (req, res) => {
     // ensure that the id in the request path and the one in request body match
-    console.log("profile put id, body id", req.params.id + "  -  " + req.body.id);
     if (!(req.params.id && req.body.id && req.params.id === req.body.id)) {
       const message =
         `Request path id (${req.params.id}) and request body id ` +
@@ -117,7 +113,6 @@ router.put("/:id", jsonParser, (req, res) => {
       }
     });
   
-    console.log("userProfileRouter toUpdate", toUpdate);
     if (!toUpdate || toUpdate == {}) {
       const message =
         `The input did not contains any updateable fields. ` +
@@ -148,7 +143,7 @@ router.put("/:id", jsonParser, (req, res) => {
         })
       });
     }
-    console.log("profile put executing findByIdAndUpdate toUpdate", toUpdate);
+
     UserProfile
       // all key/value pairs in toUpdate will be updated -- that's what `$set` does
       .findByIdAndUpdate(req.params.id, { $set: toUpdate }, function(err, docs) {
@@ -164,7 +159,7 @@ router.put("/:id", jsonParser, (req, res) => {
       })
   });
   
-  router.delete("/:id", jwtAuth, (req, res) => {
+  router.delete("/:id", (req, res) => {
     UserProfile.findByIdAndRemove(req.params.id)
       .then(UserProfile => res.status(204).end())
       .catch(err => res.status(500).json({ message: "Internal server error" }));

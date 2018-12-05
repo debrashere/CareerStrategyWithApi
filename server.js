@@ -85,6 +85,7 @@ function closeServer() {
   });
 }
 if (require.main === module) {
+  console.log("SERVER.JS connecting to DATABASE_URL", DATABASE_URL);
   runServer(DATABASE_URL).catch(err => console.error(err));
 }
 

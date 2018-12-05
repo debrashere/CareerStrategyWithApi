@@ -46,8 +46,7 @@ function watchSubmitLoginClick() {
     const loginJson = JSON.parse(`{"username": "${userName}","password": "${password}"}`);        
     
   setTimeout(loginUserAPI(pathAuth, loginJson, function(data) {    
-    console.log("watchSubmitLoginClick data", data)  ;
-    
+   
       localStorage.setItem('token', data.userAuth.authToken);
       localStorage.setItem('userProfileId', data.userAuth.profileId);
       localStorage.setItem('userId', data.userAuth.id);

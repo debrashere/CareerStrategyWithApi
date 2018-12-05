@@ -10,7 +10,6 @@ const jsonParser = bodyParser.json();
 
 // Post to register a new user
 router.post('/', jsonParser, (req, res) => {
-  console.log("DEBUG 1 user router req.body", req.body);
   const requiredFields = ['username', 'password'];
   const missingField = requiredFields.find(field => !(field in req.body));
 
@@ -143,7 +142,7 @@ router.get("/:id", (req, res) => {
         console.error(message);
         return res.status(204).send(message);
       }
-      console.log(`"found user by id "${req.params.id}"`);
+
       res.json({
           user: user.serialize()
       });
@@ -186,7 +185,6 @@ router.put("/:id", jsonParser, (req, res) => {
     }
   });
 
-  console.log("userProfileRouter toUpdate", toUpdate);
   if (!toUpdate || toUpdate == {}) {
     const message =
       `The input did not contains any updateable fields. ` +

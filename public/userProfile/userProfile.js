@@ -19,10 +19,9 @@ function findCareerStrategyAPI(path, query, id,  callbackFn) {
   url = id == "" ? url: `${url}/${id}/`;
   url = query == "" ? url: `${url}?${query}`;  
  
-  console.log("findCareerStrategyAPI final url", url);
   const authToken = localStorage.getItem('token');  
   console.log("findCareerStrategyAPI authToken", authToken);
-
+  
   return fetch(url, {
     method: 'GET',
     headers: {
@@ -37,6 +36,7 @@ function findCareerStrategyAPI(path, query, id,  callbackFn) {
       return response.json();
     }
     else if (response.status == 401) {
+      console.log ("response.status == 401", url);
       // Redirect the to the login page.
       location.href = "../login.html";
     }  
@@ -54,10 +54,10 @@ function postCareerStrategyAPI(path, query, id, callback) {
   $('#js-error-message').prop("hidden", true);
   let url =  `${CAREER_STRATEGY_URL}/${path}`;
  
-  console.log("postCareerStrategyAPI final url", url);
+  //console.log("postCareerStrategyAPI final url", url);
   const authToken = localStorage.getItem('token');
   console.log("postCareerStrategyAPI authToken", authToken);
-  console.log("postCareerStrategyAPI authToken", query);
+  //console.log("postCareerStrategyAPI authToken", query);
 
   $.ajax({
     url: url,
@@ -97,7 +97,6 @@ function deleteCareerStrategyAPI(path, update, callback) {
   url = userProfileId == "" ? url: `${url}${userProfileId}/`;
   const authToken = localStorage.getItem('token');
 
-  console.log("deleteCareerStrategyAPI final url", url);
   const settings = {
     url: url,
     data: update,
@@ -113,15 +112,15 @@ function deleteCareerStrategyAPI(path, update, callback) {
 }
 
 function renderUserProfile(data) {
-  console.log("renderUserProfile data", data);
+
   if (!data || !data.userProfile) {
     // do not display following until the user profile has been created
     $('.js-section-job-prospects').prop("hidden", true);    
+    $('.js-section-job-prospects-header').prop("hidden", true);     
     return;
   }  
   let userProfile = data.userProfile[0];
   userId = userProfile.userId;
-  console.log("renderUserProfile userId", userId);
 
   $( ".js-user-skills" ).html('');
   $( ".js-user-profile" ).html(''); 
@@ -141,7 +140,6 @@ function renderUserProfile(data) {
 
 
 function renderUserSkills(data) {
-  console.log("renderUserSkills data", data);
   if (!data || !data.userProfile) {
     // do not display following until the user profile has been created
     $('.js-section-user-skills').prop("hidden", true);
@@ -150,11 +148,30 @@ function renderUserSkills(data) {
   }  
   let userProfile = data.userProfile[0];;
   userId = userProfile.userId;
-  console.log("renderUserSkills userId", userId);
 
-  $( ".js-user-skills" ).html('');
+  $('.js-section-user-skills').html('');
   let counter = 0;
-  let skillHeader = '<ul class="items flex-item-skills">';
+  let skillHeader = `
+  <div class="flex-item">
+    <div class="prospect-header">Your Skills <em>Icons </em>
+        <img id="addNewSkill" alt="add skill" src="../images/icon-add.png"> (add)
+        <img alt="edit skill" src="../images/icon-edit.png" />  (edit)   
+        <img alt="delete skill" src="../images/icon-delete.png" /> (delete)
+    </div>
+    <div class="table">
+      <div class="tr th"> 
+        <div class="td">Skill</div> 
+        <div class="td experience">Years</div>
+        <div class="td"> </div>     
+      </div>
+      <div class="tr">  
+        <div class="td" data-header="Skill"><input type="text" id="newSkill"></input></div>
+        <div class="td" data-header="Experience"> <input type="text" id="skillYears"></input></div>
+        <div class="td" data-header=""><a id="AddSkill" href="#" class="js-add-skill"><img id="addNewSkill" alt="add skill" src="../images/icon-add.png"></a></div>
+      </div>
+    </div>              
+    <ul class="items flex-item-skills">`;
+
   let skills = skillHeader;
           
   if (userProfile.skills){
@@ -168,19 +185,21 @@ function renderUserSkills(data) {
         </li> `;
         counter++; 
      });
-     skills += '</ul>';     
+     skills += '</ul></div> ';     
     }
 
-    $('.js-user-skills').append(`${skills}`);  
-    $('.js-user-skills').prop("hidden", false); 
+    $('.js-section-user-skills').append(`${skills}`);  
+    $('.js-section-user-skills').prop("hidden", false); 
     $('.js-section-user-skills').prop("hidden", false); 
    
+    watchAddSkillButtonClick();
     watchDeleteSkillButtonClick();
     watchEditSkillButtonClick(); 
 } 
 
 function displayCareerStrategyResults(data) {  
   if (!data || !data.userProfile || data.userProfile.length == 0) {
+      $('.js-section-user-skills').prop("hidden", true); 
       displayUserProfileForm(null);
   }
   else {   
@@ -192,15 +211,17 @@ function displayCareerStrategyResults(data) {
 }
 
 function displaySkillsMasterList(data) {
-  $( ".js-masterlist-skills" ).html('');
   if (data == null || data.skill == null || data.skill.length == 0) {
     $('.js-section-master-skills').prop('hidden', true);
     return;
   }
-
+  $('.js-section-master-skills').html('');
   $('.js-section-master-skills').prop('hidden', false);
   let counter = 0;
-  let skillHeader = '<ul class="items flex-item-skills">';
+  let skillHeader = `
+  <div flex-item>
+    <div class="skills-header">Master list of skills <em> (click on a skill to add it to your list of skills)</em></div>   
+    <ul class="items flex-item-skills">`;
   let skills = skillHeader;
            
   data.skill.map( function(skill) {           
@@ -210,10 +231,10 @@ function displaySkillsMasterList(data) {
        </li> `;
         counter++; 
      });
-     skills += '</ul>';    
+     skills += '</ul></div>';    
      
-    $('.js-masterlist-skills').append(`${skills}`);  
-    $('.js-masterlist-skills').prop("hidden", false); 
+    $('.js-section-master-skills').append(`${skills}`);  
+    $('.js-section-master-skills').prop("hidden", false); 
     watchAddMasterSkillButtonClick();   
 }  
 
@@ -234,7 +255,7 @@ function renderJobProspects(data) {
     const sortedProspects = data.prospect.sort(custom_sort);
     sortedProspects.map( function(prospect) {          
       prospects +=
-       `<div flex-item-job-prospect>
+       `<div class="flex-item-job-prospect">
             <div class="prospect-header"><span id="prospect${counter}">${prospect.what}</span></div>
             <div class="td"><span><em>Where:</em> ${prospect.where}</span></div>            
             <div class="td"><span><em>When: </em>${prospect.when}</span></div>
@@ -252,15 +273,15 @@ function renderJobProspects(data) {
 
     $('.js-section-job-prospects').append(`${prospects}`);  
     $('.js-section-job-prospects').prop("hidden", false); 
-    $('.js-section-job-prospects').prop("hidden", false); 
+    $('.js-section-job-prospects-header').prop("hidden", false); 
+    
     
     watchEditJobProspectClick();
     watchAddJobProspectClick();
 }
 
 function displayUserProfileForm(data) { 
-  console.log("displayUserProfileForm data", data);
-  
+
   $('.js-edit-profile-form').html();
  
     let profile = {      
@@ -290,7 +311,12 @@ function displayUserProfileForm(data) {
 
 
 function validateProfileForm() {
-    if (profileEditsAreValid()) {   
+    if (profileEditsAreValid()) { 
+
+      userId = localStorage.getItem('userId');  
+      if (!userId || userId.length == 0) {
+        location.href = "../login.html";
+      }
       USER_PROFILE.firstName =  $('#profileFirst').val();  
       USER_PROFILE.lastName =  $('#profileLast').val();  
       USER_PROFILE.email =  $('#profileEmail').val(); 
@@ -301,14 +327,12 @@ function validateProfileForm() {
         userProfile = `{"userProfileId": "${userProfileId}", "firstName": "${USER_PROFILE.firstName}", "lastName": "${USER_PROFILE.lastName}", "email": "${USER_PROFILE.email}", "phone": "${USER_PROFILE.phone}"}`; 
         setTimeout(putCareerStrategyAPI(pathUserProfile, 
           JSON.parse(userProfile), "", function(data){
-            console.log("validateProfileForm", data);
             refreshUserProfile(); 
         }), 3000);
       }
       else{
         
-        // next update the user document for this user with the profile id 
-        userId = localStorage.getItem('userId');   
+        // next update the user document for this user with the profile id  
         userProfile = `{"firstName": "${USER_PROFILE.firstName}","lastName": "${USER_PROFILE.lastName}","email": "${USER_PROFILE.email}", "phone": "${USER_PROFILE.phone}", "userId": "${userId}" }`;    
 
         setTimeout(postCareerStrategyAPI(pathUserProfile, 
@@ -317,20 +341,27 @@ function validateProfileForm() {
               userProfileId = data.id;           
               localStorage.setItem('userProfileId', userProfileId);
               refreshUserProfile(userProfileId); 
+
+              $(".js-job-prospects-form").prop("hidden", true);
+              $(".js-form").prop("hidden", true); 
             }
-            else
-              refreshUserProfile(""); 
+            else if (data.responseJSON.error)
+            {
+              $('#js-error-message').html(data.responseJSON.error);
+              $('#js-error-message').prop("hidden", false);
+            }
+            else {
+              $('#js-error-message').html("Oops something went wrong. Please try again.");
+              $('#js-error-message').prop("hidden", false);
+            }
+              
         }), 3000);
-      } 
-      
-      $(".js-job-prospects-form").prop("hidden", true);
-      $(".js-form").prop("hidden", true);     
+      }           
   }
 }
 
 function displayProspectsSummaryForm(data) { 
-  console.log("displayProspectsSummaryForm data", data);
-  
+
   $('.js-job-prospects-form').html();
  
     let prospect = {      
@@ -359,10 +390,10 @@ function displayProspectsSummaryForm(data) {
           <p> <label for="prospectStatus"  class="edit-label"><strong>Status: </strong></label>  <input type="text"  id="prospectStatus" value=" ${prospect.status}" /></p>    
           <p> <label for="prospectSource" class="edit-label"><strong>Source: </strong></label>  <input   type="text"  id="prospectSource" value="${prospect.source}" /></p>
           <p> <label for="prospectSourceUrl" class="edit-label"><strong>Source Url: </strong></label>  <input   type="text"  id="prospectSourceUrl" value="${prospect.sourceUrl}" /></p>
-          <p> <label for="prospectDayToDay" class="edit-label"><strong>Day to Day: </strong></label>  <input   type="text"  id="prospectDayToDay" value="${prospect.dayToDay}" /></p>
-          <p> <label for="prospectContacts" class="edit-label"><strong>Contacts : </strong></label>  <input   type="text"  id="prospectContacts" value="${prospect.contacts}" /></p>
-          <p> <label for="prospectComments" class="edit-label"><strong>Comments: </strong></label>  <input   type="text"  id="prospectComments" value="${prospect.comments}" /></p> 
-          <p> <label for="prospectDetails"  class="edit-label"><strong>Details: </strong></label>  <input type="text"  id="prospectDetails" value=" ${prospect.details}" /></p>    
+          <p> <label for="prospectDayToDay" class="edit-label"><strong>Day to Day: </strong></label>  <textarea   rows="4" cols="50" id="prospectDayToDay" value="${prospect.dayToDay}" ></textarea></p>
+          <p> <label for="prospectContacts" class="edit-label"><strong>Contacts : </strong></label>  <textarea   rows="2" cols="50"  id="prospectContacts" value="${prospect.contacts}" ></textarea></p>
+          <p> <label for="prospectComments" class="edit-label"><strong>Comments: </strong></label>  <textarea   rows="4" cols="50"  id="prospectComments" value="${prospect.comments}" ></textarea></p> 
+          <p> <label for="prospectDetails"  class="edit-label"><strong>Details: </strong></label>  <textarea   rows="4" cols="50"   id="prospectDetails" value=" ${prospect.details}" ></textarea></p>    
       </fieldset>`;
 
     $(".js-job-prospects-form").html(formInputs);   
@@ -377,40 +408,20 @@ function qs(key) {
   return match && decodeURIComponent(match[1].replace(/\+/g, " "));
 }
 
-function refreshUserProfileOLD(id) {   
-  userId = localStorage.getItem('userId');
-  console.log("refreshUserProfile","start");
-  let queryPath = `"userId=${userId}`;    
-    
-    if (userId && userId != undefined &&  userId.length > 0) {
-     setTimeout(findCareerStrategyAPI(pathUserProfile, queryPath, "" , displayCareerStrategyResults)
-      , 3000);     
-    }
-    else {
-      displayCareerStrategyResults(null);
-    }
-   
-    findCareerStrategyAPI(pathSkills, "",  "", displaySkillsMasterList);
-} 
 
-
-function refreshUserProfile(id) {   
-  userId = localStorage.getItem('userId');
-  console.log("refreshUserProfile","start");    
-    
-    if (userId && userId.length > 0) {
+function refreshUserProfile(id) {     
+  userId = localStorage.getItem('userId');    
+  if (!userId || userId.length == 0) {
+    location.href = "../login.html";
+  }
       const queryPath = `"userId=${userId}`;
       setTimeout(findCareerStrategyAPI(pathUserProfile, queryPath, "" , displayCareerStrategyResults)
       , 3000);
             
       setTimeout(findCareerStrategyAPI(pathJobProspects, queryPath, "", renderJobProspects)
-     , 3000);      
-    }
-    else {
-      displayCareerStrategyResults(null);
-    }
-   
-    findCareerStrategyAPI(pathSkills, "",  "", displaySkillsMasterList);
+     , 3000);          
+
+    findCareerStrategyAPI(pathSkills, "",  "", displaySkillsMasterList);    
 } 
 
 
@@ -556,7 +567,6 @@ function  watchDeleteSkillButtonClick() {
 function watchFormSubmitButtonClick() { 
   $('#submitEvent').click(event => {
     event.preventDefault();  
-    console.log("watchFormSubmitButtonClick", "start");  
     $(".js-edit-form:visible").each(function() {     
       const formId = $( this ).attr('id')         
       switch (formId) {

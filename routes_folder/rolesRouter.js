@@ -33,7 +33,6 @@ let devType = [];
 const requiredFields = ["role", "accessLevel" ];
 for (let i = 0; i < requiredFields.length; i++) {
     const field = requiredFields[i];
-    console.log("DEBUG1 Role Post req.body",req.body);
     if (!(field in req.body)) {
         const message = `Missing \`${field}\` in request body`;
         console.error(message);

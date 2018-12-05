@@ -16,7 +16,6 @@ const UserSchema = mongoose.Schema({
   },
   firstName: {type: String, default: ''},
   lastName: {type: String, default: ''},
-  userProfileId: {type: String, default: ''},
   id: {type: String, default: ''}
 });
 
@@ -25,7 +24,6 @@ UserSchema.methods.serialize = function() {
     username: this.username || '',
     firstName: this.firstName || '',
     lastName: this.lastName || '',
-    userProfileId: this.userProfileId || '',
     id: this._id
   };
 };

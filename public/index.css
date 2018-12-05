@@ -122,15 +122,9 @@
    flex-grow: 1;
    flex-shrink: 1;
    flex-basis: auto;
-   background: aqua;
-   margin-bottom: 5px;
-  
+   margin-bottom: 5px;  
   }
-  .flex-item-job-prospect {
-    max-width: 500px; 
-    border: black 2px solid;    
-  }
- 
+
   .flex-item-skills {
     flex-grow: 1;
     flex-shrink: 1;
@@ -377,7 +371,12 @@
     border-bottom: 1px solid #d0d0d0;
   }
 
-    
+  .flex-item-job-prospect {
+    max-width: 500px; 
+    border: black 2px solid; 
+    background-color: whitesmoke   
+  }
+ 
   /* Extra small devices (phones, 600px and down) */
   @media only screen and (max-width: 600px) {
     .flex-item { max-width: 260px;  } 

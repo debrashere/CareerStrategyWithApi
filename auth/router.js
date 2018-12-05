@@ -21,15 +21,13 @@ const localAuth = passport.authenticate('local', {session: false});
 router.use(bodyParser.json());
 // The user provides a username and password to login
 router.post('/login', localAuth, (req, res) => {
-  console.log("auth router req.user", req.body);
+
   User.findOne({username: req.body.username})
   .then(user => {
     if(user) {    
       const thisUser = user.serialize();
-      const authToken = createAuthToken(thisUser); 
-      const profileId = !thisUser.userProfileId || thisUser.userProfileId == undefined
-           ? "" : thisUser.userProfileId;
-      const userAuth = JSON.parse(`{"authToken" : "${authToken}", "id": "${thisUser.id}", "profileId": "${profileId}"}`);      
+      const authToken = createAuthToken(thisUser);    
+      const userAuth = JSON.parse(`{"authToken" : "${authToken}", "id": "${thisUser.id}"}`);      
       console.log("created token", authToken);
       res.json({userAuth});
     }

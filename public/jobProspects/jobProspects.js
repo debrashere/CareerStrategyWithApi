@@ -893,12 +893,10 @@ function  watchAddSkillButtonClick() {
 function  watchDeleteSkillButtonClick() {       
     $('.js-delete-skill').click(event => {  
         event.preventDefault();
-        console.log("watchDeleteSkillButtonClick event.currentTarget.id", event.currentTarget.id)
-        const deleteItem = event.currentTarget.id.split('-')[1]; 
+       const deleteItem = event.currentTarget.id.split('-')[1]; 
         const skillId = `#skill-${deleteItem}`;
         const skill = $(skillId).html();
-        console.log("watchDeleteSkillButtonClick skill", skill);
-
+        
         // find the index for this skill in the prospects jobSkills list
         let index = -1;
         for (let i = 0; i < MOCK_JOB_PROSPECTS.prospects[0].jobSkills.length; i++){      
