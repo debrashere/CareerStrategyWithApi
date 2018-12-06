@@ -18,26 +18,21 @@
         <section class="content">                 
           <h2>Welcome to Career Strategy and Planning</h2>  
         </section>  
-        <form id="Login" class="mc4wp-form mc4wp-form-3661" method="post" data-id="3661" data-name="Sidebar Form">
-            <section class="js-login-form">
-              <div class="mc4wp-form-fields"><label>User Id:</label><br>
-              <input type="text" id="UserId" placeholder="Your user id" required=""><br>
-              <div class="mc4wp-form-fields"><label>Password:</label><br>
-              <input type="password" id="userPassword" placeholder="Your password" required=""><br>        
-              <div class="mc4wp-response"></div>
+        <form id="Login" class="flex-container" method="post">
+            <section class="js-login-form flex-item">
+              <div><label>User Id:</label><br><input type="text" id="UserId" placeholder="Your user id" required><br>
+                   <label>Password:</label><br> <input type="password" id="userPassword" placeholder="Your password" required><br>        
+                   <div class=" error-message js-login-response"></div>
+              </div>
             </section>
-            <section class="js-signup-form" hidden>
-              <div class="mc4wp-form-fields"><label>First Name:</label><br>
-                <input type="text" id="firstName" placeholder="Your first name" required=""><br>
-                <div class="mc4wp-form-fields"><label>Last Name:</label><br>
-                <input type="text" id="lastName" placeholder="Your last name" required=""><br>
-                <label>User Id: </label><br>
-                <input type="text" id="userName" placeholder="Your user id" required=""><br>           
-                <label>Password: </label><br>
-                <input type="password" id="password" placeholder="Your password" required=""><br>                           
-                <br>
-                <div class="mc4wp-response"></div>
-              </section>                  
+            <section class="js-signup-form flex-item" hidden>
+              <div><label>First Name:</label><br><input type="text" id="firstName" placeholder="Your first name" required><br>
+                   <label>Last Name:</label><br><input type="text" id="lastName" placeholder="Your last name" required><br>
+                   <label>User Id: </label><br><input type="text" id="userName" placeholder="Your user id" required><br>           
+                   <label>Password: </label><br><input type="password" id="password" placeholder="Your password" required><br>                           
+                <br><div class=" error-message js-signup-response"></div>
+              </div>
+            </section>                  
           </form> 
             <button type="submit" id="submitLogin" class="js-edit-event js-edit-button" >Login</button>  
             <button type="submit" id="registerUser" class="js-edit-event js-edit-button" >Signup</button>                                         
