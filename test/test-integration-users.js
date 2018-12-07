@@ -26,35 +26,23 @@ function seedUserData() {
   console.info('seeding user data');
   const seedData = [];
 
-  for (let i=1; i<=10; i++) {
+  for (let i=1; i<=100; i++) {
     //console.info('seeding user data ', seedData);
     seedData.push(generateuserData());
   }
   // this will return a promise
   return User.insertMany(seedData).catch(err => console.error(err));
 }
-
+  
 // used to generate data to put in db
-function generateBoroughName() {
-  const boroughs = [
-    'Manhattan', 'Queens', 'Brooklyn', 'Bronx', 'Staten Island'];
-  return boroughs[Math.floor(Math.random() * boroughs.length)];
-}
-
-// used to generate data to put in db
-function generateCuisineType() {
-  const cuisines = ['Italian', 'Thai', 'Colombian'];
-  return cuisines[Math.floor(Math.random() * cuisines.length)];
-}
-
-// used to generate data to put in db
-function generateGrade() {
-  const grades = ['A', 'B', 'C', 'D', 'F'];
-  const grade = grades[Math.floor(Math.random() * grades.length)];
-  return {
-    date: faker.date.past(),
-    grade: grade
-  };
+function generatePassword() {
+  const text = ['Mypass', 'Testpass', 'Regpass', 'Newpass', 'Oldpass'];
+  const numbers = ['1', '2', '3', '4', '5'];
+  const part1 = text[Math.floor(Math.random() * text.length)];
+  const part2 = numbers[Math.floor(Math.random() * numbers.length)];
+  //return   `${part1}${part2}`); 
+  //return  User.hashPassword('Mypassw0rd');
+  return '$2a$10$UHynRKStsFB63WZiNg3d/.4a/lHx1DIj4yK/TcTa1oJRf4gvZSj3y';
 }
 
 // generate an object represnting a user.
@@ -63,7 +51,7 @@ function generateGrade() {
 function generateuserData() {
   return {
     username:faker.internet.userName(),
-    password:faker.random.number(),
+    password: generatePassword(),
     firstName: faker.name.firstName(),
     lastName:  faker.name.lastName()
   };
@@ -93,11 +81,9 @@ describe('users API resource', function() {
     return seedUserData();
   });
 
-  /*
   afterEach(function() {
     return tearDownDb();
   });
-  */
 
   after(function() {
     return closeServer();
@@ -161,7 +147,7 @@ describe('users API resource', function() {
         });
     });
  
-  /*
+/*
   describe('POST endpoint', function() {
     // strategy: make a POST request with data,
     // then prove that the user we get back has

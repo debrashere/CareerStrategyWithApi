@@ -34,18 +34,39 @@ router.get("/:id", (req, res) => {
 
 router.get('/', (req, res) => {
   const authHeaders = req.get("Authorization");
-    UserProfile.find() 
-      //.populate('jobProspects').exec()    
-      .then(userProfile => {
-        res.json({
-            userProfile: userProfile.map(profiles => profiles.serialize())
-        });
-      })
-      .catch(err => {
-        console.error(err);
-        res.status(500).json({ message: "Internal server error" });
+  let toQuery = "";
+
+    if (req.query && req.query != {}) {
+      toQuery = {};
+      const queryableFields = ["firstName", "lastName", "email", "userId" ];
+
+      queryableFields.forEach(field => {
+        if (field in req.query) {
+          toQuery[field] = req.query[field];
+        }
+      });      
+            
+      if (!toQuery || toQuery == {}) {
+        const message =
+          `The input did not contains any queryable fields. ` +
+          `Must contain one or more of the following: (${queryableFields}).`;
+        console.error(message);
+        return res.status(400).json({ message: message });
+      }
+    }        
+        
+  UserProfile.find(toQuery )    
+    .then(userProfile => {
+      res.json({
+          userProfile: userProfile.map(profiles => profiles.serialize())
       });
-  });
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).json({ message: "Internal server error" });
+    });  
+    
+});
 
 router.post("/", jsonParser, (req, res) => {
 const requiredFields = ["firstName", "lastName", "email", "userId" ];

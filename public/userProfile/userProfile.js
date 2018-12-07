@@ -414,7 +414,7 @@ function refreshUserProfile(id) {
   if (!userId || userId.length == 0) {
     location.href = "../login.html";
   }
-      const queryPath = `"userId=${userId}`;
+      const queryPath = `userId=${userId}`;
       setTimeout(findCareerStrategyAPI(pathUserProfile, queryPath, "" , displayCareerStrategyResults)
       , 3000);
             

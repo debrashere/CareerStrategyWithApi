@@ -38,25 +38,9 @@ function registerUserAPI(path, update, callback) {
   });
 }
  
-function loginIsInValid() {
-  let message = "";
-  const userName =  $('#UserId').val();
-  const password = $("#userPassword").val();
-  if (!userName || userName.length < 8) {
-    message += "User name is required. <br>";
-  }
-  if (!password || password.length < 6) {
-    message += "Password is required and must be at least 6 characters.";
-  }
-  return message;
-}
 function watchSubmitLoginClick() {       
   $('#submitLogin').click(event => {
     event.preventDefault(); 
-    if (loginIsInValid()) {
-      $('.js-login-response').html(loginIsInValid());
-      return;
-    }
     const userName =  $('#UserId').val();
     const password = $("#userPassword").val(); 
     const loginJson = JSON.parse(`{"username": "${userName}","password": "${password}"}`);        
@@ -71,43 +55,32 @@ function watchSubmitLoginClick() {
   }); 
 }
 
-function registrationIsInValid() {
-  let message = "";
-  const userName =  $('#userName').val();
-  const password = $("#password").val();
-  const firstName = $("#firstName").val();
-  const lastName = $("#lastName").val();    
- 
-  if (!userName || userName.length < 8) {
-    message += "User name is required. <br>";
-  }
-  if (!password || password.length < 6) {
-    message += "Password is required and must be at least 6 characters.";
-  }
-  if (!firstName || firstName.length < 2) {
-    message += "First name is required and must be at least 2 characters.";
-  }
-  if (!lastName || lastName.length < 2) {
-    message += "Last name is required and must be at least 2 characters.";
-  }
-  return message;
-}
 function watchSubmitRegistrationClick() {       
   $('#submitReg').click(event => {
-    event.preventDefault(); 
-    if (registrationIsInValid()) {
-      $('.js-login-response').html(registrationIsInValid());
-      return;
-    }  
+    event.preventDefault();     
      const userName =  $('#userName').val();
      const password = $("#password").val();
      const firstName = $("#firstName").val();
      const lastName = $("#lastName").val();    
     
     const loginJson = JSON.parse(`{"username": "${userName}","password": "${password}","firstName": "${firstName}", "lastName": "${lastName}"}`);    
-    registerUserAPI(pathUsers, loginJson, function(data) {  
-      return data;
-    });
+    setTimeout(registerUserAPI(pathUsers, loginJson, function(data){
+      $('#js-signup-response').prop("hidden", false);
+      if (data) {  
+        console.log("response data", data); 
+      }
+      else if (data.responseJSON.success)
+      {
+        $('#js-signup-response').html("Registration was successful. Please login.");
+      }
+      else if (data.responseJSON.error)
+      {
+        $('#js-signup-response').html(data.responseJSON.error);
+      }
+      else {
+        $('#js-signup-response').html("Oops something went wrong. Please try again.");
+      }        
+    }), 3000);
   }); 
 }
   

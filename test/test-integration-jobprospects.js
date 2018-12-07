@@ -4,13 +4,14 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const faker = require('faker');
 const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 
 // this makes the expect syntax available throughout
 // this module
 const expect = chai.expect;
 
 const {User} = require('../users/models');
-const {UserProfile} = require('../models/userProfileModels');
+const {JobProspect} = require('../models/jobProspectsModels');
 const {app, runServer, closeServer} = require('../server');
 const {TEST_DATABASE_URL} = require('../config');
 
@@ -23,24 +24,34 @@ chai.use(chaiHttp);
 // we use the Faker library to automatically
 // generate placeholder values for author, title, content
 // and then we insert that data into mongo
-function seedUserData() {
+function seedJobProspectData() {
   console.info('seeding user profile data');
   const seedData = [];
 
   for (let i=1; i<=100; i++) { 
-    seedData.push(generateUserProfileData());
+    seedData.push(generateJobProspectData());
   }
   // this will return a promise
-  return UserProfile.insertMany(seedData).catch(err => console.error(err));
+  return JobProspect.insertMany(seedData).catch(err => console.error(err));
+}
+
+function generateStatus()
+{
+  return "Applied";
+}
+function generateSource(){
+  return "Indeed";
+}
+function generateSourceUrl() {
+return "Indeed.job.url";
+}
+// used to generate data to put in db
+function getUserId() {
+  return  11111;
 }
 
 // used to generate data to put in db
-function generateRoles() {
-  return  [];
-}
-
-// used to generate data to put in db
-function generateSkills() {
+function generateJobSkills() {
   return [];
   /*
   return [
@@ -54,16 +65,21 @@ function generateSkills() {
 // generate an object represnting a user.
 // can be used to generate seed data for db
 // or request.body data
-function generateUserProfileData() {
+function generateJobProspectData() {
+   
   return {
-    username:faker.internet.userName(),
-    firstName: faker.name.firstName(),
-    lastName: faker.name.lastName(),
-    email: faker.internet.email(),
-    userId: faker.internet.userName(),
-    phone:  faker.phone.phoneNumber(),
-    skills: generateSkills(),
-    roles: generateRoles()
+    what: faker.name.jobTitle(),
+    where: faker.company.companyName(),
+    when: faker.date.recent(),
+    userId: getUserId(),
+    status: generateStatus(),
+    source: generateSource(),
+    sourceUrl: generateSourceUrl(),
+    dayToDay:faker.name.jobDescriptor(),
+    contact: faker.name.findName(),
+    comments:faker.lorem.paragraph(),
+    details:faker.random.words(),
+    jobSkills: generateJobSkills()
   };
 }
 
@@ -77,7 +93,7 @@ function tearDownDb() {
   return mongoose.connection.dropDatabase();
 }
 
-describe('users API resource', function() {
+describe('Job Prospects API resource', function() {
 
   before(function(done) {
     mongoose.connect(TEST_DATABASE_URL, function(err) {
@@ -86,9 +102,9 @@ describe('users API resource', function() {
   })
   
     beforeEach(function() {
-      return seedUserData();
+      return seedJobProspectData();
     });
-  
+
     afterEach(function() {
       return tearDownDb();
     });  
@@ -105,27 +121,27 @@ describe('users API resource', function() {
   describe('User Profile', function() {
 
     // test strategy:
-    //   1. make request to `/api/userprofiles`
+    //   1. make request to `/api/prospects`
     //   2. inspect response object and prove has right code and have
     //   right keys in response object.
-    it('should retrieve user profile data GET', function() {
+    it('should retrieve job prospect data GET', function() {
       // for Mocha tests, when we're dealing with asynchronous operations,
       // we must either return a Promise object or else call a `done` callback
       // at the end of the test. The `chai.request(server).get...` call is asynchronous
       // and returns a Promise, so we just return it.
       return chai.request(app)
-        .get('/api/userprofiles')
+        .get('/api/prospects')
         .then(function(res) {
-        
+          console.log("aaaaaaaaaaaaaaaaaaaaaa res.body", res.body);
           res.should.have.status(200);
           res.should.be.json; 
-          res.body.userProfile.should.be.a('array');
+          res.body.jobProspect.should.be.a('array');
           // because we create three items on app load
-          res.body.userProfile.length.should.be.at.least(1);
+          res.body.jobProspect.length.should.be.at.least(1);
           // each item should be an object with key/value pairs
           // for `id`, `name` and `checked`.
-          const expectedKeys = ['id', 'firstName', 'lastName'];
-          res.body.userProfile.forEach(function(item) {
+          const expectedKeys = ['id', 'what', 'where'];
+          res.body.jobProspect.forEach(function(item) {
             item.should.be.a('object');
             item.should.include.keys(expectedKeys);
           });
@@ -139,16 +155,16 @@ describe('users API resource', function() {
     it('should add an item on POST', function() {    
       const randomUserId = Math.floor((Math.random() * 1000000) + 1).toString();
       //const newItem = `{"email": "jason.diggs@test.com", "firstName": "testguy", "lastName": "jones", "phone": "123-456-1789",  "roles": [], "skills" : [], "userId": "${randomUserId}"}`; 
-      const newItem = JSON.parse(`{"email": "jason.diggs@test.com", "firstName": "testguy", "lastName": "jones", "phone": "123-456-1789",  "roles": [], "skills" : [], "userId":  "${randomUserId}"}`);
-    
+      const newItem = generateJobProspect();
+
       return chai.request(app)
-        .post('/api/userprofiles')
+        .post('/api/jobprospects')
         .send(newItem)
         .then(function(res) {
           res.should.have.status(201);
           res.should.be.json;
           res.body.should.be.a('object');
-          res.body.should.include.keys('email', 'firstName', 'id', 'lastName', 'phone',  'roles',  'skills', 'userId');
+          res.body.should.include.keys('what', 'when', 'where', 'status');
           res.body.id.should.not.be.null;
           // response should be deep equal to `newItem` from above if we assign
           // `id` to it from `res.body.id`
@@ -168,23 +184,20 @@ describe('users API resource', function() {
       // we initialize our updateData here and then after the initial
       // request to the app, we update it with an `id` property so
       // we can make a second, PUT call to the app.
-      const updateData = {
-        email: 'test@tesat.com',
-        phone: '123-456-5413'
-      };
+      const updateData = generateProspectUpdateData();
 
       return chai.request(app)
         // first have to get so we have an idea of object to update
-        .get('/api/userprofiles')
+        .get('/api/prospects')
         .then(function(res) {
-          updateData.id = res.body.userProfile[0].id;
+          updateData.id = res.body.JobProspect[0].id;
           // this will return a promise whose value will be the response
           // object, which we can inspect in the next `then` back. Note
           // that we could have used a nested callback here instead of
           // returning a promise and chaining with `then`, but we find
           // this approach cleaner and easier to read and reason about.
           return chai.request(app)
-            .put(`/api/userprofiles/${updateData.id}`)
+            .put(`/api/prospects/${updateData.id}`)
             .send(updateData);
         })
         // prove that the PUT request has right status code
@@ -202,10 +215,10 @@ describe('users API resource', function() {
       return chai.request(app)
         // first have to get so we have an `id` of item
         // to delete
-        .get('/api/userprofiles')
+        .get('/api/prospects')
         .then(function(res) {
           return chai.request(app)
-            .delete(`/api/userprofiles/${res.body.userProfile[0].id}`);
+            .delete(`/api/prospects/${res.body.jobProspect[0].id}`);
         })
         .then(function(res) {
           res.should.have.status(204);

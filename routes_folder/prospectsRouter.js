@@ -36,7 +36,29 @@ router.get("/:id", (req, res) => {
   });    
     
 router.get("/", (req, res) => {
-    JobProspect.find()    
+
+  let toQuery = "";
+
+    if (req.query && req.query != {}) {
+      toQuery = {};
+      const queryableFields = ["firstName", "lastName", "email", "userId" ];
+
+      queryableFields.forEach(field => {
+        if (field in req.query) {
+          toQuery[field] = req.query[field];
+        }
+      });      
+            
+      if (!toQuery || toQuery == {}) {
+        const message =
+          `The input did not contains any queryable fields. ` +
+          `Must contain one or more of the following: (${queryableFields}).`;
+        console.error(message);
+        return res.status(400).json({ message: message });
+      }
+    }    
+
+    JobProspect.find(toQuery)    
     .then(prospect => {
         res.json({
             prospect: prospect.map(prospects => prospects.serialize())
