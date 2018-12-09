@@ -26,7 +26,7 @@ function seedUserData() {
   console.info('seeding user profile data');
   const seedData = [];
 
-  for (let i=1; i<=100; i++) { 
+  for (let i=1; i<=10; i++) { 
     seedData.push(generateUserProfileData());
   }
   // this will return a promise
