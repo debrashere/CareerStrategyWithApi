@@ -1,4 +1,7 @@
 'use strict';
+var http = require('http')
+//var Cookies = require('cookies')
+ 
 const express = require('express');
 const passport = require('passport');
 const bodyParser = require('body-parser');
@@ -24,7 +27,11 @@ router.post('/login', localAuth, (req, res) => {
 
   User.findOne({username: req.body.username})
   .then(user => {
-    if(user) {    
+    if(user) { 
+        // Create a cookies object
+       // let keys = [{"token":authToken}];
+       // let cookies = new Cookies(req, res, { keys: keys })
+       // let cookiesJS = JSON.serialize(cookies);
       const thisUser = user.serialize();
       const authToken = createAuthToken(thisUser);    
       const userAuth = JSON.parse(`{"authToken" : "${authToken}", "id": "${thisUser.id}"}`);      

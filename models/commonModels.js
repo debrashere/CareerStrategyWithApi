@@ -11,9 +11,9 @@ const linkSchema = mongoose.Schema({
 
 const roleSchema = mongoose.Schema({
   role:  { type: String, required: true },
-  accessLevel:  { type: String, required: true}
+  accessLevel:  { type: String, required: true},
+  date: { type: Date, required: true}
 });
-
 
 linkSchema.methods.serialize = function() {
   return {
@@ -28,8 +28,9 @@ linkSchema.methods.serialize = function() {
 roleSchema.methods.serialize = function() {
   return {
     id: this._id,
-    role: this.title  || "",
-    accessLevel: this.accessLevel   || ""
+    role: this.role  || "",
+    accessLevel: this.accessLevel   || "",
+    date: this.date
   };
 };
  

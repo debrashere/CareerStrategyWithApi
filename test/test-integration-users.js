@@ -146,8 +146,8 @@ describe('users API resource', function() {
           expect(resuser.username).to.equal(user.username);
         });
     });
+  })
  
-/*
   describe('POST endpoint', function() {
     // strategy: make a POST request with data,
     // then prove that the user we get back has
@@ -156,37 +156,33 @@ describe('users API resource', function() {
     it('should add a new user', function() {
 
       const newuser = generateuserData();
-      let mostRecentGrade;
+      let mostRecentUser;
 
       return chai.request(app)
-        .post('/users')
+        .post('/api/users/')
         .send(newuser)
         .then(function(res) {
           expect(res).to.have.status(201);
           expect(res).to.be.json;
           expect(res.body).to.be.a('object');
           expect(res.body).to.include.keys(
-            'id', 'name', 'cuisine', 'borough', 'grade', 'address');
+            'id', 'username', 'firstName', 'lastName');
           expect(res.body.name).to.equal(newuser.name);
           // cause Mongo should have created id on insertion
           expect(res.body.id).to.not.be.null;
-          expect(res.body.cuisine).to.equal(newuser.cuisine);
-          expect(res.body.borough).to.equal(newuser.borough);
+          expect(res.body.username).to.equal(newuser.username);
+          expect(res.body.lastName).to.equal(newuser.lastName);
+          expect(res.body.firstName).to.equal(newuser.firstName);
 
-          mostRecentGrade = newuser.grades.sort(
-            (a, b) => b.date - a.date)[0].grade;
+          mostRecentUser = newuser
 
-          expect(res.body.grade).to.equal(mostRecentGrade);
-          return user.findById(res.body.id);
+          expect(res.body.username).to.equal(mostRecentUser.username);
+          return User.findById(res.body.id);
         })
         .then(function(user) {
-          expect(user.name).to.equal(newuser.name);
-          expect(user.cuisine).to.equal(newuser.cuisine);
-          expect(user.borough).to.equal(newuser.borough);
-          expect(user.grade).to.equal(mostRecentGrade);
-          expect(user.address.building).to.equal(newuser.address.building);
-          expect(user.address.street).to.equal(newuser.address.street);
-          expect(user.address.zipcode).to.equal(newuser.address.zipcode);
+          expect(user.username).to.equal(newuser.username);
+          expect(user.firstName).to.equal(newuser.firstName);
+          expect(user.lastName).to.equal(newuser.lastName);
         });
     });
   });
@@ -200,11 +196,13 @@ describe('users API resource', function() {
     //  4. Prove user in db is correctly updated
     it('should update fields you send over', function() {
       const updateData = {
-        name: 'fofofofofofofof',
-        cuisine: 'futuristic fusion'
+        id: "ID",
+        username: 'newUserName01',
+        firstName: 'new FirstName',
+        lastName: 'new LastName'
       };
 
-      return user
+      return User
         .findOne()
         .then(function(user) {
           updateData.id = user.id;
@@ -212,13 +210,13 @@ describe('users API resource', function() {
           // make request then inspect it to make sure it reflects
           // data we sent
           return chai.request(app)
-            .put(`/users/${user.id}`)
+            .put(`/api/users/${user.id}`)
             .send(updateData);
         })
         .then(function(res) {
           expect(res).to.have.status(204);
 
-          return user.findById(updateData.id);
+          return User.findById(updateData.id);
         })
         .then(function(user) {
           expect(user.name).to.equal(updateData.name);
@@ -226,7 +224,7 @@ describe('users API resource', function() {
         });
     });
   });
-
+/*  CURRENT Users are not to be deleted
   describe('DELETE endpoint', function() {
     // strategy:
     //  1. get a user
@@ -237,20 +235,20 @@ describe('users API resource', function() {
 
       let user;
 
-      return user
+      return User
         .findOne()
         .then(function(_user) {
           user = _user;
-          return chai.request(app).delete(`/users/${user.id}`);
+          return chai.request(app).delete(`/api/users/${user.id}`);
         })
         .then(function(res) {
           expect(res).to.have.status(204);
-          return user.findById(user.id);
+          return User.findById(user.id);
         })
         .then(function(_user) {
           expect(_user).to.be.null;
         });
-    });
-    */
+    });  
   }); 
-});
+  */
+})

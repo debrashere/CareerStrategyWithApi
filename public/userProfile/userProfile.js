@@ -25,7 +25,7 @@ function findCareerStrategyAPI(path, query, id,  callbackFn) {
   return fetch(url, {
     method: 'GET',
     headers: {
-      'Authorization': 'Bearer' + authToken
+      'Authorization': 'Bearer ' + authToken
     }
   })
   .then(response => {

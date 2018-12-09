@@ -2,7 +2,7 @@
 const CAREER_STRATEGY_URL = 'http://localhost:8080/api';
 const pathUsers = "users";
 const pathAuth = "auth/login";
- 
+
 /*    
   Retrieve data from Career Strategy API
 */
@@ -45,10 +45,8 @@ function watchSubmitLoginClick() {
     const password = $("#userPassword").val(); 
     const loginJson = JSON.parse(`{"username": "${userName}","password": "${password}"}`);        
     
-  setTimeout(loginUserAPI(pathAuth, loginJson, function(data) {    
-   
+  setTimeout(loginUserAPI(pathAuth, loginJson, function(data) {           
       localStorage.setItem('token', data.userAuth.authToken);
-      localStorage.setItem('userProfileId', data.userAuth.profileId);
       localStorage.setItem('userId', data.userAuth.id);
       location.href = "./userProfile/userProfile.html";
     }), 3000);

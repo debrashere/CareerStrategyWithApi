@@ -5,13 +5,16 @@ mongoose.Promise = global.Promise;
 
 const skillSchema = mongoose.Schema({
     skill: { type: String, required: true,  unique: true },
-    description: { type: String }
+    description: { type: String },
+    date: { type: Date, required: true}
 });
 
 skillSchema.methods.serialize = function() {
   return {
+    id: this._id,
     skill: this.skill || '',
-    description: this.description || ''
+    description: this.description || '',
+    date: this.date
   };
 };
 

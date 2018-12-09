@@ -4,18 +4,16 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const faker = require('faker');
 const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
 
 // this makes the expect syntax available throughout
 // this module
 const expect = chai.expect;
 
-const {User} = require('../users/models');
 const {JobProspect} = require('../models/jobProspectsModels');
 const {app, runServer, closeServer} = require('../server');
 const {TEST_DATABASE_URL} = require('../config');
 
-console.log("test-users TEST_DATABASE_URL", TEST_DATABASE_URL);
+console.log("test-jb-prospects TEST_DATABASE_URL", TEST_DATABASE_URL);
 
 chai.use(chaiHttp);
 
@@ -51,15 +49,8 @@ function getUserId() {
 }
 
 // used to generate data to put in db
-function generateJobSkills() {
-  return [];
-  /*
-  return [
-    {skill: "angular", yearsOfExperience: 2},
-    {skill: "cSharp", yearsOfExperience: 8},
-    {skill: "asp.net", yearsOfExperience: 12},    
-  ];
-  */
+function generateJobSkills() { 
+  return []
 }
 
 // generate an object represnting a user.
@@ -82,7 +73,7 @@ function generateJobProspectData() {
     jobSkills: generateJobSkills()
   };
 }
-
+ 
 
 // this function deletes the entire database.
 // we'll call it in an `afterEach` block below
@@ -93,136 +84,182 @@ function tearDownDb() {
   return mongoose.connection.dropDatabase();
 }
 
-describe('Job Prospects API resource', function() {
+describe('Prospects API resource', function() {
 
-  before(function(done) {
-    mongoose.connect(TEST_DATABASE_URL, function(err) {
-        done(err)
-    })
-  })
-  
-    beforeEach(function() {
-      return seedJobProspectData();
+  // we need each of these hook functions to return a promise
+  // otherwise we'd need to call a `done` callback. `runServer`,
+  // `seedJobProspectData` and `tearDownDb` each return a promise,
+  // so we return the value returned by these function calls.
+  before(function() {
+    return runServer(TEST_DATABASE_URL);
+  });
+
+  beforeEach(function() {
+    return seedJobProspectData();
+  });
+
+  afterEach(function() {
+    return tearDownDb();
+  });
+
+  after(function() {
+    return closeServer();
+  });
+
+  // note the use of nested `describe` blocks.
+  // this allows us to make clearer, more discrete tests that focus
+  // on proving something small
+  describe('GET endpoint', function() {
+
+    it('should return all existing prospects', function() {
+      // strategy:
+      //    1. get back all prospects returned by by GET request to `/prospects`
+      //    2. prove res has right status, data type
+      //    3. prove the number of prospects we got back is equal to number
+      //       in db.
+      //
+      // need to have access to mutate and access `res` across
+      // `.then()` calls below, so declare it here so can modify in place
+      let res;
+      return chai.request(app)
+        .get('/api/prospects/')
+        .then(function(_res) {       
+          // so subsequent .then blocks can access response object
+          res = _res; 
+          expect(res).to.have.status(200);
+          // otherwise our db seeding didn't work
+          expect(res.body.prospect).to.have.lengthOf.at.least(1);
+          return res.body.prospect.length;
+        })
+        .then(function(count) {
+          expect(res.body.prospect).to.have.lengthOf(count);
+        });
     });
 
-    afterEach(function() {
-      return tearDownDb();
-    });  
-
-  // Close the fake connection after all tests are done
-  after(function(done) {
-    console.log('Closing') // Shows in console (always)
-    mongoose.connection.close(function() {
-        console.log('Closed') // Also. always shows in console
-        done()
-    })
-  })
-
-  describe('User Profile', function() {
-
-    // test strategy:
-    //   1. make request to `/api/prospects`
-    //   2. inspect response object and prove has right code and have
-    //   right keys in response object.
-    it('should retrieve job prospect data GET', function() {
-      // for Mocha tests, when we're dealing with asynchronous operations,
-      // we must either return a Promise object or else call a `done` callback
-      // at the end of the test. The `chai.request(server).get...` call is asynchronous
-      // and returns a Promise, so we just return it.
+    it('should return prospect with right fields', function() {
+      // Strategy: Get back all job prospects, and ensure they have expected keys
+      let resProspect;
       return chai.request(app)
-        .get('/api/prospects')
+        .get('/api/prospects/')
         .then(function(res) {
-          console.log("aaaaaaaaaaaaaaaaaaaaaa res.body", res.body);
-          res.should.have.status(200);
-          res.should.be.json; 
-          res.body.jobProspect.should.be.a('array');
-          // because we create three items on app load
-          res.body.jobProspect.length.should.be.at.least(1);
-          // each item should be an object with key/value pairs
-          // for `id`, `name` and `checked`.
-          const expectedKeys = ['id', 'what', 'where'];
-          res.body.jobProspect.forEach(function(item) {
-            item.should.be.a('object');
-            item.should.include.keys(expectedKeys);
+          expect(res).to.have.status(200);
+          expect(res).to.be.json;
+          expect(res.body.prospect).to.be.a('array');
+          expect(res.body.prospect).to.have.lengthOf.at.least(1);
+
+          res.body.prospect.forEach(function(jobProspect) {
+            expect(jobProspect).to.be.a('object');
+            expect(jobProspect).to.include.keys(
+              'what', 'where', 'when');
           });
+          resProspect = res.body.prospect[0];  
+          return JobProspect.findById(resProspect.id);
+        })
+        .then(function(prospect) {    
+          //expect(resProspect.id).to.equal(jobProspect._id);
+          expect(resProspect.what).to.equal(prospect.what);        
         });
     });
+});
 
-    // test strategy:
-    //  1. make a POST request with data for a new item
-    //  2. inspect response object and prove it has right
-    //  status code and that the returned object has an `id`
-    it('should add an item on POST', function() {    
-      const randomUserId = Math.floor((Math.random() * 1000000) + 1).toString();
-      //const newItem = `{"email": "jason.diggs@test.com", "firstName": "testguy", "lastName": "jones", "phone": "123-456-1789",  "roles": [], "skills" : [], "userId": "${randomUserId}"}`; 
-      const newItem = generateJobProspect();
+describe('POST endpoint', function() {
+    // strategy: make a POST request with data,
+    // then prove that the jobProspect we get back has
+    // right keys, and that `id` is there (which means
+    // the data was inserted into db)
+    it('should add a new job prospect', function() {
+
+      const newProspect = generateJobProspectData();
+      let mostRecentProspect;
 
       return chai.request(app)
-        .post('/api/jobprospects')
-        .send(newItem)
+        .post('/api/prospects/')
+        .send(newProspect)
         .then(function(res) {
-          res.should.have.status(201);
-          res.should.be.json;
-          res.body.should.be.a('object');
-          res.body.should.include.keys('what', 'when', 'where', 'status');
-          res.body.id.should.not.be.null;
-          // response should be deep equal to `newItem` from above if we assign
-          // `id` to it from `res.body.id`
-          res.body.should.deep.equal(Object.assign(newItem, {id: res.body.id}));
+          expect(res).to.have.status(201);
+          expect(res).to.be.json;
+          expect(res.body).to.be.a('object');
+          expect(res.body).to.include.keys(
+            'id', 'what', 'when', 'where');
+          //expect(res.body).to.equal(newProspect.prospect);
+          // cause Mongo should have created id on insertion
+          expect(res.body.id).to.not.be.null;
+          expect(res.body.what).to.equal(newProspect.what);
+          expect(res.body.where).to.equal(newProspect.where);
+
+          mostRecentProspect = newProspect;
+
+          expect(res.body.what).to.equal(mostRecentProspect.what);
+          return JobProspect.findById(res.body.id);
+        })
+        .then(function(jobProspect) {
+          expect(jobProspect.what).to.equal(newProspect.what);
+          expect(jobProspect.where).to.equal(newProspect.where);
+          expect(jobProspect.date).to.equal(newProspect.date); 
         });
     });
+  });
 
-    // test strategy:
-    //  1. initialize some update data (we won't have an `id` yet)
-    //  2. make a GET request so we can get an item to update
-    //  3. add the `id` to `updateData`
-    //  4. Make a PUT request with `updateData`
-    //  5. Inspect the response object to ensure it
-    //  has right status code and that we get back an updated
-    //  item with the right data in it.
-    it('should update items on PUT', function() {
-      // we initialize our updateData here and then after the initial
-      // request to the app, we update it with an `id` property so
-      // we can make a second, PUT call to the app.
-      const updateData = generateProspectUpdateData();
+  describe('PUT endpoint', function() {
 
-      return chai.request(app)
-        // first have to get so we have an idea of object to update
-        .get('/api/prospects')
-        .then(function(res) {
-          updateData.id = res.body.JobProspect[0].id;
-          // this will return a promise whose value will be the response
-          // object, which we can inspect in the next `then` back. Note
-          // that we could have used a nested callback here instead of
-          // returning a promise and chaining with `then`, but we find
-          // this approach cleaner and easier to read and reason about.
+    // strategy:
+    //  1. Get an existing jobProspect from db
+    //  2. Make a PUT request to update that jobProspect
+    //  3. Prove jobProspect returned by request contains data we sent
+    //  4. Prove jobProspect in db is correctly updated
+    it('should update fields you send over', function() {
+      const updateData = { 
+           id: "id",
+        what: "new what" ,
+        where: 'new where'
+      };
+
+      return JobProspect
+        .findOne()
+        .then(function(jobProspect) {
+          updateData.id = jobProspect.id;
+
+          // make request then inspect it to make sure it reflects
+          // data we sent
           return chai.request(app)
-            .put(`/api/prospects/${updateData.id}`)
+            .put(`/api/prospects/${jobProspect.id}`)
             .send(updateData);
         })
-        // prove that the PUT request has right status code
-        // and returns updated item
         .then(function(res) {
-          res.should.have.status(204);
+          expect(res).to.have.status(204);
+          return JobProspect.findById(updateData.id);
+        })
+        .then(function(jobProspect) {
+          expect(jobProspect.what).to.equal(updateData.what);
+          expect(jobProspect.where).to.equal(updateData.where);
         });
     });
-  
-    // test strategy:
-    //  1. GET a shopping list items so we can get ID of one
-    //  to delete.
-    //  2. DELETE an item and ensure we get back a status 204
-    it('should delete items on DELETE', function() {
-      return chai.request(app)
-        // first have to get so we have an `id` of item
-        // to delete
-        .get('/api/prospects')
-        .then(function(res) {
-          return chai.request(app)
-            .delete(`/api/prospects/${res.body.jobProspect[0].id}`);
+  });
+
+  describe('DELETE endpoint', function() {
+    // strategy:
+    //  1. get a jobProspect
+    //  2. make a DELETE request for that jobProspect's id
+    //  3. assert that response has right status code
+    //  4. prove that jobProspect with the id doesn't exist in db anymore
+    it('delete a jobProspect by id', function() {
+
+      let jobProspect;
+
+      return JobProspect
+        .findOne()
+        .then(function(_prospect) {
+          jobProspect = _prospect;
+          return chai.request(app).delete(`/api/prospects/${jobProspect.id}`);
         })
         .then(function(res) {
-          res.should.have.status(204);
+          expect(res).to.have.status(204);
+          return JobProspect.findById(jobProspect.id);
+        })
+        .then(function(_prospect) {
+          expect(_prospect).to.be.null;
         });
-    });
-  })
+    });      
+});
+
 })

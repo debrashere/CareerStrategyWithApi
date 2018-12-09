@@ -4,8 +4,6 @@ const express = require('express');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
-let devType = "";
-let devTypes = [];
 
 const bodyParser = require('body-parser');
 const router = express.Router();
@@ -29,40 +27,42 @@ const jwtAuth = passport.authenticate('jwt', { session: false });
   });
 
 router.post("/", jsonParser, (req, res) => {
-let devType = [];
-const requiredFields = ["role", "accessLevel" ];
-for (let i = 0; i < requiredFields.length; i++) {
-    const field = requiredFields[i];
-    if (!(field in req.body)) {
-        const message = `Missing \`${field}\` in request body`;
-        console.error(message);
-        return res.status(400).send(message);
-    }
-}
+  
+  console.log("Role Router post req.body", req.body);
+  const requiredFields = ["role", "accessLevel", "date" ];
+  for (let i = 0; i < requiredFields.length; i++) {
+      const field = requiredFields[i];
+      if (!(field in req.body)) {
+          const message = `Missing \`${field}\` in request body`;
+          console.error(message);
+          return res.status(400).send(message);
+      }
+  }
 
-Role
-.find({ role: req.body.role })
-.then(role => {
-    if (role && role.length > 0) {      
-        res.status(500).json({ error: `Role "${req.body.role}" already exists`})
-     }
-     else {      
-        Role
-        .create({
-            role: req.body.role,
-            accessLevel: req.body.accessLevel
-            })                      
-        .then( role => res.status(201).json(role.serialize()))                 
-        .catch( err => {
-            console.error(err);
-            res.status(500).json({ error: 'Something went wrong' });
-        })        
-    }  
-})
-.catch(err => {
-    console.error(err);
-    res.status(500).json({ error: 'Something went wrong posting role' });
-    })        
+  Role
+  .find({ role: req.body.role })
+  .then(role => {
+      if (role && role.length > 0) {      
+          res.status(500).json({ error: `Role "${req.body.role}" already exists`})
+      }
+      else {      
+          Role
+          .create({
+              role: req.body.role,
+              accessLevel: req.body.accessLevel,
+              date: req.body.date
+              })                      
+          .then( role => res.status(201).json(role.serialize()))                 
+          .catch( err => {
+              console.error(err);
+              res.status(500).json({ error: 'Something went wrong' });
+          })        
+      }  
+  })
+  .catch(err => {
+      console.error(err);
+      res.status(500).json({ error: 'Something went wrong posting role' });
+      })        
 })
 
 router.put("/:id", jsonParser, (req, res) => {
@@ -79,7 +79,7 @@ router.put("/:id", jsonParser, (req, res) => {
     // if the user sent over any of the updatableFields, we udpate those values
     // in document
     const toUpdate = {};
-    const updateableFields = ["role", "accessLevel"];
+    const updateableFields = ["accessLevel"];
   
     updateableFields.forEach(field => {
       if (field in req.body) {

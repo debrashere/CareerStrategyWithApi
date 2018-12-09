@@ -9,12 +9,11 @@ const mongoose = require('mongoose');
 // this module
 const expect = chai.expect;
 
-const {User} = require('../users/models');
 const {UserProfile} = require('../models/userProfileModels');
 const {app, runServer, closeServer} = require('../server');
 const {TEST_DATABASE_URL} = require('../config');
 
-console.log("test-users TEST_DATABASE_URL", TEST_DATABASE_URL);
+console.log("test-jb-user-profile TEST_DATABASE_URL", TEST_DATABASE_URL);
 
 chai.use(chaiHttp);
 
@@ -42,13 +41,13 @@ function generateRoles() {
 // used to generate data to put in db
 function generateSkills() {
   return [];
-  /*
+
   return [
     {skill: "angular", yearsOfExperience: 2},
     {skill: "cSharp", yearsOfExperience: 8},
     {skill: "asp.net", yearsOfExperience: 12},    
   ];
-  */
+
 }
 
 // generate an object represnting a user.
@@ -67,7 +66,6 @@ function generateUserProfileData() {
   };
 }
 
-
 // this function deletes the entire database.
 // we'll call it in an `afterEach` block below
 // to ensure data from one test does not stick
@@ -77,139 +75,180 @@ function tearDownDb() {
   return mongoose.connection.dropDatabase();
 }
 
-describe('users API resource', function() {
+describe('UserProfile API resource', function() {
 
-  before(function(done) {
-    mongoose.connect(TEST_DATABASE_URL, function(err) {
-        done(err)
-    })
-  })
-  
-    beforeEach(function() {
-      return seedUserData();
-    });
-  
-    afterEach(function() {
-      return tearDownDb();
-    });  
+  // we need each of these hook functions to return a promise
+  // otherwise we'd need to call a `done` callback. `runServer`,
+  // `seedUserData` and `tearDownDb` each return a promise,
+  // so we return the value returned by these function calls.
+  before(function() {
+    return runServer(TEST_DATABASE_URL);
+  });
 
-  // Close the fake connection after all tests are done
-  after(function(done) {
-    console.log('Closing') // Shows in console (always)
-    mongoose.connection.close(function() {
-        console.log('Closed') // Also. always shows in console
-        done()
-    })
-  })
+  beforeEach(function() {
+    return seedUserData();
+  });
 
-  describe('User Profile', function() {
+  afterEach(function() {
+    return tearDownDb();
+  });
 
-    // test strategy:
-    //   1. make request to `/api/userprofiles`
-    //   2. inspect response object and prove has right code and have
-    //   right keys in response object.
-    it('should retrieve user profile data GET', function() {
-      // for Mocha tests, when we're dealing with asynchronous operations,
-      // we must either return a Promise object or else call a `done` callback
-      // at the end of the test. The `chai.request(server).get...` call is asynchronous
-      // and returns a Promise, so we just return it.
+  after(function() {
+    return closeServer();
+  });
+
+  // note the use of nested `describe` blocks.
+  // this allows us to make clearer, more discrete tests that focus
+  // on proving something small
+  describe('GET endpoint', function() {
+
+    it('should return all existing user profiles', function() {
+      // strategy:
+      //    1. get back all user profile returned by by GET request to `/userprofiles`
+      //    2. prove res has right status, data type
+      //    3. prove the number of user profile we got back is equal to number
+      //       in db.
+      //
+      // need to have access to mutate and access `res` across
+      // `.then()` calls below, so declare it here so can modify in place
+      let res;
       return chai.request(app)
-        .get('/api/userprofiles')
+        .get('/api/userprofiles/')
+        .then(function(_res) { 
+          // so subsequent .then blocks can access response object
+          res = _res; 
+          expect(res).to.have.status(200);
+          // otherwise our db seeding didn't work
+          expect(res.body.userProfile).to.have.lengthOf.at.least(1);
+          return res.body.userProfile.length;
+        })
+        .then(function(count) {
+          expect(res.body.userProfile).to.have.lengthOf(count);
+        });
+    });   
+
+    it('should return user profile with right fields', function() {
+      // Strategy: Get back all user profiles, and ensure they have expected keys
+      let resProfile;
+      return chai.request(app)
+        .get('/api/userprofiles/')
         .then(function(res) {
-        
-          res.should.have.status(200);
-          res.should.be.json; 
-          res.body.userProfile.should.be.a('array');
-          // because we create three items on app load
-          res.body.userProfile.length.should.be.at.least(1);
-          // each item should be an object with key/value pairs
-          // for `id`, `name` and `checked`.
-          const expectedKeys = ['id', 'firstName', 'lastName'];
-          res.body.userProfile.forEach(function(item) {
-            item.should.be.a('object');
-            item.should.include.keys(expectedKeys);
+          expect(res).to.have.status(200);
+          expect(res).to.be.json;
+          expect(res.body.userProfile).to.be.a('array');
+          expect(res.body.userProfile).to.have.lengthOf.at.least(1);
+
+          res.body.userProfile.forEach(function(userProfile) {
+            expect(userProfile).to.be.a('object');
+            expect(userProfile).to.include.keys(
+              'firstName','lastName', 'email', 'userId', 'phone', 'skills', 'roles');
           });
+          resProfile = res.body.userProfile[0];  
+          return UserProfile.findById(resProfile.id);
+        })
+        .then(function(profile) {    
+          //expect(resProfile.id).to.equal(userProfile._id);
+          expect(resProfile.what).to.equal(profile.what);        
         });
     });
+});
+ 
+describe('POST endpoint', function() {
+    // strategy: make a POST request with data,
+    // then prove that the userProfile we get back has
+    // right keys, and that `id` is there (which means
+    // the data was inserted into db)
+    it('should add a new user profile', function() {
 
-    // test strategy:
-    //  1. make a POST request with data for a new item
-    //  2. inspect response object and prove it has right
-    //  status code and that the returned object has an `id`
-    it('should add an item on POST', function() {    
-      const randomUserId = Math.floor((Math.random() * 1000000) + 1).toString();
-      //const newItem = `{"email": "jason.diggs@test.com", "firstName": "testguy", "lastName": "jones", "phone": "123-456-1789",  "roles": [], "skills" : [], "userId": "${randomUserId}"}`; 
-      const newItem = JSON.parse(`{"email": "jason.diggs@test.com", "firstName": "testguy", "lastName": "jones", "phone": "123-456-1789",  "roles": [], "skills" : [], "userId":  "${randomUserId}"}`);
-    
+      const newProfile = generateUserProfileData();
+      let mostRecentProfile;
+
       return chai.request(app)
-        .post('/api/userprofiles')
-        .send(newItem)
+        .post('/api/userprofiles/')
+        .send(newProfile)
         .then(function(res) {
-          res.should.have.status(201);
-          res.should.be.json;
-          res.body.should.be.a('object');
-          res.body.should.include.keys('email', 'firstName', 'id', 'lastName', 'phone',  'roles',  'skills', 'userId');
-          res.body.id.should.not.be.null;
-          // response should be deep equal to `newItem` from above if we assign
-          // `id` to it from `res.body.id`
-          res.body.should.deep.equal(Object.assign(newItem, {id: res.body.id}));
+          expect(res).to.have.status(201);
+          expect(res).to.be.json;
+          expect(res.body).to.be.a('object');
+          expect(res.body).to.include.keys(
+            'firstName','lastName', 'email', 'userId', 'phone', 'skills', 'roles');
+          //expect(res.body).to.equal(newProfile.prospect);
+          // cause Mongo should have created id on insertion
+          expect(res.body.id).to.not.be.null;
+          expect(res.body.firstName).to.equal(newProfile.firstName);
+          expect(res.body.lastName).to.equal(newProfile.lastName);
+
+          mostRecentProfile = newProfile;
+          expect(res.body.firstName).to.equal(mostRecentProfile.firstName);
+          return UserProfile.findById(res.body.id);
+        })
+        .then(function(userProfile) {
+          expect(userProfile.firstName).to.equal(newProfile.firstName);
+          expect(userProfile.lastName).to.equal(newProfile.lastName);
+          expect(userProfile.email).to.equal(newProfile.email); 
         });
     });
+  });
 
-    // test strategy:
-    //  1. initialize some update data (we won't have an `id` yet)
-    //  2. make a GET request so we can get an item to update
-    //  3. add the `id` to `updateData`
-    //  4. Make a PUT request with `updateData`
-    //  5. Inspect the response object to ensure it
-    //  has right status code and that we get back an updated
-    //  item with the right data in it.
-    it('should update items on PUT', function() {
-      // we initialize our updateData here and then after the initial
-      // request to the app, we update it with an `id` property so
-      // we can make a second, PUT call to the app.
-      const updateData = {
-        email: 'test@tesat.com',
-        phone: '123-456-5413'
+  describe('PUT endpoint', function() {
+
+    // strategy:
+    //  1. Get an existing userProfile from db
+    //  2. Make a PUT request to update that userProfile
+    //  3. Prove userProfile returned by request contains data we sent
+    //  4. Prove userProfile in db is correctly updated
+    it('should update fields you send over', function() {
+      const updateData = { 
+           id: "id",
+        email: "new.email@new.com" ,
+        phone: '111-123-2344'
       };
 
-      return chai.request(app)
-        // first have to get so we have an idea of object to update
-        .get('/api/userprofiles')
-        .then(function(res) {
-          updateData.id = res.body.userProfile[0].id;
-          // this will return a promise whose value will be the response
-          // object, which we can inspect in the next `then` back. Note
-          // that we could have used a nested callback here instead of
-          // returning a promise and chaining with `then`, but we find
-          // this approach cleaner and easier to read and reason about.
+      return UserProfile
+        .findOne()
+        .then(function(userProfile) {
+          updateData.id = userProfile.id;
+
+          // make request then inspect it to make sure it reflects
+          // data we sent
           return chai.request(app)
-            .put(`/api/userprofiles/${updateData.id}`)
+            .put(`/api/userprofiles/${userProfile.id}`)
             .send(updateData);
         })
-        // prove that the PUT request has right status code
-        // and returns updated item
         .then(function(res) {
-          res.should.have.status(204);
+          expect(res).to.have.status(204);
+          return UserProfile.findById(updateData.id);
+        })
+        .then(function(userProfile) {
+          expect(userProfile.email).to.equal(updateData.email);
+          expect(userProfile.phone).to.equal(updateData.phone);
         });
     });
-  
-    // test strategy:
-    //  1. GET a shopping list items so we can get ID of one
-    //  to delete.
-    //  2. DELETE an item and ensure we get back a status 204
-    it('should delete items on DELETE', function() {
-      return chai.request(app)
-        // first have to get so we have an `id` of item
-        // to delete
-        .get('/api/userprofiles')
-        .then(function(res) {
-          return chai.request(app)
-            .delete(`/api/userprofiles/${res.body.userProfile[0].id}`);
+  });
+ 
+  describe('DELETE endpoint', function() {
+    // strategy:
+    //  1. get a userProfile
+    //  2. make a DELETE request for that userProfile's id
+    //  3. assert that response has right status code
+    //  4. prove that userProfile with the id doesn't exist in db anymore
+    it('delete a userProfile by id', function() {
+
+      let userProfile;
+
+      return UserProfile
+        .findOne()
+        .then(function(_profile) {
+          userProfile = _profile;
+          return chai.request(app).delete(`/api/userprofiles/${userProfile.id}`);
         })
         .then(function(res) {
-          res.should.have.status(204);
+          expect(res).to.have.status(204);
+          return UserProfile.findById(userProfile.id);
+        })
+        .then(function(_profile) {
+          expect(_profile).to.be.null;
         });
-    });
-  })
+    });      
+  });
 })

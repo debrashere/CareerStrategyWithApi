@@ -18,35 +18,37 @@ console.log("test-skills TEST_DATABASE_URL", TEST_DATABASE_URL);
 chai.use(chaiHttp);
 
 const skills = [
-{"skill": "Angular", "description": ""},
-{"skill": ".Net", "description": ""},
-{"skill": ".Net Core", "description": ""},
-{"skill": "c#", "description": ""},
-{"skill": "Visual Studio", "description": ""},
-{"skill": "HTML5" , "description": ""},
-{"skill": "CSS" , "description": ""}, 
-{"skill": "CSS3" , "description": ""},
-{"skill": "JS" , "description": ""},
-{"skill": "AJAX/JSON" , "description": ""},
-{"skill": "jquery" , "description": ""},
-{"skill": "react.js" , "description": ""},
-{"skill": "Responsive design" , "description": ""},
-{"skill": "PHP" , "description": ""},
-{"skill": "Node.js" , "description": ""},
-{"skill": "ROR" , "description": ""},
-{"skill": "Django" , "description": ""},
-{"skill": "Apache" , "description": ""},
-{"skill": "nginx" , "description": ""},
-{"skill": "NoSQL" , "description": ""},
-{"skill": "RDBMS" , "description": ""},
-{"skill": "TDD" , "description": ""},
-{"skill": "Virtualization" , "description": ""},
-{"skill": "sandboxing" , "description": ""},
-{"skill": "linux" , "description": ""},
-{"skill": "Git" , "description": ""}, 
-{"skill": "android/iOS" , "description": ""}, 
-{"skill": "app developement" , "description": ""},
-{"skill": "UI/UX design" , "description": ""}]
+
+  {"skill": "Angular", "description": "", "date": new Date()},
+  {"skill": ".Net", "description": "", "date": new Date()},
+  {"skill": ".Net Core", "description": "", "date": new Date()},
+  {"skill": "c#", "description": "", "date": new Date()},
+  {"skill": "Visual Studio", "description": "", "date": new Date()},
+  {"skill": "HTML5" , "description": "", "date": new Date()},
+  {"skill": "CSS" , "description": "", "date": new Date()}, 
+  {"skill": "CSS3" , "description": "", "date": new Date()},
+  {"skill": "JS" , "description": "", "date": new Date()},
+  {"skill": "AJAX/JSON" , "description": "", "date": new Date()},
+  {"skill": "jquery" , "description": "", "date": new Date()},
+  {"skill": "react.js" , "description": "", "date": new Date()},
+  {"skill": "Responsive design" , "description": "", "date": new Date()},
+  {"skill": "PHP" , "description": "", "date": new Date()},
+  {"skill": "Node.js" , "description": "", "date": new Date()},
+  {"skill": "ROR" , "description": "", "date": new Date()},
+  {"skill": "Django" , "description": "", "date": new Date()},
+  {"skill": "Apache" , "description": "", "date": new Date()},
+  {"skill": "nginx" , "description": "", "date": new Date()},
+  {"skill": "NoSQL" , "description": "", "date": new Date()},
+  {"skill": "RDBMS" , "description": "", "date": new Date()},
+  {"skill": "TDD" , "description": "", "date": new Date()},
+  {"skill": "Virtualization" , "description": "", "date": new Date()},
+  {"skill": "sandboxing" , "description": "", "date": new Date()},
+  {"skill": "linux" , "description": "", "date": new Date()},
+  {"skill": "Git" , "description": "", "date": new Date()}, 
+  {"skill": "android/iOS" , "description": "", "date": new Date()}, 
+  {"skill": "app developement" , "description": "", "date": new Date()},
+  {"skill": "UI/UX design" , "description": "", "date": new Date()}
+]
 
 // used to put randomish documents in db
 // so we have data to work with and assert about.
@@ -61,17 +63,16 @@ function seedSkillData() {
   return Skill.insertMany(skills).catch(err => console.error(err));
 }
  
-
 // generate an object represnting a skill.
 // can be used to generate seed data for db
 // or request.body data
 function generateSkillData() {
   return {
     skill:"newskill",
-    description:""
+    description:"new skill description",
+    date: new Date()
   };
 }
-
 
 // this function deletes the entire database.
 // we'll call it in an `afterEach` block below
@@ -120,17 +121,17 @@ describe('skills API resource', function() {
       // `.then()` calls below, so declare it here so can modify in place
       let res;
       return chai.request(app)
-        .get('/api/skills')
+        .get('/api/skills/')
         .then(function(_res) {       
           // so subsequent .then blocks can access response object
           res = _res; 
           expect(res).to.have.status(200);
           // otherwise our db seeding didn't work
-          expect(res.body).to.have.lengthOf.at.least(1);
-          return res.body.length;
+          expect(res.body.skill).to.have.lengthOf.at.least(1);
+          return res.body.skill.length;
         })
         .then(function(count) {
-          expect(res.body).to.have.lengthOf(count);
+          expect(res.body.skill).to.have.lengthOf(count);
         });
     });
 
@@ -139,19 +140,19 @@ describe('skills API resource', function() {
 
       let resSkill;
       return chai.request(app)
-        .get('/api/skills')
+        .get('/api/skills/')
         .then(function(res) {
           expect(res).to.have.status(200);
           expect(res).to.be.json;
-          expect(res.body).to.be.a('array');
-          expect(res.body).to.have.lengthOf.at.least(1);
+          expect(res.body.skill).to.be.a('array');
+          expect(res.body.skill).to.have.lengthOf.at.least(1);
 
-          res.body.forEach(function(skill) {
+          res.body.skill.forEach(function(skill) {
             expect(skill).to.be.a('object');
             expect(skill).to.include.keys(
-              'id', 'skill');
+              'id', 'skill', 'description');
           });
-          resSkill = res.body[0];          
+          resSkill = res.body.skill[0];          
           return Skill.findById(resSkill.id);
         })
         .then(function(skill) {     
@@ -169,37 +170,32 @@ describe('skills API resource', function() {
     it('should add a new skill', function() {
 
       const newSkill = generateSkillData();
-      let mostRecentGrade;
+      let mostRecentSkill;
 
       return chai.request(app)
-        .post('/skills')
+        .post('/api/skills/')
         .send(newSkill)
         .then(function(res) {
           expect(res).to.have.status(201);
           expect(res).to.be.json;
           expect(res.body).to.be.a('object');
           expect(res.body).to.include.keys(
-            'id', 'name', 'cuisine', 'borough', 'grade', 'address');
-          expect(res.body.name).to.equal(newSkill.name);
+            'id', 'skill', 'description', 'date');
+          expect(res.body.skill).to.equal(newSkill.skill);
           // cause Mongo should have created id on insertion
-          expect(res.body.id).to.not.be.null;
-          expect(res.body.cuisine).to.equal(newSkill.cuisine);
-          expect(res.body.borough).to.equal(newSkill.borough);
+          //expect(res.body.id).to.not.be.null;
+          expect(res.body.skill).to.equal(newSkill.skill);
+          expect(res.body.description).to.equal(newSkill.description);
 
-          mostRecentGrade = newSkill.grades.sort(
-            (a, b) => b.date - a.date)[0].grade;
+          mostRecentSkill = newSkill;
 
-          expect(res.body.grade).to.equal(mostRecentGrade);
-          return skill.findById(res.body.id);
+          expect(res.body.skill).to.equal(mostRecentSkill.skill);
+          return Skill.findById(res.body.id);
         })
         .then(function(skill) {
-          expect(skill.name).to.equal(newSkill.name);
-          expect(skill.cuisine).to.equal(newSkill.cuisine);
-          expect(skill.borough).to.equal(newSkill.borough);
-          expect(skill.grade).to.equal(mostRecentGrade);
-          expect(skill.address.building).to.equal(newSkill.address.building);
-          expect(skill.address.street).to.equal(newSkill.address.street);
-          expect(skill.address.zipcode).to.equal(newSkill.address.zipcode);
+          expect(skill.skill).to.equal(newSkill.skill);
+          expect(skill.description).to.equal(newSkill.description);
+         // expect(skill.date).to.equal(newSkill.date); 
         });
     });
   });
@@ -212,12 +208,13 @@ describe('skills API resource', function() {
     //  3. Prove skill returned by request contains data we sent
     //  4. Prove skill in db is correctly updated
     it('should update fields you send over', function() {
-      const updateData = {
-        name: 'fofofofofofofof',
-        cuisine: 'futuristic fusion'
+      const updateData = { 
+           id: "id",
+        skill: "Angular" ,
+        description: 'Angular new description'
       };
 
-      return skill
+      return Skill
         .findOne()
         .then(function(skill) {
           updateData.id = skill.id;
@@ -225,17 +222,16 @@ describe('skills API resource', function() {
           // make request then inspect it to make sure it reflects
           // data we sent
           return chai.request(app)
-            .put(`/skills/${skill.id}`)
+            .put(`/api/skills/${skill.id}`)
             .send(updateData);
         })
         .then(function(res) {
           expect(res).to.have.status(204);
-
-          return skill.findById(updateData.id);
+          return Skill.findById(updateData.id);
         })
         .then(function(skill) {
-          expect(skill.name).to.equal(updateData.name);
-          expect(skill.cuisine).to.equal(updateData.cuisine);
+          expect(skill.skill).to.equal(updateData.skill);
+          expect(skill.description).to.equal(updateData.description);
         });
     });
   });
@@ -250,20 +246,19 @@ describe('skills API resource', function() {
 
       let skill;
 
-      return skill
+      return Skill
         .findOne()
         .then(function(_skill) {
           skill = _skill;
-          return chai.request(app).delete(`/skills/${skill.id}`);
+          return chai.request(app).delete(`/api/skills/${skill.id}`);
         })
         .then(function(res) {
           expect(res).to.have.status(204);
-          return skill.findById(skill.id);
+          return Skill.findById(skill.id);
         })
         .then(function(_skill) {
           expect(_skill).to.be.null;
         });
     });   
   }); 
-
 });

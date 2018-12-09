@@ -62,7 +62,7 @@ Skill
         .create({
             skill: req.body.skill,
             description: req.body.description,
-            links: req.body.links
+            date: req.body.date
             })                      
         .then( skill => res.status(201).json(skill.serialize()))                 
         .catch( err => {
@@ -77,7 +77,7 @@ Skill
     })        
 })
 
-router.put("/:id", jwtAuth, jsonParser, (req, res) => {
+router.put("/:id", jsonParser, (req, res) => {
     // ensure that the id in the request path and the one in request body match
     if (!(req.params.id && req.body.id && req.params.id === req.body.id)) {
       const message =

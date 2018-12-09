@@ -13,7 +13,7 @@ const { UserProfile} = require('../models/userProfileModels');
 const passport = require('passport');
 const jwtAuth = passport.authenticate('jwt', { session: false });
 
-router.get("/:id", (req, res) => {
+router.get("/:id",  (req, res) => {
     UserProfile.findOne({_id: req.params.id})
     //.populate('jobProspects').exec()    
     .then(userProfile => {
@@ -32,7 +32,7 @@ router.get("/:id", (req, res) => {
     });
   });    
 
-router.get('/', (req, res) => {
+router.get('/',  (req, res) => {
   const authHeaders = req.get("Authorization");
   let toQuery = "";
 
@@ -126,7 +126,7 @@ router.put("/:id", jsonParser, (req, res) => {
     // if the user sent over any of the updatableFields, we udpate those values
     // in document
     const toUpdate = {};
-    const updateableFields = ["firstName", "lastName", "email", "links", "roles", "skills", "jobProspects" ];
+    const updateableFields = ["firstName", "lastName", "email", "phone", "links", "roles", "skills", "jobProspects" ];
   
     updateableFields.forEach(field => {
       if (field in req.body) {
