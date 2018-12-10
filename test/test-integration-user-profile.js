@@ -50,7 +50,7 @@ function seedLoggedInUser() {
     
      token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InVzZXJuYW1lIjoiZGVicmF0ZXN0ZXIiLCJmaXJzdE5hbWUiOiJkZWJyYSIsImxhc3ROYW1lIjoidGVzdGVyIiwiaWQiOiI1YzBiMDg0ZGE3MWJkNDBhZDAzNWYzZjQifSwiaWF0IjoxNTQ0MjMzNzQ4LCJleHAiOjE1NDQ4Mzg1NDgsInN1YiI6ImRlYnJhdGVzdGVyIn0.nE8Vs317DX_6I5j_6VP3oLErBLOOBPBh-NoM4mLvDYk';
     // this will return a promise  
-    return User.insertMany(loggedInUsers);
+    //return User.insertMany(loggedInUsers);
   }
 
 // used to generate data to put in db
@@ -96,6 +96,36 @@ function tearDownDb() {
   console.warn('            Deleting database');
   return mongoose.connection.dropDatabase();
 }
+/* --------------------------------------------------------------------
+ after all tests have exected exit
+---------------------------------------------------------------------- */
+function exit (code) {
+  function done() {
+    draining--;
+    console.log(`Draining down to ${draining}`);
+    if (draining <= 0) {
+      process.exit(Math.min(code, 255));
+    }
+  }
+
+  process.on('exit', function(realExitCode) {
+    console.log(`Process is exiting with ${realExitCode}`);
+  });
+
+  var draining = 0;
+  var streams = [process.stdout, process.stderr];
+
+  streams.forEach(function (stream) {
+    // submit empty write request and wait for completion
+    draining += 1;
+    console.log(`Draining up to ${draining}`);
+    stream.write('', done);
+  });
+
+  console.log('Starting extra call to done().');
+  done();
+  console.log('Extra call to done() finished.');
+}
   
 /* --------------------------------------------------------------------
    start UserProfile tests hook functions.
@@ -114,28 +144,20 @@ describe('UserProfile API resource', function() {
     return seedUserProfileData();
   }); 
 
-
   before(function() {
     return seedLoggedInUser();
   }); 
 
-/*
-  beforeEach(function() {
-    return seedUserProfileData();
-  });
-
-  beforeEach(function() {
-    return seedLoggedInUser();
-  });
-
-  afterEach(function() {
-    return tearDownDb();
-  });
-  */
-
   after(function() {
     return tearDownDb();
+  });
+
+  after(function() {
     return closeServer();
+  });
+
+  after(function() {
+    exit();
   });
 
   /* --------------------------------------------------------------------

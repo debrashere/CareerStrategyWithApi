@@ -47,7 +47,7 @@ function seedLoggedInUser() {
   
    token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InVzZXJuYW1lIjoiZGVicmF0ZXN0ZXIiLCJmaXJzdE5hbWUiOiJkZWJyYSIsImxhc3ROYW1lIjoidGVzdGVyIiwiaWQiOiI1YzBiMDg0ZGE3MWJkNDBhZDAzNWYzZjQifSwiaWF0IjoxNTQ0MjMzNzQ4LCJleHAiOjE1NDQ4Mzg1NDgsInN1YiI6ImRlYnJhdGVzdGVyIn0.nE8Vs317DX_6I5j_6VP3oLErBLOOBPBh-NoM4mLvDYk';
   // this will return a promise  
-  return User.insertMany(loggedInUsers);
+  //return User.insertMany(loggedInUsers);
 }
 
 function generateStatus()
@@ -91,6 +91,33 @@ function generateJobProspectData() {
   };
 }
  
+function exit (code) {
+  function done() {
+    draining--;
+    console.log(`Draining down to ${draining}`);
+    if (draining <= 0) {
+      process.exit(Math.min(code, 255));
+    }
+  }
+
+  process.on('exit', function(realExitCode) {
+    console.log(`Process is exiting with ${realExitCode}`);
+  });
+
+  var draining = 0;
+  var streams = [process.stdout, process.stderr];
+
+  streams.forEach(function (stream) {
+    // submit empty write request and wait for completion
+    draining += 1;
+    console.log(`Draining up to ${draining}`);
+    stream.write('', done);
+  });
+
+  console.log('Starting extra call to done().');
+  done();
+  console.log('Extra call to done() finished.');
+}
 
 // this function deletes the entire database.
 // we'll call it in an `afterEach` block below
@@ -119,22 +146,16 @@ describe('Prospects API resource', function() {
     return seedLoggedInUser();
   });
 
-  /*
-  beforeEach(function() {
-    return seedJobProspectData();
-  });
-
-  afterEach(function() {
+  after(function() {
     return tearDownDb();
   });
-  */
 
   after(function() {
     return closeServer();
   });
 
   after(function() {
-    return tearDownDb();
+    exit();
   });
 
   // note the use of nested `describe` blocks.
@@ -160,7 +181,7 @@ describe('Prospects API resource', function() {
           res = _res; 
           expect(res).to.have.status(200);
           // otherwise our db seeding didn't work
-          expect(res.body.prospect).to.have.lengthOf.at.least(1);
+          expect(res.body.prospect).to.have.lengthOf.at.least(1);     
           return res.body.prospect.length;
         })
         .then(function(count) {
@@ -220,9 +241,7 @@ describe('POST endpoint', function() {
           expect(res).to.be.json;
           expect(res.body).to.be.a('object');
           expect(res.body).to.include.keys(
-            'id', 'what', 'when', 'where');
-          //expect(res.body).to.equal(newProspect.prospect);
-          // cause Mongo should have created id on insertion
+            'id', 'what', 'when', 'where');       
           expect(res.body.id).to.not.be.null;
           expect(res.body.what).to.equal(newProspect.what);
           expect(res.body.where).to.equal(newProspect.where);
@@ -312,6 +331,5 @@ describe('POST endpoint', function() {
           console.error(err);             
       })        
     })    
-})
-
+  })
 })
