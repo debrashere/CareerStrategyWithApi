@@ -10,9 +10,10 @@ const mongoose = require('mongoose');
 const expect = chai.expect;
 
 const {Role} = require('../models/commonModels');
+const {User} = require('../users/models');
 const {app, runServer, closeServer} = require('../server');
 const {TEST_DATABASE_URL} = require('../config');
-
+let token;
 console.log("test-roles TEST_DATABASE_URL", TEST_DATABASE_URL);
 
 chai.use(chaiHttp);
@@ -36,6 +37,20 @@ function seedRoleData() {
   return Role.insertMany(roles).catch(err => console.error(err));
 }
  
+
+function seedLoggedInUser() {
+  console.info('           seeding logged in User data');
+  const loggedInUsers = [{
+      username: "debratester",
+      password: "Mypassw0rd",
+      firstName:"debra",
+      lastName:  "tester"
+    }];
+  
+   token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InVzZXJuYW1lIjoiZGVicmF0ZXN0ZXIiLCJmaXJzdE5hbWUiOiJkZWJyYSIsImxhc3ROYW1lIjoidGVzdGVyIiwiaWQiOiI1YzBiMDg0ZGE3MWJkNDBhZDAzNWYzZjQifSwiaWF0IjoxNTQ0MjMzNzQ4LCJleHAiOjE1NDQ4Mzg1NDgsInN1YiI6ImRlYnJhdGVzdGVyIn0.nE8Vs317DX_6I5j_6VP3oLErBLOOBPBh-NoM4mLvDYk';
+  // this will return a promise  
+  return User.insertMany(loggedInUsers);
+}
 
 // generate an object represnting a role.
 // can be used to generate seed data for db
@@ -68,11 +83,26 @@ describe('roles API resource', function() {
     return runServer(TEST_DATABASE_URL);
   });
 
+  before(function() {
+    return seedRoleData();
+  });
+
+  before(function() {
+    return seedLoggedInUser();
+  });
+
+
+  /*
   beforeEach(function() {
     return seedRoleData();
   });
 
   afterEach(function() {
+    return tearDownDb();
+  });
+  */
+
+  after(function() {
     return tearDownDb();
   });
 
@@ -97,6 +127,7 @@ describe('roles API resource', function() {
       let res;
       return chai.request(app)
         .get('/api/roles')
+        .set('Authorization', token)
         .then(function(_res) {       
           // so subsequent .then blocks can access response object
           res = _res; 
@@ -116,6 +147,7 @@ describe('roles API resource', function() {
       let resRole;
       return chai.request(app)
         .get('/api/roles')
+        .set('Authorization', token)
         .then(function(res) {
           expect(res).to.have.status(200);
           expect(res).to.be.json;
@@ -151,6 +183,7 @@ describe('roles API resource', function() {
 
       return chai.request(app)      
         .post('/api/roles/')
+        .set('Authorization', token)
         .send(newRole)
         .then(function(res) {
           expect(res).to.have.status(201);
@@ -197,6 +230,7 @@ describe('roles API resource', function() {
           // data we sent
           return chai.request(app)
             .put(`/api/roles/${updateData.id}`)
+            .set('Authorization', token)
             .send(updateData);
         })
         .then(function(res) {
@@ -223,7 +257,9 @@ describe('roles API resource', function() {
         .findOne()
         .then(function(_role) {
           role = _role;
-          return chai.request(app).delete(`/api/roles/${role.id}`);
+          return chai.request(app)
+          .delete(`/api/roles/${role.id}`)
+          .set('Authorization', token)
         })
         .then(function(res) {
           expect(res).to.have.status(204);

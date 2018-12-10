@@ -12,8 +12,7 @@ const { JobProspect} = require('../models/jobProspectsModels');
 const passport = require('passport');
 const jwtAuth = passport.authenticate('jwt', { session: false });
 
-//router.get('/', jwtAuth, (req, res) => {
-router.get("/:id", (req, res) => { 
+router.get("/:id", jwtAuth, (req, res) => { 
   console.log("prospect routher findd", "start");   
     JobProspect.findOne({_id: req.params.id})   
     .then(prospect => {
@@ -35,7 +34,7 @@ router.get("/:id", (req, res) => {
     });
   });    
     
-router.get("/", (req, res) => {
+router.get("/", jwtAuth, (req, res) => {
 
   let toQuery = "";
 
@@ -70,7 +69,7 @@ router.get("/", (req, res) => {
       });
   });
 
-router.post("/", jsonParser, (req, res) => {
+router.post("/", jwtAuth, jsonParser, (req, res) => {
   console.log("prospect router req.body", req.body);
   const requiredFields = ["userId", "what", "where", "when", "status", "userId" ];
   for (let i = 0; i < requiredFields.length; i++) {
@@ -113,7 +112,7 @@ router.post("/", jsonParser, (req, res) => {
       })
 });
 
-router.put("/:id", jsonParser, (req, res) => {
+router.put("/:id", jwtAuth, jsonParser, (req, res) => {
     // ensure that the id in the request path and the one in request body match
     if (!(req.params.id && req.body.id && req.params.id === req.body.id)) {
       const message =
@@ -143,7 +142,7 @@ router.put("/:id", jsonParser, (req, res) => {
       .catch(err => res.status(500).json({ message: "Internal server error" }));
   });
   
-  router.delete("/:id", (req, res) => {
+  router.delete("/:id", jwtAuth, (req, res) => {
     JobProspect.findByIdAndRemove(req.params.id)
       .then(prospect => res.status(204).end())
       .catch(err => res.status(500).json({ message: "Internal server error" }));

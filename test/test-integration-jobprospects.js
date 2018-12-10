@@ -10,12 +10,14 @@ const mongoose = require('mongoose');
 const expect = chai.expect;
 
 const {JobProspect} = require('../models/jobProspectsModels');
+const {User} = require('../users/models');
 const {app, runServer, closeServer} = require('../server');
 const {TEST_DATABASE_URL} = require('../config');
 
 console.log("test-jb-prospects TEST_DATABASE_URL", TEST_DATABASE_URL);
 
 chai.use(chaiHttp);
+let token;
 
 // used to put randomish documents in db
 // so we have data to work with and assert about.
@@ -31,6 +33,21 @@ function seedJobProspectData() {
   }
   // this will return a promise
   return JobProspect.insertMany(seedData).catch(err => console.error(err));
+}
+
+function seedLoggedInUser() {
+  console.info('           seeding logged in User data');
+
+  const loggedInUsers = [{
+      username: "debratester",
+      password: "Mypassw0rd",
+      firstName:"debra",
+      lastName:  "tester"
+    }];
+  
+   token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InVzZXJuYW1lIjoiZGVicmF0ZXN0ZXIiLCJmaXJzdE5hbWUiOiJkZWJyYSIsImxhc3ROYW1lIjoidGVzdGVyIiwiaWQiOiI1YzBiMDg0ZGE3MWJkNDBhZDAzNWYzZjQifSwiaWF0IjoxNTQ0MjMzNzQ4LCJleHAiOjE1NDQ4Mzg1NDgsInN1YiI6ImRlYnJhdGVzdGVyIn0.nE8Vs317DX_6I5j_6VP3oLErBLOOBPBh-NoM4mLvDYk';
+  // this will return a promise  
+  return User.insertMany(loggedInUsers);
 }
 
 function generateStatus()
@@ -94,6 +111,15 @@ describe('Prospects API resource', function() {
     return runServer(TEST_DATABASE_URL);
   });
 
+  before(function() {
+    return seedJobProspectData
+  });
+
+  before(function() {
+    return seedLoggedInUser();
+  });
+
+  /*
   beforeEach(function() {
     return seedJobProspectData();
   });
@@ -101,9 +127,14 @@ describe('Prospects API resource', function() {
   afterEach(function() {
     return tearDownDb();
   });
+  */
 
   after(function() {
     return closeServer();
+  });
+
+  after(function() {
+    return tearDownDb();
   });
 
   // note the use of nested `describe` blocks.
@@ -123,6 +154,7 @@ describe('Prospects API resource', function() {
       let res;
       return chai.request(app)
         .get('/api/prospects/')
+        .set('Authorization', token)
         .then(function(_res) {       
           // so subsequent .then blocks can access response object
           res = _res; 
@@ -133,14 +165,18 @@ describe('Prospects API resource', function() {
         })
         .then(function(count) {
           expect(res.body.prospect).to.have.lengthOf(count);
-        });
-    });
+        })
+        .catch(err => {
+          console.error(err);                  
+      })      
+    })
 
     it('should return prospect with right fields', function() {
       // Strategy: Get back all job prospects, and ensure they have expected keys
       let resProspect;
       return chai.request(app)
         .get('/api/prospects/')
+        .set('Authorization', token)
         .then(function(res) {
           expect(res).to.have.status(200);
           expect(res).to.be.json;
@@ -158,9 +194,12 @@ describe('Prospects API resource', function() {
         .then(function(prospect) {    
           //expect(resProspect.id).to.equal(jobProspect._id);
           expect(resProspect.what).to.equal(prospect.what);        
-        });
-    });
-});
+        })
+        .catch(err => {
+          console.error(err);             
+      })        
+    })
+})
 
 describe('POST endpoint', function() {
     // strategy: make a POST request with data,
@@ -174,6 +213,7 @@ describe('POST endpoint', function() {
 
       return chai.request(app)
         .post('/api/prospects/')
+        .set('Authorization', token)
         .send(newProspect)
         .then(function(res) {
           expect(res).to.have.status(201);
@@ -196,9 +236,12 @@ describe('POST endpoint', function() {
           expect(jobProspect.what).to.equal(newProspect.what);
           expect(jobProspect.where).to.equal(newProspect.where);
           expect(jobProspect.date).to.equal(newProspect.date); 
-        });
-    });
-  });
+        })
+        .catch(err => {
+          console.error(err);             
+      })        
+    })
+  })
 
   describe('PUT endpoint', function() {
 
@@ -223,6 +266,7 @@ describe('POST endpoint', function() {
           // data we sent
           return chai.request(app)
             .put(`/api/prospects/${jobProspect.id}`)
+            .set('Authorization', token)
             .send(updateData);
         })
         .then(function(res) {
@@ -232,9 +276,12 @@ describe('POST endpoint', function() {
         .then(function(jobProspect) {
           expect(jobProspect.what).to.equal(updateData.what);
           expect(jobProspect.where).to.equal(updateData.where);
-        });
-    });
-  });
+        })
+        .catch(err => {
+          console.error(err);             
+      })        
+    })
+  })
 
   describe('DELETE endpoint', function() {
     // strategy:
@@ -250,7 +297,9 @@ describe('POST endpoint', function() {
         .findOne()
         .then(function(_prospect) {
           jobProspect = _prospect;
-          return chai.request(app).delete(`/api/prospects/${jobProspect.id}`);
+          return chai.request(app)
+          .delete(`/api/prospects/${jobProspect.id}`)
+          .set('Authorization', token);
         })
         .then(function(res) {
           expect(res).to.have.status(204);
@@ -258,8 +307,11 @@ describe('POST endpoint', function() {
         })
         .then(function(_prospect) {
           expect(_prospect).to.be.null;
-        });
-    });      
-});
+        })
+        .catch(err => {
+          console.error(err);             
+      })        
+    })    
+})
 
 })

@@ -21,7 +21,6 @@ router.post('/', jsonParser, (req, res) => {
       location: missingField
     });
   }
-
   const stringFields = ['username', 'password', 'firstName', 'lastName'];
   const nonStringField = stringFields.find(
     field => field in req.body && typeof req.body[field] !== 'string'
@@ -56,7 +55,7 @@ router.post('/', jsonParser, (req, res) => {
       location: nonTrimmedField
     });
   }
-
+;
   const sizedFields = {
     username: {
       min: 1

@@ -34,8 +34,7 @@ router.post('/login', localAuth, (req, res) => {
        // let cookiesJS = JSON.serialize(cookies);
       const thisUser = user.serialize();
       const authToken = createAuthToken(thisUser);    
-      const userAuth = JSON.parse(`{"authToken" : "${authToken}", "id": "${thisUser.id}"}`);      
-      console.log("created token", authToken);
+      const userAuth = JSON.parse(`{"authToken" : "${authToken}", "id": "${thisUser.id}"}`);           
       res.json({userAuth});
     }
   })

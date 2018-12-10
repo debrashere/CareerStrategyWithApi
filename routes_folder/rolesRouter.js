@@ -12,8 +12,7 @@ const { Role} = require('../models/commonModels');
 const passport = require('passport');
 const jwtAuth = passport.authenticate('jwt', { session: false });
 
-//router.get('/', jwtAuth, (req, res) => {
-  router.get("/", (req, res) => {
+  router.get("/", jwtAuth, (req, res) => {
     Role.find() 
       .then(role => {
         res.json({
@@ -26,7 +25,7 @@ const jwtAuth = passport.authenticate('jwt', { session: false });
       });
   });
 
-router.post("/", jsonParser, (req, res) => {
+router.post("/", jwtAuth, jsonParser, (req, res) => {
   
   console.log("Role Router post req.body", req.body);
   const requiredFields = ["role", "accessLevel", "date" ];
@@ -65,7 +64,7 @@ router.post("/", jsonParser, (req, res) => {
       })        
 })
 
-router.put("/:id", jsonParser, (req, res) => {
+router.put("/:id", jwtAuth, jsonParser, (req, res) => {
     // ensure that the id in the request path and the one in request body match
     if (!(req.params.id && req.body.id && req.params.id === req.body.id)) {
       const message =
@@ -94,7 +93,7 @@ router.put("/:id", jsonParser, (req, res) => {
       .catch(err => res.status(500).json({ message: "Internal server error" }));
   });
   
-  router.delete("/:id", (req, res) => {
+  router.delete("/:id",jwtAuth,  (req, res) => {
     Role.findByIdAndRemove(req.params.id)
       .then(role => res.status(204).end())
       .catch(err => res.status(500).json({ message: "Internal server error" }));

@@ -10,8 +10,10 @@ const mongoose = require('mongoose');
 const expect = chai.expect;
 
 const {Skill} = require('../models/skillsModels');
+const {User} = require('../users/models');
 const {app, runServer, closeServer} = require('../server');
 const {TEST_DATABASE_URL} = require('../config');
+let token;
 
 console.log("test-skills TEST_DATABASE_URL", TEST_DATABASE_URL);
 
@@ -63,6 +65,21 @@ function seedSkillData() {
   return Skill.insertMany(skills).catch(err => console.error(err));
 }
  
+
+function seedLoggedInUser() {
+  console.info('           seeding logged in User data');
+  const loggedInUsers = [{
+      username: "debratester",
+      password: "Mypassw0rd",
+      firstName:"debra",
+      lastName:  "tester"
+    }];
+  
+   token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InVzZXJuYW1lIjoiZGVicmF0ZXN0ZXIiLCJmaXJzdE5hbWUiOiJkZWJyYSIsImxhc3ROYW1lIjoidGVzdGVyIiwiaWQiOiI1YzBiMDg0ZGE3MWJkNDBhZDAzNWYzZjQifSwiaWF0IjoxNTQ0MjMzNzQ4LCJleHAiOjE1NDQ4Mzg1NDgsInN1YiI6ImRlYnJhdGVzdGVyIn0.nE8Vs317DX_6I5j_6VP3oLErBLOOBPBh-NoM4mLvDYk';
+  // this will return a promise  
+  return User.insertMany(loggedInUsers);
+}
+
 // generate an object represnting a skill.
 // can be used to generate seed data for db
 // or request.body data
@@ -97,13 +114,27 @@ describe('skills API resource', function() {
     return seedSkillData();
   });
 
+  beforeEach(function() {
+    return seedLoggedInUser();
+  });
+
+  /*
+  beforeEach(function() {
+    return seedLoggedInUser();
+  });
+
   afterEach(function() {
     return tearDownDb();
   });
-
+*/
+  after(function() {
+    return tearDownDb();
+  });
   after(function() {
     return closeServer();
   });
+  
+  
 
   // note the use of nested `describe` blocks.
   // this allows us to make clearer, more discrete tests that focus
@@ -122,6 +153,7 @@ describe('skills API resource', function() {
       let res;
       return chai.request(app)
         .get('/api/skills/')
+        .set('Authorization', token)
         .then(function(_res) {       
           // so subsequent .then blocks can access response object
           res = _res; 
@@ -141,6 +173,7 @@ describe('skills API resource', function() {
       let resSkill;
       return chai.request(app)
         .get('/api/skills/')
+        .set('Authorization', token)
         .then(function(res) {
           expect(res).to.have.status(200);
           expect(res).to.be.json;
@@ -174,6 +207,7 @@ describe('skills API resource', function() {
 
       return chai.request(app)
         .post('/api/skills/')
+        .set('Authorization', token)
         .send(newSkill)
         .then(function(res) {
           expect(res).to.have.status(201);
@@ -223,6 +257,7 @@ describe('skills API resource', function() {
           // data we sent
           return chai.request(app)
             .put(`/api/skills/${skill.id}`)
+            .set('Authorization', token)
             .send(updateData);
         })
         .then(function(res) {
@@ -250,7 +285,9 @@ describe('skills API resource', function() {
         .findOne()
         .then(function(_skill) {
           skill = _skill;
-          return chai.request(app).delete(`/api/skills/${skill.id}`);
+          return chai.request(app)
+          .delete(`/api/skills/${skill.id}`)
+          .set('Authorization', token)
         })
         .then(function(res) {
           expect(res).to.have.status(204);

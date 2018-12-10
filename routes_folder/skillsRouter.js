@@ -13,7 +13,7 @@ const { Skill} = require('../models/skillsModels');
 const passport = require('passport');
 const jwtAuth = passport.authenticate('jwt', { session: false });
 
-router.get("/", jsonParser, (req, res) => {   
+router.get("/", jwtAuth, jsonParser, (req, res) => {   
     if (req.query.skill)
     Skill
     .find({ skill: req.query.skill})
@@ -40,7 +40,7 @@ router.get("/", jsonParser, (req, res) => {
   });
 
 
-router.post("/", jsonParser, (req, res) => {
+router.post("/", jwtAuth, jsonParser, (req, res) => {
 const requiredFields = ["skill" ];
 for (let i = 0; i < requiredFields.length; i++) {
     const field = requiredFields[i];
@@ -77,7 +77,7 @@ Skill
     })        
 })
 
-router.put("/:id", jsonParser, (req, res) => {
+router.put("/:id", jwtAuth, jsonParser, (req, res) => {
     // ensure that the id in the request path and the one in request body match
     if (!(req.params.id && req.body.id && req.params.id === req.body.id)) {
       const message =
@@ -106,16 +106,10 @@ router.put("/:id", jsonParser, (req, res) => {
       .catch(err => res.status(500).json({ message: "Internal server error" }));
   });
   
-  router.delete("/:id", (req, res) => {
+  router.delete("/:id", jwtAuth, (req, res) => {
     Skill.findByIdAndRemove(req.params.id)
       .then(Skill => res.status(204).end())
       .catch(err => res.status(500).json({ message: "Internal server error" }));
   });
-  
-  function getUrlParameter(name) {
-    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-    var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-    var results = regex.exec(location.search);
-    return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
-};  
+   
 module.exports = router;

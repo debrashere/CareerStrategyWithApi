@@ -27,7 +27,6 @@ function seedUserData() {
   const seedData = [];
 
   for (let i=1; i<=10; i++) {
-    //console.info('seeding user data ', seedData);
     seedData.push(generateuserData());
   }
   // this will return a promise
@@ -56,7 +55,6 @@ function generateuserData() {
     lastName:  faker.name.lastName()
   };
 }
-
 
 // this function deletes the entire database.
 // we'll call it in an `afterEach` block below
@@ -88,6 +86,34 @@ describe('users API resource', function() {
   after(function() {
     return closeServer();
   });
+
+  /*
+describe('USER Registartion and Login ', function() {
+  it('should return register and login a user', (done) => {
+  chai.request(app)
+        .post('/api/users/')
+        .send(register_details) // this is like sending $http.post 
+        .end((err, res) => { // when we get a response from the endpoint
+          // in other words,the res object should have a status of 201
+          res.should.have.status(201);
+          // the property, res.body.state, we expect it to be true.
+
+          // follow up with login
+          chai.request(app)
+            .post('/api/auth/login')
+            .send(login_details)
+            .end((err, res) => {                
+              res.should.have.status(200);                    
+              res.body.userAuth.should.have.property('authToken');               
+               //token = 'Bearer ' + res.body.userAuth.authToken;    
+            })
+          })
+          .catch(err => {
+              console.error(err);             
+            })  
+      })
+})
+*/
 
   // note the use of nested `describe` blocks.
   // this allows us to make clearer, more discrete tests that focus

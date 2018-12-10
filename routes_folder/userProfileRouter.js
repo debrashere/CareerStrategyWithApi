@@ -13,7 +13,7 @@ const { UserProfile} = require('../models/userProfileModels');
 const passport = require('passport');
 const jwtAuth = passport.authenticate('jwt', { session: false });
 
-router.get("/:id",  (req, res) => {
+router.get("/:id", jwtAuth,  (req, res) => {
     UserProfile.findOne({_id: req.params.id})
     //.populate('jobProspects').exec()    
     .then(userProfile => {
@@ -32,7 +32,7 @@ router.get("/:id",  (req, res) => {
     });
   });    
 
-router.get('/',  (req, res) => {
+router.get('/', jwtAuth,  (req, res) => {
   const authHeaders = req.get("Authorization");
   let toQuery = "";
 
@@ -68,7 +68,7 @@ router.get('/',  (req, res) => {
     
 });
 
-router.post("/", jsonParser, (req, res) => {
+router.post("/", jwtAuth, jsonParser, (req, res) => {
 const requiredFields = ["firstName", "lastName", "email", "userId" ];
 for (let i = 0; i < requiredFields.length; i++) {
     const field = requiredFields[i];
@@ -112,7 +112,7 @@ UserProfile
     })        
 })
 
-router.put("/:id", jsonParser, (req, res) => {
+router.put("/:id", jwtAuth, jsonParser, (req, res) => {
     // ensure that the id in the request path and the one in request body match
     if (!(req.params.id && req.body.id && req.params.id === req.body.id)) {
       const message =
@@ -146,22 +146,24 @@ router.put("/:id", jsonParser, (req, res) => {
     // if so check if each skill is in the master list of skills and add it if not
     if (req.body.skills && req.body.skills.length > 0) {
       req.body.skills.forEach(skillUpdate => {
-        Skill.find({ skill: skillUpdate.skill})
-        .then(thisSkill => {
-          if (!thisSkill || thisSkill.length == 0) {
-              Skill
-              .create({
-                  skill: skillUpdate.skill,
-                  description: "",
-                  links: ""
-                  })                      
-              .then( skill => res.status(201).json(skill.serialize()))                 
-              .catch( err => {
-                  console.error(err);
-                  res.status(500).json({ error: 'Something went wrong' });
-              })        
+        if (skillUpdate.skill && skillUpdate.skill != undefined) {
+          Skill.find({ skill: skillUpdate.skill})
+          .then(thisSkill => {
+            if (!thisSkill || thisSkill.length == 0) {
+                Skill
+                .create({
+                    skill: skillUpdate.skill,
+                    description: "",
+                    links: ""
+                    })                      
+                .then( skill => res.status(201).json(skill.serialize()))                 
+                .catch( err => {
+                    console.error(err);
+                    res.status(500).json({ error: 'Something went wrong' });
+                })        
             }        
-        })
+          })
+        }
       });
     }
 
@@ -180,7 +182,7 @@ router.put("/:id", jsonParser, (req, res) => {
       })
   });
   
-  router.delete("/:id", (req, res) => {
+  router.delete("/:id", jwtAuth, (req, res) => {
     UserProfile.findByIdAndRemove(req.params.id)
       .then(UserProfile => res.status(204).end())
       .catch(err => res.status(500).json({ message: "Internal server error" }));
