@@ -127,9 +127,11 @@ describe('roles API resource', function() {
     return closeServer();
   });
 
+  /*
   after(function() {
     exit();
   });
+  */
 
   // note the use of nested `describe` blocks.
   // this allows us to make clearer, more discrete tests that focus

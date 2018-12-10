@@ -12,24 +12,20 @@ const { JobProspect} = require('../models/jobProspectsModels');
 const passport = require('passport');
 const jwtAuth = passport.authenticate('jwt', { session: false });
 
-router.get("/:id", jwtAuth, (req, res) => { 
-  console.log("prospect routher findd", "start");   
+router.get("/:id", jwtAuth, (req, res) => {  
     JobProspect.findOne({_id: req.params.id})   
     .then(prospect => {
-      console.log( "prospect routher findOne", prospect);
       if (!prospect || prospect.length == 0) {
         const message = `Id "${req.params.id}" not found`;
         console.warn(message);
         return res.status(204).send(message);
       }
-      console.log(`"found profile by id "${req.params.id}"`);
       res.json({
         prospect: prospect.map(prospects => prospects.serialize())
       });
     })
     .catch(err => {
         console.error(err);
-        console.log("prospect routher error", err);
         res.status(500).json({ message: "Internal server error" });
     });
   });    
@@ -70,7 +66,6 @@ router.get("/", jwtAuth, (req, res) => {
   });
 
 router.post("/", jwtAuth, jsonParser, (req, res) => {
-  console.log("prospect router req.body", req.body);
   const requiredFields = ["userId", "what", "where", "when", "status", "userId" ];
   for (let i = 0; i < requiredFields.length; i++) {
       const field = requiredFields[i];

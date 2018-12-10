@@ -156,9 +156,11 @@ describe('UserProfile API resource', function() {
     return closeServer();
   });
 
+  /*
   after(function() {
     exit();
   });
+  */
 
   /* --------------------------------------------------------------------
    note the use of nested `describe` blocks.

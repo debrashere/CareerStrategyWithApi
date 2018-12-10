@@ -65,6 +65,34 @@ function tearDownDb() {
   return mongoose.connection.dropDatabase();
 }
 
+function exit (code) {
+  function done() {
+    draining--;
+    console.log(`Draining down to ${draining}`);
+    if (draining <= 0) {
+      process.exit(Math.min(code, 255));
+    }
+  }
+
+  process.on('exit', function(realExitCode) {
+    console.log(`Process is exiting with ${realExitCode}`);
+  });
+
+  let draining = 0;
+  let streams = [process.stdout, process.stderr];
+
+  streams.forEach(function (stream) {
+    // submit empty write request and wait for completion
+    draining += 1;
+    console.log(`Draining up to ${draining}`);
+    stream.write('', done);
+  });
+
+  console.log('Starting extra call to done().');
+  done();
+  console.log('Extra call to done() finished.');
+}
+
 describe('users API resource', function() {
 
   // we need each of these hook functions to return a promise
@@ -85,6 +113,10 @@ describe('users API resource', function() {
 
   after(function() {
     return closeServer();
+  });
+
+  after(function() {
+    exit();
   });
 
   /*

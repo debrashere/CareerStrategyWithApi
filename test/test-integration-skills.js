@@ -152,9 +152,12 @@ describe('skills API resource', function() {
   after(function() {
     return closeServer();
   });
+
+  /*
   after(function() {
     exit();
   });
+  */
 
   // note the use of nested `describe` blocks.
   // this allows us to make clearer, more discrete tests that focus

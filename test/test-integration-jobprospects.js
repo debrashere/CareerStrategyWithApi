@@ -28,11 +28,11 @@ function seedJobProspectData() {
   console.info('seeding user profile data');
   const seedData = [];
 
-  for (let i=1; i<=10; i++) { 
-    seedData.push(generateJobProspectData());
+  for (let i=1; i<=100; i++) {   
+    seedData.push(generateJobProspectData());  
   }
   // this will return a promise
-  return JobProspect.insertMany(seedData).catch(err => console.error(err));
+  return JobProspect.insertMany(seedData).catch(err => console.error(err));  
 }
 
 function seedLoggedInUser() {
@@ -52,14 +52,49 @@ function seedLoggedInUser() {
 
 function generateStatus()
 {
-  return "Applied";
+  const status = [ 
+    'Applied', 'Interviewing', 'Reviewing', 'Negotiating', 'Withdrawn', 'Hired'];  
+    let index = Math.floor((Math.random() * status.length-1) + 1);
+    return status[index];
 }
+
 function generateSource(){
-  return "Indeed";
+  const jobSites = [ 
+    'Indeed', 'LinkIn', 'glassdoor', 'dice', 'hired', 'Stackoverflow',
+    'theladders', 'crunchboard', 'crunchdata','jobs.mashable', 
+    'itjobcafe', 'toptechjobs', 'techcareers',    'justtechjobs'];
+  
+  let index = Math.floor((Math.random() * 14) + 1);
+   return (jobSites[index]);
 }
-function generateSourceUrl() {
-return "Indeed.job.url";
+
+function generateSourceUrl(source) { 
+  let sourceUrl ="test@test.com";
+  const jobSites = [
+  'http://www.Indeed.com/',
+  'http://www.LinkIn.com/',
+  'http://www.glassdoor.com/',
+  'http://www.dice.com/',
+  'http://hired.com',
+  'http://Stackoverflow.com' ,
+  'https://www.theladders.com/',
+  'http://www.crunchboard.com/jobs',
+  'http://www.icrunchdata.com',
+  'http://jobs.mashable.com' ,
+  'http://itjobcafe.com',
+  'http://toptechjobs.com',
+  'http://www.techcareers.com',
+  'http://www.justtechjobs.com'];
+
+  for (let index=0; index<= jobSites.length -1 ; index++) { 
+    if (jobSites[index].includes(source)) {
+      sourceUrl = jobSites[index];
+       break;
+    }
+  }
+  return sourceUrl;
 }
+
 // used to generate data to put in db
 function getUserId() {
   return  11111;
@@ -75,20 +110,23 @@ function generateJobSkills() {
 // or request.body data
 function generateJobProspectData() {
    
-  return {
+  let jobProspect = {
     what: faker.name.jobTitle(),
     where: faker.company.companyName(),
     when: faker.date.recent(),
     userId: getUserId(),
     status: generateStatus(),
     source: generateSource(),
-    sourceUrl: generateSourceUrl(),
+    sourceUrl: "test@test.com",
     dayToDay:faker.name.jobDescriptor(),
     contact: faker.name.findName(),
     comments:faker.lorem.paragraph(),
     details:faker.random.words(),
     jobSkills: generateJobSkills()
   };
+
+  jobProspect.sourceUrl = generateSourceUrl(jobProspect.source);
+  return jobProspect;
 }
  
 function exit (code) {
@@ -139,12 +177,13 @@ describe('Prospects API resource', function() {
   });
 
   before(function() {
-    return seedJobProspectData
+     return seedJobProspectData();
   });
 
   before(function() {
     return seedLoggedInUser();
   });
+
 
   after(function() {
     return tearDownDb();
@@ -154,9 +193,11 @@ describe('Prospects API resource', function() {
     return closeServer();
   });
 
+  /*
   after(function() {
     exit();
   });
+  */
 
   // note the use of nested `describe` blocks.
   // this allows us to make clearer, more discrete tests that focus
@@ -199,6 +240,7 @@ describe('Prospects API resource', function() {
         .get('/api/prospects/')
         .set('Authorization', token)
         .then(function(res) {
+
           expect(res).to.have.status(200);
           expect(res).to.be.json;
           expect(res.body.prospect).to.be.a('array');
