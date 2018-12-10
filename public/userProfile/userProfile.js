@@ -66,7 +66,7 @@ function postCareerStrategyAPI(path, query, id, callback) {
     contentType: 'application/json',         
     data: JSON.stringify(query),
     headers: {
-      "Authorization": `'Bearer '+ ${authToken}`
+      "Authorization": `Bearer ${authToken}`
     },      
     success: callback,
     error:callback    
@@ -85,7 +85,7 @@ function putCareerStrategyAPI(path, update, callback) {
     contentType: 'application/json',    
     data: JSON.stringify(update), 
     headers: {
-      "Authorization": `'Bearer '+ ${authToken}`
+      "Authorization": `Bearer ${authToken}`
     },      
     success: callback,
     error: callback     
@@ -103,7 +103,7 @@ function deleteCareerStrategyAPI(path, update, callback) {
     dataType: 'json',
     type: 'DELETE',    
     headers: {
-      "Authorization": `'Bearer '+ ${authToken}`
+      "Authorization": `Bearer ${authToken}`
     },      
     success: callback,
     error:callback
