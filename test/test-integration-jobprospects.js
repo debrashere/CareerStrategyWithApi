@@ -25,7 +25,7 @@ let token;
 // generate placeholder values for author, title, content
 // and then we insert that data into mongo
 function seedJobProspectData() {
-  console.info('seeding user profile data');
+  console.info('           seeding user profile data');
   const seedData = [];
 
   for (let i=1; i<=100; i++) {   
@@ -50,10 +50,20 @@ function seedLoggedInUser() {
   //return User.insertMany(loggedInUsers);
 }
 
+function seedJobProspectDataForUser() {
+  const seedData = [];
+
+  for (let i=1; i<=100; i++) {   
+    seedData.push(generateJobProspectData());  
+  }
+  // this will return a promise
+  return JobProspect.insertMany(seedData).catch(err => console.error(err));  
+}
+
 function generateStatus()
 {
   const status = [ 
-    'Applied', 'Interviewing', 'Reviewing', 'Negotiating', 'Withdrawn', 'Hired'];  
+    'Applied', 'Interviewing', 'Reviewing', 'Negotiating', 'Withdrawn', 'Hired', 'Closed'];  
     let index = Math.floor((Math.random() * status.length-1) + 1);
     return status[index];
 }
@@ -64,7 +74,7 @@ function generateSource(){
     'theladders', 'crunchboard', 'crunchdata','jobs.mashable', 
     'itjobcafe', 'toptechjobs', 'techcareers',    'justtechjobs'];
   
-  let index = Math.floor((Math.random() * 14) + 1);
+  let index = Math.floor((Math.random() * jobSites.length) + 1);
    return (jobSites[index]);
 }
 

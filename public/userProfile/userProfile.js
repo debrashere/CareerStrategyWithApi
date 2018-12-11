@@ -20,7 +20,6 @@ function findCareerStrategyAPI(path, query, id,  callbackFn) {
   url = query == "" ? url: `${url}?${query}`;  
  
   const authToken = localStorage.getItem('token');  
-  console.log("findCareerStrategyAPI authToken", authToken);
   
   return fetch(url, {
     method: 'GET',
@@ -36,7 +35,6 @@ function findCareerStrategyAPI(path, query, id,  callbackFn) {
       return response.json();
     }
     else if (response.status == 401) {
-      console.log ("response.status == 401", url);
       // Redirect the to the login page.
       location.href = "../login.html";
     }  
@@ -54,10 +52,7 @@ function postCareerStrategyAPI(path, query, id, callback) {
   $('#js-error-message').prop("hidden", true);
   let url =  `${CAREER_STRATEGY_URL}/${path}`;
  
-  //console.log("postCareerStrategyAPI final url", url);
   const authToken = localStorage.getItem('token');
-  console.log("postCareerStrategyAPI authToken", authToken);
-  //console.log("postCareerStrategyAPI authToken", query);
 
   $.ajax({
     url: url,
@@ -86,7 +81,7 @@ function putCareerStrategyAPI(path, update, callback) {
     data: JSON.stringify(update), 
     headers: {
       "Authorization": `Bearer ${authToken}`
-    },      
+    },       
     success: callback,
     error: callback     
   });  
@@ -262,8 +257,8 @@ function renderJobProspects(data) {
             <div class="td"><span><em>Status:</em> ${prospect.status}</span></div>          
             <div class="td"><span><em>Source:</em> ${prospect.source}</span></div>    
             <div class="td"><span><em>Source Url:</em> ${prospect.sourceUrl}</span></div>              
-            <div class="td"><span><em>Comments:</em> ${prospect.comment}</span></div>  
-            <div class="td"><span><em>Details:</em> ${prospect.details}</span></div> 
+            <div class="td"><span><em>Comments:</em> <textarea rows="4" cols="50">${prospect.comments}</textarea></span></div>  
+            <div class="td"><span><em>Details:</em> <textarea rows="2" cols="50">${prospect.details}</textarea></span></div> 
             <div class="td"><span><em>Day to day:</em> ${prospect.dayToDay}</span></div>                                      
             <div class="td" hidden><input id="Prospect-${counter}" type="text"value=${prospect.id} hidden></input></div>
       </div>
