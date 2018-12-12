@@ -156,8 +156,8 @@ function renderUserSkills(data) {
   $('.js-section-user-skills').html('');
   let counter = 0;
   let skillHeader = `
-  <div class="flex-item">
-    <div class="section-header">Your Skills</div>
+  <div class="flex-item-skills">
+    <div class="section-header"><h3>Your Skills</h3></div>
     <div class="table">
       <div class="tr th"> 
         <div class="td">Skill</div> 
@@ -170,7 +170,7 @@ function renderUserSkills(data) {
         <div class="td" data-header=""><a id="AddSkill" href="#" class="js-add-skill"><img id="addNewSkill" alt="add skill" src="../images/icon-add.png">(Add)</a></div>
       </div>
     </div>              
-    <ul class="items flex-item-skills">`;
+    <ul class="items flex-item-skillset">`;
 
   let skills = skillHeader;
           
@@ -220,7 +220,7 @@ function displaySkillsMasterList(data) {
   let counter = 0;
   let skillHeader = `
   <div flex-item>
-    <div class="skills-header">Master list of skills <em> (click on a skill to add it to your list of skills)</em></div>   
+    <div class="skills-header"><h3>Master list of skills</h3> <em> (click on a skill to add it to your list of skills)</em></div>   
     <ul class="items flex-item-skills">`;
   let skills = skillHeader;
            
@@ -268,9 +268,9 @@ function renderJobProspects(data) {
             <div class="td"><span><em>Status:</em> ${prospect.status}</span></div>          
             <div class="td"><span><em>Source:</em> ${prospect.source}</span></div>    
             <div class="td"><span><em>Source Url:</em> <a href='${prospect.sourceUrl}' target=_blank>${prospect.sourceUrl}<a></span></div>              
-            <div class="td"><span class="flex-multiline"><em>Contacts:</em>${prospect.contact}</span></div>            
-            <div class="td"><span class="flex-multiline"><em>Comments:</em>${prospect.comments}</span></div>  
-            <div class="td"><span class="flex-multiline"><em>Details:</em>${prospect.details}</span></div> 
+            <div class="td"><em>Contacts:</em><p>${prospect.contact}</p></div>            
+            <div class="td"><em>Comments:</em><p>${prospect.comments}</p></div>  
+            <div class="td"><em>Details:</em><p>${prospect.details}</p></div> 
             <div class="td"><span><em>Day to day:</em> ${prospect.dayToDay}</span></div>                                      
             <div class="td" hidden><span id="Prospect-${counter}" hidden>${prospect.id}</span></div>
       </div>
@@ -390,7 +390,7 @@ function displayProspectsSummaryForm(data) {
 
     if (data && data != undefined) {
       prospect = data.prospect;
-      hiddenProspectId = `<span id="ProspectEditKey" value=${prospect.id} hidden></span`;     
+      hiddenProspectId = `<label for="ProspectEditKey" class="edit-label"></label><div class="td" hidden><input id="ProspectEditKey" type="text"value=${prospect.id} hidden></input></div>`;      
     }
 
     let formInputs = `
@@ -635,8 +635,8 @@ function watchFormSubmitButtonClick() {
       const formId = $( this ).attr('id')         
       switch (formId) {
         case "editProfile":{          
-          const prospectKey = $('#ProfileEditKey').val();
-            validateProfileForm(prospectKey);
+          const profileKey = $('#ProfileEditKey').val();
+            validateProfileForm(profileKey);
             break;}
         case "editProspect": {     
           const prospectKey = $('#ProspectEditKey').val();
