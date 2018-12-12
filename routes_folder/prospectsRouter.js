@@ -12,24 +12,28 @@ const { JobProspect} = require('../models/jobProspectsModels');
 const passport = require('passport');
 const jwtAuth = passport.authenticate('jwt', { session: false });
 
-router.get("/:id", jwtAuth, (req, res) => {  
-    JobProspect.findOne({_id: req.params.id})   
-    .then(prospect => {
-      if (!prospect || prospect.length == 0) {
-        const message = `Id "${req.params.id}" not found`;
-        console.warn(message);
-        return res.status(204).send(message);
-      }
-      res.json({
-        prospect: prospect.map(prospects => prospects.serialize())
-      });
-    })
-    .catch(err => {
-        console.error(err);
-        res.status(500).json({ message: "Internal server error" });
+
+router.get("/:id", jwtAuth,  (req, res) => {
+  console.log("DEBUG prospect getbyid req.body", req.body) ;
+  console.log("DEBUG prospect getbyid req.params.id", req.params.id) ; 
+  JobProspect.findOne({_id: req.params.id})     
+  .then(prospect => {
+    console.log("DEBUG prospect getbyid res.body", res.body) ;
+    if (!prospect || prospect.length == 0) {
+      const message = `Id "${req.params.id}" not found`;
+      console.error(message);
+      return res.status(204).send(message);
+    }
+    res.json({
+      prospect: prospect.serialize()
     });
-  });    
-    
+  })
+  .catch(err => {
+    console.error(err);
+    res.status(500).json({ message: "Internal server error" });
+  });
+});  
+
 router.get("/", jwtAuth, (req, res) => {
 
   let toQuery = "";
@@ -108,6 +112,7 @@ router.post("/", jwtAuth, jsonParser, (req, res) => {
 });
 
 router.put("/:id", jwtAuth, jsonParser, (req, res) => {
+  console.log("DEBUG prospect PUT res.body", res.body) ;
     // ensure that the id in the request path and the one in request body match
     if (!(req.params.id && req.body.id && req.params.id === req.body.id)) {
       const message =
@@ -122,14 +127,14 @@ router.put("/:id", jwtAuth, jsonParser, (req, res) => {
     // in document
     const toUpdate = {};
     const updateableFields = [ "what", "where", "when", "status", "source", "sourceUrl",
-    "dayToDay", "contact", "comment", "details", "jobSkills"];
+    "dayToDay", "contact", "comments", "details", "jobSkills"];
   
     updateableFields.forEach(field => {
       if (field in req.body) {
         toUpdate[field] = req.body[field];
       }
     });
-  
+    console.log("DEBUG prospect before findByIdAndUpdate  toUpdate", toUpdate) ;
     JobProspect
       // all key/value pairs in toUpdate will be updated -- that's what `$set` does
       .findByIdAndUpdate(req.params.id, { $set: toUpdate })

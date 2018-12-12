@@ -47,11 +47,13 @@ function findCareerStrategyAPI(path, query, id,  callbackFn) {
   }); 
 } 
 
+/*     
+  Post data via Career Strategy API
+*/
 function postCareerStrategyAPI(path, query, id, callback) {
   $('#js-error-message').empty();
   $('#js-error-message').prop("hidden", true);
-  let url =  `${CAREER_STRATEGY_URL}/${path}`;
- 
+  let url =  `${CAREER_STRATEGY_URL}/${path}`; 
   const authToken = localStorage.getItem('token');
 
   $.ajax({
@@ -68,9 +70,12 @@ function postCareerStrategyAPI(path, query, id, callback) {
   });
 }
 
-function putCareerStrategyAPI(path, update, callback) {
+/*     
+  Update data via Career Strategy API
+*/
+function putCareerStrategyAPI(path, update, id, callback) {
   let url =  `${CAREER_STRATEGY_URL}/${path}/`;
-  url = userProfileId == "" ? url: `${url}${userProfileId}/`;
+  url = id == "" ? url: `${url}/${id}/`;
   const authToken = localStorage.getItem('token');
 
   $.ajax({
@@ -81,15 +86,18 @@ function putCareerStrategyAPI(path, update, callback) {
     data: JSON.stringify(update), 
     headers: {
       "Authorization": `Bearer ${authToken}`
-    },       
+    },     
     success: callback,
     error: callback     
   });  
 } 
 
-function deleteCareerStrategyAPI(path, update, callback) {
+/*     
+  Delete data via Career Strategy API
+*/
+function deleteCareerStrategyAPI(path, update, id, callback) {
   let url =  `${CAREER_STRATEGY_URL}/${path}/`;
-  url = userProfileId == "" ? url: `${url}${userProfileId}/`;
+  url = id == "" ? url: `${url}${id}/`;
   const authToken = localStorage.getItem('token');
 
   const settings = {
@@ -107,7 +115,6 @@ function deleteCareerStrategyAPI(path, update, callback) {
 }
 
 function renderUserProfile(data) {
-
   if (!data || !data.userProfile) {
     // do not display following until the user profile has been created
     $('.js-section-job-prospects').prop("hidden", true);    
@@ -122,7 +129,7 @@ function renderUserProfile(data) {
 
   let profileContent =  
     `<div class="flex-item">
-          <div class="prospect-header"><em>${userProfile.firstName} ${userProfile.lastName}</em></div>
+          <div class="prospect-header"><em>${userProfile.firstName} ${userProfile.lastName}</em> <a href=# class="js-edit-profile"><img alt="edit prospect" src="../images/icon-edit.png" /> (Edit)</a></div>
           <div> 
             <span>${userProfile.email}</span>  </br>          
             <span>${userProfile.phone}</span>  </br>   
@@ -131,6 +138,8 @@ function renderUserProfile(data) {
         
   $('.js-user-profile').append(`${profileContent}`);  
   $('.js-user-profile').prop("hidden", false); 
+
+  watchEditUserProfile();
 } 
 
 
@@ -148,11 +157,7 @@ function renderUserSkills(data) {
   let counter = 0;
   let skillHeader = `
   <div class="flex-item">
-    <div class="prospect-header">Your Skills <em>Icons </em>
-        <img id="addNewSkill" alt="add skill" src="../images/icon-add.png"> (add)
-        <img alt="edit skill" src="../images/icon-edit.png" />  (edit)   
-        <img alt="delete skill" src="../images/icon-delete.png" /> (delete)
-    </div>
+    <div class="prospect-header">Your Skills</div>
     <div class="table">
       <div class="tr th"> 
         <div class="td">Skill</div> 
@@ -162,7 +167,7 @@ function renderUserSkills(data) {
       <div class="tr">  
         <div class="td" data-header="Skill"><input type="text" id="newSkill"></input></div>
         <div class="td" data-header="Experience"> <input type="text" id="skillYears"></input></div>
-        <div class="td" data-header=""><a id="AddSkill" href="#" class="js-add-skill"><img id="addNewSkill" alt="add skill" src="../images/icon-add.png"></a></div>
+        <div class="td" data-header=""><a id="AddSkill" href="#" class="js-add-skill"><img id="addNewSkill" alt="add skill" src="../images/icon-add.png">(Add)</a></div>
       </div>
     </div>              
     <ul class="items flex-item-skills">`;
@@ -248,15 +253,22 @@ function renderJobProspects(data) {
         return new Date(a.when).getTime() - new Date(b.when).getTime();
     }
     const sortedProspects = data.prospect.sort(custom_sort);
-    sortedProspects.map( function(prospect) {          
+    sortedProspects.map( function(prospect) {  
+      let dateWhen = new Date(prospect.when);
+      let formattedDate = `${dateWhen.getMonth()}/${dateWhen.getDay()}/${dateWhen.getFullYear()}  - 
+       ${dateWhen.getHours()}:${dateWhen.getMinutes()}:${dateWhen.getSeconds()} `;     
+                                                 
       prospects +=
        `<div class="flex-item-job-prospect">
-            <div class="prospect-header"><span id="prospect${counter}">${prospect.what}</span></div>
+            <div class="prospect-header"><span id="prospect${counter}">${prospect.what}</span>  <br />
+                    <a id="ProspectEdit-${counter}" href=# class="js-edit-prospect"><img alt="edit prospect" src="../images/icon-edit.png" />  (edit)</a>   
+                    <a id="ProspectDelete-${counter}" href=# class="js-delete-prospect"><img alt="delete prospect" src="../images/icon-delete.png" /> (delete)</a>  </div>
             <div class="td"><span><em>Where:</em> ${prospect.where}</span></div>            
-            <div class="td"><span><em>When: </em>${prospect.when}</span></div>
+            <div class="td"><span><em>When: </em>${formattedDate}</span></div>
             <div class="td"><span><em>Status:</em> ${prospect.status}</span></div>          
             <div class="td"><span><em>Source:</em> ${prospect.source}</span></div>    
-            <div class="td"><span><em>Source Url:</em> ${prospect.sourceUrl}</span></div>              
+            <div class="td"><span><em>Source Url:</em> <a href='${prospect.sourceUrl}' target=_blank>${prospect.sourceUrl}<a></span></div>              
+            <div class="td"><span><em>Contacts:</em> <textarea rows="2" cols="50">${prospect.contact}</textarea></span></div>            
             <div class="td"><span><em>Comments:</em> <textarea rows="4" cols="50">${prospect.comments}</textarea></span></div>  
             <div class="td"><span><em>Details:</em> <textarea rows="2" cols="50">${prospect.details}</textarea></span></div> 
             <div class="td"><span><em>Day to day:</em> ${prospect.dayToDay}</span></div>                                      
@@ -273,12 +285,14 @@ function renderJobProspects(data) {
     
     watchEditJobProspectClick();
     watchAddJobProspectClick();
+    watchDeleteJobProspectClick();
 }
 
 function displayUserProfileForm(data) { 
 
   $('.js-edit-profile-form').html();
  
+    let hiddenProfileId = "";
     let profile = {      
       "firstName": "",
       "lastName": "",      
@@ -286,8 +300,9 @@ function displayUserProfileForm(data) {
       "phone": ""
     }; 
 
-    if (data && data.profile.length > 0) {
-      profile = data.profile[[0]];
+    if (data && data.userProfile.length > 0) {
+      profile = data.userProfile[[0]];
+      hiddenProfileId = `<div class="td" hidden><input id="ProfileEditKey" type="text"value=${profile.id} hidden></input></div>`;       
     }
 
     let formInputs = `
@@ -297,6 +312,7 @@ function displayUserProfileForm(data) {
         <p> <label for="profileLast" class="edit-label"><strong>Last Name: </strong></label>  <input   type="text"  id="profileLast" value="${profile.lastName}" required /></p>
         <p> <label for="profileEmail" class="edit-label"><strong>Email: </strong></label>  <input   type="text"  id="profileEmail" value="${profile.email}" required /></p>
         <p> <label for="profilePhone" class="edit-label"><strong>Phone: </strong></label>  <input   type="text"  id="profilePhone" value="${profile.phone}" /></p>
+        ${hiddenProfileId}
       </fieldset>`;
 
     $(".js-edit-profile-form").html(formInputs);   
@@ -304,8 +320,7 @@ function displayUserProfileForm(data) {
     $(".js-form").prop("hidden", false);    
 } 
 
-
-function validateProfileForm() {
+function validateProfileForm(profileId) {
     if (profileEditsAreValid()) { 
 
       userId = localStorage.getItem('userId');  
@@ -318,26 +333,22 @@ function validateProfileForm() {
       USER_PROFILE.phone =  $('#profilePhone').val(); 
       let userProfile = ""; 
 
-      if (userProfileId && userProfileId.length > 0) {
-        userProfile = `{"userProfileId": "${userProfileId}", "firstName": "${USER_PROFILE.firstName}", "lastName": "${USER_PROFILE.lastName}", "email": "${USER_PROFILE.email}", "phone": "${USER_PROFILE.phone}"}`; 
+      if (profileId && profileId != undefined) {
+        // update the user profile document for this user
+        userProfile = `{"id": "${profileId}", "firstName": "${USER_PROFILE.firstName}", "lastName": "${USER_PROFILE.lastName}", "email": "${USER_PROFILE.email}", "phone": "${USER_PROFILE.phone}"}`; 
         setTimeout(putCareerStrategyAPI(pathUserProfile, 
-          JSON.parse(userProfile), "", function(data){
-            refreshUserProfile(); 
-        }), 3000);
+          JSON.parse(userProfile), profileId, refreshUserProfile),  3000);
       }
-      else{
-        
-        // next update the user document for this user with the profile id  
+      else{        
+        // create the user profile document for this user  
         userProfile = `{"firstName": "${USER_PROFILE.firstName}","lastName": "${USER_PROFILE.lastName}","email": "${USER_PROFILE.email}", "phone": "${USER_PROFILE.phone}", "userId": "${userId}" }`;    
-
         setTimeout(postCareerStrategyAPI(pathUserProfile, 
           JSON.parse(userProfile), "", function(data){
             if (data && data.id) {
-              userProfileId = data.id;           
-              localStorage.setItem('userProfileId', userProfileId);
+              userProfileId = data.id;                     
               refreshUserProfile(userProfileId); 
 
-              $(".js-job-prospects-form").prop("hidden", true);
+              $(".js-edit-profile-form").prop("hidden", true);
               $(".js-form").prop("hidden", true); 
             }
             else if (data.responseJSON.error)
@@ -356,10 +367,11 @@ function validateProfileForm() {
 }
 
 function displayProspectsSummaryForm(data) { 
-
   $('.js-job-prospects-form').html();
  
-    let prospect = {      
+    let hiddenProspectId = "";
+    let prospect = { 
+      "id": "",     
       "what": "",
       "where": "",  
       "when": "",    
@@ -372,29 +384,30 @@ function displayProspectsSummaryForm(data) {
       "details": "",
     }; 
 
-    if (data && data.prospect.length > 0) {
-      prospect = data.prospect[[0]];
+    if (data && data != undefined) {
+      prospect = data.prospect;
+      hiddenProspectId = `<div class="td" hidden><input id="ProspectEditKey" type="text"value=${prospect.id} hidden></input></div>`;     
     }
 
     let formInputs = `
       <fieldset class="edit-form">
         <legend><h2>Job Prospect</h2></legend>
           <p> <label for="prospectWhat" class="edit-label"><strong>What: </strong></label> <input type="text" id="prospectWhat" value="${prospect.what}" required /></p>    
-          <p> <label for="prospectWhere" class="edit-label"><strong>Company: </strong></label>  <input   type="text"  id="prospectCompany" value="${prospect.where}" /></p>
+          <p> <label for="prospectWhere" class="edit-label"><strong>Company: </strong></label>  <input   type="text"  id="prospectWhere" value="${prospect.where}" /></p>
           <p> <label for="prospectWhen" class="edit-label"><strong>When: </strong></label>  <input type="datetime"  role="datetime" id="prospectWhen" value="${prospect.when}" /></p>                   
           <p> <label for="prospectStatus"  class="edit-label"><strong>Status: </strong></label>  <input type="text"  id="prospectStatus" value=" ${prospect.status}" /></p>    
           <p> <label for="prospectSource" class="edit-label"><strong>Source: </strong></label>  <input   type="text"  id="prospectSource" value="${prospect.source}" /></p>
           <p> <label for="prospectSourceUrl" class="edit-label"><strong>Source Url: </strong></label>  <input   type="text"  id="prospectSourceUrl" value="${prospect.sourceUrl}" /></p>
-          <p> <label for="prospectDayToDay" class="edit-label"><strong>Day to Day: </strong></label>  <textarea   rows="4" cols="50" id="prospectDayToDay" value="${prospect.dayToDay}" ></textarea></p>
-          <p> <label for="prospectContacts" class="edit-label"><strong>Contacts : </strong></label>  <textarea   rows="2" cols="50"  id="prospectContacts" value="${prospect.contacts}" ></textarea></p>
-          <p> <label for="prospectComments" class="edit-label"><strong>Comments: </strong></label>  <textarea   rows="4" cols="50"  id="prospectComments" value="${prospect.comments}" ></textarea></p> 
-          <p> <label for="prospectDetails"  class="edit-label"><strong>Details: </strong></label>  <textarea   rows="4" cols="50"   id="prospectDetails" value=" ${prospect.details}" ></textarea></p>    
-      </fieldset>`;
+          <p> <label for="prospectDayToDay" class="edit-label"><strong>Day to Day: </strong></label>  <textarea   rows="4" cols="50" id="prospectDayToDay" value="${prospect.dayToDay}" >${prospect.dayToDay}</textarea></p>
+          <p> <label for="prospectContacts" class="edit-label"><strong>Contacts : </strong></label>  <textarea   rows="2" cols="50"  id="prospectContacts" value="${prospect.contact}" >${prospect.contact}</textarea></p>
+          <p> <label for="prospectComments" class="edit-label"><strong>Comments: </strong></label>  <textarea   rows="4" cols="50"  id="prospectComments" value="${prospect.comments}" >${prospect.comments}</textarea></p> 
+          <p> <label for="prospectDetails"  class="edit-label"><strong>Details: </strong></label>  <textarea   rows="4" cols="50"   id="prospectDetails" value=" ${prospect.details}" >${prospect.details}</textarea></p>    
+          ${hiddenProspectId}
+      </fieldset>`;      
 
     $(".js-job-prospects-form").html(formInputs);   
     $(".js-job-prospects-form").prop("hidden", false);
-    $(".js-form").prop("hidden", false);
-    
+    $(".js-form").prop("hidden", false);    
 } 
 
 function qs(key) {
@@ -440,13 +453,13 @@ function validateProspectForm(prospectId) {
      const source =  $('#prospectSource').val(); 
      const sourceUrl =  $('#prospectSourceUrl').val();
      const dayToDay =  $('#prospectDayToDay').val();
-     const contacts =  $('#prospectContact').val();
+     const contacts =  $('#prospectContacts').val();
      const comments =  $('#prospectComments').val();
      const details =  $('#prospectDetails').val(); 
     
       // Creating new job prospect
-     if (prospectId == null || prospectId == undefined) {
-      const jobProspect = `{"what": "${what}", "when": "${when}", "where": "${where}", "status": "${status}", "userId": "${userId}","source":  "${source}", "sourceUrl": "${sourceUrl}","dayToDay":  "${dayToDay}", "contacts":  "${contacts}", "comments":  "${comments}", "details":   "${details}"}`;          
+     if (!prospectId || prospectId == undefined) {
+      const jobProspect = `{"what": "${what}", "when": "${when}", "where": "${where}", "status": "${status}", "userId": "${userId}","source":  "${source}", "sourceUrl": "${sourceUrl}","dayToDay":  "${dayToDay}", "contact":  "${contacts}", "comments":  "${comments}", "details":   "${details}"}`;          
       setTimeout(postCareerStrategyAPI(pathJobProspects, 
         JSON.parse(jobProspect), userProfileId, function(data){  
           refreshUserProfile();
@@ -454,7 +467,7 @@ function validateProspectForm(prospectId) {
     }
     else{ 
       // Updating existing job prospect
-      const jobProspect = `{"id","${prospectId}", what": "${what}", "when": "${when}", "where": "${where}", "status": "${status}", "userId": "${userId}","source":  "${source}", "sourceUrl": "${sourceUrl}","dayToDay":  "${dayToDay}", "contacts":  "${contacts}", "comments":  "${comments}", "details":   "${details}"}`;  
+      const jobProspect = `{"id":"${prospectId}","what": "${what}", "when": "${when}", "where": "${where}", "status": "${status}", "userId": "${userId}","source":  "${source}", "sourceUrl": "${sourceUrl}","dayToDay":  "${dayToDay}", "contacts":  "${contacts}", "comments":  "${comments}", "details":   "${details}"}`;  
       setTimeout(putCareerStrategyAPI(pathJobProspects, 
         JSON.parse(jobProspect), prospectId, function(data){       
           refreshUserProfile();
@@ -465,6 +478,15 @@ function validateProspectForm(prospectId) {
     $(".js-form").prop("hidden", true);    
   }
 } 
+
+function  watchEditUserProfile() {       
+  $('.js-edit-profile').click(event => {  
+    event.preventDefault();  
+    userId = localStorage.getItem('userId');
+    const queryPath = `userId=${userId}`;
+    setTimeout( findCareerStrategyAPI(pathUserProfile, queryPath, "", displayUserProfileForm), 5000);     
+  }); 
+}
 
 function  watchAddSkillButtonClick() {       
   $('.js-add-skill').click(event => {  
@@ -501,9 +523,18 @@ function watchEditJobProspectClick(){
     const id = `#${event.currentTarget.id}`; 
     const prospectId =`#Prospect-${id.split('-')[1]}`;
     const prospectKey = $(prospectId).val();
- 
-    const query = `userProfileId=${userProfileId}&id=${prospectKey}`;
-    setTimeout( findCareerStrategyAPI(pathJobProspects, query, "", displayProspectsSummaryForm), 5000);     
+
+    setTimeout( findCareerStrategyAPI(pathJobProspects, "", prospectKey, displayProspectsSummaryForm), 5000);     
+  }); 
+}
+
+function watchDeleteJobProspectClick(){
+  $('.js-delete-prospect').click(event => {  
+    event.preventDefault();
+    const id = `#${event.currentTarget.id}`; 
+    const prospectId =`#Prospect-${id.split('-')[1]}`;
+    const prospectKey = $(prospectId).val();
+    setTimeout( deleteCareerStrategyAPI(pathJobProspects, "", prospectKey, refreshUserProfile), 5000);     
   }); 
 }
 
@@ -562,29 +593,43 @@ function  watchDeleteSkillButtonClick() {
 function watchFormSubmitButtonClick() { 
   $('#submitEvent').click(event => {
     event.preventDefault();  
+    const id = `#${event.currentTarget.id}`; 
     $(".js-edit-form:visible").each(function() {     
       const formId = $( this ).attr('id')         
       switch (formId) {
-        case "editProfile":{
-            validateProfileForm();
+        case "editProfile":{          
+          const prospectKey = $('#ProfileEditKey').val();
+            validateProfileForm(prospectKey);
             break;}
-        case "editProspect": {
-            validateProspectForm(null);
+        case "editProspect": {     
+          const prospectKey = $('#ProspectEditKey').val();
+            validateProspectForm(prospectKey);
             break; }
         }       
     });    
   });  
 }
 
+function watchFormCancelClick() { 
+  $('#cancelEvent').click(event => {
+    event.preventDefault();  
+    $(".js-form").prop("hidden", "true");
+    $(".js-edit-form").prop("hidden", "true");       
+  });  
+}
+
 function setupHandleEvents() {  
   refreshUserProfile();   
+  watchEditUserProfile();
   watchAddSkillButtonClick();
   watchAddMasterSkillButtonClick();
   watchDeleteSkillButtonClick();
   watchEditSkillButtonClick();
   watchFormSubmitButtonClick();
   watchEditJobProspectClick();
+  watchDeleteJobProspectClick();
   watchAddJobProspectClick();
+  watchFormCancelClick();
 }
 
 $(setupHandleEvents);

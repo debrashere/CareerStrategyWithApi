@@ -14,8 +14,7 @@ const passport = require('passport');
 const jwtAuth = passport.authenticate('jwt', { session: false });
 
 router.get("/:id", jwtAuth,  (req, res) => {
-    UserProfile.findOne({_id: req.params.id})
-    //.populate('jobProspects').exec()    
+    UserProfile.findOne({_id: req.params.id})     
     .then(userProfile => {
       if (!userProfile || userProfile.length == 0) {
         const message = `Id "${req.params.id}" not found`;
