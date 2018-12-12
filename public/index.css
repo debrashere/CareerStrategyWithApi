@@ -18,7 +18,8 @@ main .row {
   padding-bottom: 5px; 
   margin-bottom: 20px; 
 }
-.prospect-header{
+
+.section-header{
   border: 1px solid black;
   background-color: lightgray;
 }
@@ -33,15 +34,7 @@ main .row {
   max-width:100%;
   color:white;
   font-size:8px;
-  height: 150px;
-}
-
-.headerImage { 
-  background: black; 
-  height:150px; 
-  width: 100%;
-  object-fit: contain;
-  offset: -20px; 
+  height: 280px;
 }
 
 fieldset div {
@@ -55,14 +48,6 @@ input:focus ~ label, textarea:focus ~ label, select:focus ~ label {
 
 input:checked ~ label {
   font-weight: bold;
-}
-
-/* Centered text */
-.centered {
-  position: absolute;
-  top: 8px;
-  left: 50%;
-  transform: translate(-50%, -50%);
 }
 
 .error-message {
@@ -124,17 +109,6 @@ padding: 10px;
   border: black 2px solid;  
 }
 
-.flex-container-profile {
-  display: flex;
-  /*display: inline; */
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: space-evenly;   
-  /*align-items: stretch; */
-  align-items: center;
-  max-width: 100%; 
-}
-
 .flex-item {
  flex-grow: 1;
  flex-shrink: 1;
@@ -142,6 +116,26 @@ padding: 10px;
  margin-bottom: 5px;  
 }
 
+.flex-container-profile {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-evenly;  
+  align-items: center;
+  max-width: 95%; 
+  vertical-align: top;
+  color: black;
+}
+
+.flex-item-profile {
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: auto;
+  margin-bottom: 5px; 
+  max-width: 300px;
+  border: black solid 2px;
+ }
+ 
 .flex-item-skills {
   flex-grow: 1;
   flex-shrink: 1;
@@ -420,6 +414,7 @@ padding: 10px;
 
 /* Extra large devices (large laptops and desktops, 1200px and up) */
 @media only screen and (min-width: 1200px) {
+  .header {height: 200px;}
   .flex-item { max-width: 500px;  }
   * {font-size: 20px;}
   .add-prospect-to { font-size: 20px;}

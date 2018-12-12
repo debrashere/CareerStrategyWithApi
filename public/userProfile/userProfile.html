@@ -10,19 +10,19 @@
 <body>
   <main>
     <div class="row">      
-      <div class="header">  
-        <h1  tabindex="0" class="centered">Job Strategy Planner</h1> 
-        <img src="../images/JobSearch.jpg" alt="job search image" />
-       </div>        
+      <div class="header">
+        <div class="flex-container-profile js-section-user-profile">  
+          <div class="flex-item">
+           <h1 tabindex="0">Job Strategy Planner</h1> 
+            <img src="../images/icon-header.jpg" alt="job search image" />
+          </div>
+          <div class="flex-item-profile">           
+            <section class="user-profile js-user-profile"  aria-hidden="true" hidden> </section>                   
+          </div> 
+        </div> 
+      </div>        
         <div class="col-6"> 
-         <section class="content">                 
-         <h2>User Profile</h2>  
-         </section> 
-         <output><div id="js-error-message" class="error-message" aria-live="assertive" hidden> </div></output>
-
-         <div class="flex-container-profile js-section-user-profile">
-          <output class="user-profile js-user-profile" role="dialog" aria-hidden="true" hidden> </output>                   
-        </div>                                 
+         <output><div id="js-error-message" class="error-message" aria-live="assertive" hidden> </div></output>                                
 
          <form action="#" class="js-form"  id="editForm" name="editForm" aria-hidden="true" hidden>                   
           <output id="editProfile" name="editProfile" class="edit-form js-edit-form js-edit-profile-form" aria-hidden="true" aria-live="assertive" hidden></output>      				          
@@ -32,7 +32,7 @@
         </form>   
 
         <div class="job-prospects-header js-section-job-prospects-header">          
-           Job Prospects          
+          <h3>Job Prospects </h3>         
           <span>  <a id="AddProspect-0" href="#" class="js-add-prospect"><img alt="add prospect" src="../images/icon-add.png"></a> (Add)</span>
         </div>
         <div class="flex-container js-section-job-prospects" aria-hidden="true" hidden></div>                  

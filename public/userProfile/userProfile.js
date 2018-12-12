@@ -129,7 +129,7 @@ function renderUserProfile(data) {
 
   let profileContent =  
     `<div class="flex-item">
-          <div class="prospect-header"><em>${userProfile.firstName} ${userProfile.lastName}</em> <a href=# class="js-edit-profile"><img alt="edit prospect" src="../images/icon-edit.png" /> (Edit)</a></div>
+          <div class="section-header"><em>${userProfile.firstName} ${userProfile.lastName}</em> <a href=# class="js-edit-profile"><img alt="edit prospect" src="../images/icon-edit.png" /> (Edit)</a></div>
           <div> 
             <span>${userProfile.email}</span>  </br>          
             <span>${userProfile.phone}</span>  </br>   
@@ -157,7 +157,7 @@ function renderUserSkills(data) {
   let counter = 0;
   let skillHeader = `
   <div class="flex-item">
-    <div class="prospect-header">Your Skills</div>
+    <div class="section-header">Your Skills</div>
     <div class="table">
       <div class="tr th"> 
         <div class="td">Skill</div> 
@@ -260,7 +260,7 @@ function renderJobProspects(data) {
                                                  
       prospects +=
        `<div class="flex-item-job-prospect">
-            <div class="prospect-header"><span id="prospect${counter}">${prospect.what}</span>  <br />
+            <div class="section-header"><span id="prospect${counter}">${prospect.what}</span>  <br />
                     <a id="ProspectEdit-${counter}" href=# class="js-edit-prospect"><img alt="edit prospect" src="../images/icon-edit.png" />  (edit)</a>   
                     <a id="ProspectDelete-${counter}" href=# class="js-delete-prospect"><img alt="delete prospect" src="../images/icon-delete.png" /> (delete)</a>  </div>
             <div class="td"><span><em>Where:</em> ${prospect.where}</span></div>            
@@ -426,7 +426,9 @@ function refreshUserProfile(id) {
       setTimeout(findCareerStrategyAPI(pathJobProspects, queryPath, "", renderJobProspects)
      , 3000);          
 
-    findCareerStrategyAPI(pathSkills, "",  "", displaySkillsMasterList);    
+    findCareerStrategyAPI(pathSkills, "",  "", displaySkillsMasterList);
+    $(".js-form").prop("hidden", "true");
+    $(".js-edit-form").prop("hidden", "true");     
 } 
 
 
