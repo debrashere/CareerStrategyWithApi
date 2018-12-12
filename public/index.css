@@ -86,6 +86,12 @@ h2, h2, h3, address {
 }
  
 
+.flex-multiline { 
+  display: flex;
+  flex-wrap: wrap;
+}
+
+
 /*
   TEST HORIZONTAL FLEX LIST ITEMS
 */
@@ -118,6 +124,17 @@ padding: 10px;
   border: black 2px solid;  
 }
 
+.flex-container-profile {
+  display: flex;
+  /*display: inline; */
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-evenly;   
+  /*align-items: stretch; */
+  align-items: center;
+  max-width: 100%; 
+}
+
 .flex-item {
  flex-grow: 1;
  flex-shrink: 1;
@@ -129,7 +146,6 @@ padding: 10px;
   flex-grow: 1;
   flex-shrink: 1;
   flex-basis: auto;
-  background: white;
   max-width: 80%;
   margin-bottom: 5px;   
  }
@@ -374,7 +390,8 @@ padding: 10px;
 .flex-item-job-prospect {
   max-width: 500px; 
   border: black 2px solid; 
-  background-color: whitesmoke   
+  background-color: whitesmoke;
+  margin-top: 5px;
 }
 
 /* Extra small devices (phones, 600px and down) */

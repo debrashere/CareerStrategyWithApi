@@ -19,7 +19,7 @@ function findCareerStrategyAPI(path, query, id,  callbackFn) {
   url = id == "" ? url: `${url}/${id}/`;
   url = query == "" ? url: `${url}?${query}`;  
  
-  const authToken = localStorage.getItem('token');  
+  const authToken = localStorage.getItem('token'); 
   
   return fetch(url, {
     method: 'GET',
@@ -268,11 +268,11 @@ function renderJobProspects(data) {
             <div class="td"><span><em>Status:</em> ${prospect.status}</span></div>          
             <div class="td"><span><em>Source:</em> ${prospect.source}</span></div>    
             <div class="td"><span><em>Source Url:</em> <a href='${prospect.sourceUrl}' target=_blank>${prospect.sourceUrl}<a></span></div>              
-            <div class="td"><span><em>Contacts:</em> <textarea rows="2" cols="50">${prospect.contact}</textarea></span></div>            
-            <div class="td"><span><em>Comments:</em> <textarea rows="4" cols="50">${prospect.comments}</textarea></span></div>  
-            <div class="td"><span><em>Details:</em> <textarea rows="2" cols="50">${prospect.details}</textarea></span></div> 
+            <div class="td"><span class="flex-multiline"><em>Contacts:</em>${prospect.contact}</span></div>            
+            <div class="td"><span class="flex-multiline"><em>Comments:</em>${prospect.comments}</span></div>  
+            <div class="td"><span class="flex-multiline"><em>Details:</em>${prospect.details}</span></div> 
             <div class="td"><span><em>Day to day:</em> ${prospect.dayToDay}</span></div>                                      
-            <div class="td" hidden><input id="Prospect-${counter}" type="text"value=${prospect.id} hidden></input></div>
+            <div class="td" hidden><span id="Prospect-${counter}" hidden>${prospect.id}</span></div>
       </div>
       `; 
        counter++;       
@@ -302,15 +302,15 @@ function displayUserProfileForm(data) {
 
     if (data && data.userProfile.length > 0) {
       profile = data.userProfile[[0]];
-      hiddenProfileId = `<div class="td" hidden><input id="ProfileEditKey" type="text"value=${profile.id} hidden></input></div>`;       
+      hiddenProfileId = `<label for="ProfileEditKey" class="edit-label"></label><div class="td" hidden><input id="ProfileEditKey" type="text"value=${profile.id} hidden></input></div>`;       
     }
 
     let formInputs = `
       <fieldset class="edit-form">
         <legend><h2>User Profile</h2></legend>
-        <p> <label for="profileFirst" class="edit-label"><strong>First Name: </strong></label> <input type="text" id="profileFirst" value="${profile.firstName}" required /></p>    
-        <p> <label for="profileLast" class="edit-label"><strong>Last Name: </strong></label>  <input   type="text"  id="profileLast" value="${profile.lastName}" required /></p>
-        <p> <label for="profileEmail" class="edit-label"><strong>Email: </strong></label>  <input   type="text"  id="profileEmail" value="${profile.email}" required /></p>
+        <p> <label for="profileFirst" class="edit-label"><strong>First Name: </strong></label> <input type="text" id="profileFirst" value="${profile.firstName}" aria-required="true" required /></p>    
+        <p> <label for="profileLast" class="edit-label"><strong>Last Name: </strong></label>  <input   type="text"  id="profileLast" value="${profile.lastName}" aria-required="true" required /></p>
+        <p> <label for="profileEmail" class="edit-label"><strong>Email: </strong></label>  <input   type="text"  id="profileEmail" value="${profile.email}" aria-required="true" required /></p>
         <p> <label for="profilePhone" class="edit-label"><strong>Phone: </strong></label>  <input   type="text"  id="profilePhone" value="${profile.phone}" /></p>
         ${hiddenProfileId}
       </fieldset>`;
@@ -321,49 +321,53 @@ function displayUserProfileForm(data) {
 } 
 
 function validateProfileForm(profileId) {
-    if (profileEditsAreValid()) { 
+    const errors = profileEditsAreValid();
+    if (errors != "") {
+      $('#js-error-message').html(errors);
+      $('#js-error-message').prop("hidden", false);
+      return;
+    } 
 
-      userId = localStorage.getItem('userId');  
-      if (!userId || userId.length == 0) {
-        location.href = "../login.html";
-      }
-      USER_PROFILE.firstName =  $('#profileFirst').val();  
-      USER_PROFILE.lastName =  $('#profileLast').val();  
-      USER_PROFILE.email =  $('#profileEmail').val(); 
-      USER_PROFILE.phone =  $('#profilePhone').val(); 
-      let userProfile = ""; 
+    userId = localStorage.getItem('userId');  
+    if (!userId || userId.length == 0) {
+      location.href = "../login.html";
+    }
+    USER_PROFILE.firstName =  $('#profileFirst').val();  
+    USER_PROFILE.lastName =  $('#profileLast').val();  
+    USER_PROFILE.email =  $('#profileEmail').val(); 
+    USER_PROFILE.phone =  $('#profilePhone').val(); 
+    let userProfile = ""; 
 
-      if (profileId && profileId != undefined) {
-        // update the user profile document for this user
-        userProfile = `{"id": "${profileId}", "firstName": "${USER_PROFILE.firstName}", "lastName": "${USER_PROFILE.lastName}", "email": "${USER_PROFILE.email}", "phone": "${USER_PROFILE.phone}"}`; 
-        setTimeout(putCareerStrategyAPI(pathUserProfile, 
-          JSON.parse(userProfile), profileId, refreshUserProfile),  3000);
-      }
-      else{        
-        // create the user profile document for this user  
-        userProfile = `{"firstName": "${USER_PROFILE.firstName}","lastName": "${USER_PROFILE.lastName}","email": "${USER_PROFILE.email}", "phone": "${USER_PROFILE.phone}", "userId": "${userId}" }`;    
-        setTimeout(postCareerStrategyAPI(pathUserProfile, 
-          JSON.parse(userProfile), "", function(data){
-            if (data && data.id) {
-              userProfileId = data.id;                     
-              refreshUserProfile(userProfileId); 
+    if (profileId && profileId != undefined) {
+      // update the user profile document for this user
+      userProfile = `{"id": "${profileId}", "firstName": "${USER_PROFILE.firstName}", "lastName": "${USER_PROFILE.lastName}", "email": "${USER_PROFILE.email}", "phone": "${USER_PROFILE.phone}"}`; 
+      setTimeout(putCareerStrategyAPI(pathUserProfile, 
+        JSON.parse(userProfile), profileId, refreshUserProfile),  3000);
+    }
+    else{        
+      // create the user profile document for this user  
+      userProfile = `{"firstName": "${USER_PROFILE.firstName}","lastName": "${USER_PROFILE.lastName}","email": "${USER_PROFILE.email}", "phone": "${USER_PROFILE.phone}", "userId": "${userId}" }`;    
+      setTimeout(postCareerStrategyAPI(pathUserProfile, 
+        JSON.parse(userProfile), "", function(data){
+          if (data && data.id) {
+            userProfileId = data.id;                     
+            refreshUserProfile(userProfileId); 
 
-              $(".js-edit-profile-form").prop("hidden", true);
-              $(".js-form").prop("hidden", true); 
-            }
-            else if (data.responseJSON.error)
-            {
-              $('#js-error-message').html(data.responseJSON.error);
-              $('#js-error-message').prop("hidden", false);
-            }
-            else {
-              $('#js-error-message').html("Oops something went wrong. Please try again.");
-              $('#js-error-message').prop("hidden", false);
-            }
-              
-        }), 3000);
-      }           
-  }
+            $(".js-edit-profile-form").prop("hidden", true);
+            $(".js-form").prop("hidden", true); 
+          }
+          else if (data.responseJSON.error)
+          {
+            $('#js-error-message').html(data.responseJSON.error);
+            $('#js-error-message').prop("hidden", false);
+          }
+          else {
+            $('#js-error-message').html("Oops something went wrong. Please try again.");
+            $('#js-error-message').prop("hidden", false);
+          }
+            
+      }), 3000);
+    }             
 }
 
 function displayProspectsSummaryForm(data) { 
@@ -386,15 +390,15 @@ function displayProspectsSummaryForm(data) {
 
     if (data && data != undefined) {
       prospect = data.prospect;
-      hiddenProspectId = `<div class="td" hidden><input id="ProspectEditKey" type="text"value=${prospect.id} hidden></input></div>`;     
+      hiddenProspectId = `<span id="ProspectEditKey" value=${prospect.id} hidden></span`;     
     }
 
     let formInputs = `
       <fieldset class="edit-form">
         <legend><h2>Job Prospect</h2></legend>
-          <p> <label for="prospectWhat" class="edit-label"><strong>What: </strong></label> <input type="text" id="prospectWhat" value="${prospect.what}" required /></p>    
-          <p> <label for="prospectWhere" class="edit-label"><strong>Company: </strong></label>  <input   type="text"  id="prospectWhere" value="${prospect.where}" /></p>
-          <p> <label for="prospectWhen" class="edit-label"><strong>When: </strong></label>  <input type="datetime"  role="datetime" id="prospectWhen" value="${prospect.when}" /></p>                   
+          <p> <label for="prospectWhat" class="edit-label"><strong>What: </strong></label> <input type="text" id="prospectWhat" value="${prospect.what}" aria-required="true" required /></p>    
+          <p> <label for="prospectWhere" class="edit-label"><strong>Company: </strong></label>  <input   type="text"  id="prospectWhere" value="${prospect.where}" aria-required="true" required /></p>
+          <p> <label for="prospectWhen" class="edit-label"><strong>When: </strong></label>  <input type="datetime"  role="datetime" id="prospectWhen" value="${prospect.when}" aria-required="true" required /></p>                   
           <p> <label for="prospectStatus"  class="edit-label"><strong>Status: </strong></label>  <input type="text"  id="prospectStatus" value=" ${prospect.status}" /></p>    
           <p> <label for="prospectSource" class="edit-label"><strong>Source: </strong></label>  <input   type="text"  id="prospectSource" value="${prospect.source}" /></p>
           <p> <label for="prospectSourceUrl" class="edit-label"><strong>Source Url: </strong></label>  <input   type="text"  id="prospectSourceUrl" value="${prospect.sourceUrl}" /></p>
@@ -409,13 +413,6 @@ function displayProspectsSummaryForm(data) {
     $(".js-job-prospects-form").prop("hidden", false);
     $(".js-form").prop("hidden", false);    
 } 
-
-function qs(key) {
-  key = key.replace(/[*+?^$.\[\]{}()|\\\/]/g, "\\$&"); // escape RegEx meta chars
-  var match = location.search.match(new RegExp("[?&]"+key+"=([^&]+)(&|$)"));
-  return match && decodeURIComponent(match[1].replace(/\+/g, " "));
-}
-
 
 function refreshUserProfile(id) {     
   userId = localStorage.getItem('userId');    
@@ -440,43 +437,80 @@ function getMasterSkill(skill){
     });
   }
 
+function prospectEditsAreValid() {
+  let message = "";
+  const what =  $('#prospectWhat').val();  
+  const when =  $('#prospectWhen').val();  
+  const where = $('#prospectWhere').val(); 
+
+  if (!what || what.trim().length == 0)
+    message += "What is required <br/>";
+
+  if (!when || when.trim().length == 0)
+    message += "When is required <br/>";
+
+  if (!where || where.trim().length == 0)
+    message += "Where is required";  
+
+  return message;
+}
+
 function profileEditsAreValid() {
-    return true;
+  let message = "";
+  const firstName =  $('#profileFirst').val();  
+  const lastName =  $('#profileLast').val();  
+  const email =  $('#profileEmail').val();  
+
+  if (!firstName || firstName.trim().length == 0)
+    message += "First name is required <br/>";
+
+  if (!lastName || lastName.trim().length == 0)
+    message += "Last name is required <br/>";
+  
+  if (!email || email.trim().length == 0)
+    message += "Email is required";    
+
+  return message;
 }
 
 function validateProspectForm(prospectId) {
-  if (profileEditsAreValid()) {
-     const what =  $('#prospectWhat').val();  
-     const when =  $('#prospectWhen').val();  
-     const where = $('#prospectWhere').val(); 
-     const status =  $('#prospectStatus').val();  
-     const source =  $('#prospectSource').val(); 
-     const sourceUrl =  $('#prospectSourceUrl').val();
-     const dayToDay =  $('#prospectDayToDay').val();
-     const contacts =  $('#prospectContacts').val();
-     const comments =  $('#prospectComments').val();
-     const details =  $('#prospectDetails').val(); 
-    
-      // Creating new job prospect
-     if (!prospectId || prospectId == undefined) {
-      const jobProspect = `{"what": "${what}", "when": "${when}", "where": "${where}", "status": "${status}", "userId": "${userId}","source":  "${source}", "sourceUrl": "${sourceUrl}","dayToDay":  "${dayToDay}", "contact":  "${contacts}", "comments":  "${comments}", "details":   "${details}"}`;          
-      setTimeout(postCareerStrategyAPI(pathJobProspects, 
-        JSON.parse(jobProspect), userProfileId, function(data){  
-          refreshUserProfile();
-       }), 3000);  
-    }
-    else{ 
-      // Updating existing job prospect
-      const jobProspect = `{"id":"${prospectId}","what": "${what}", "when": "${when}", "where": "${where}", "status": "${status}", "userId": "${userId}","source":  "${source}", "sourceUrl": "${sourceUrl}","dayToDay":  "${dayToDay}", "contacts":  "${contacts}", "comments":  "${comments}", "details":   "${details}"}`;  
-      setTimeout(putCareerStrategyAPI(pathJobProspects, 
-        JSON.parse(jobProspect), prospectId, function(data){       
-          refreshUserProfile();
-      }), 3000);
-    }    
-       
-    $(".js-job-prospects-form").prop("hidden", true);
-    $(".js-form").prop("hidden", true);    
+
+  const errors = prospectEditsAreValid();
+  if (errors != "") {
+    $('#js-error-message').html(errors);
+    $('#js-error-message').prop("hidden", false);
+    return;
+  } 
+    const what =  $('#prospectWhat').val();  
+    const when =  $('#prospectWhen').val();  
+    const where = $('#prospectWhere').val(); 
+    const status =  $('#prospectStatus').val();  
+    const source =  $('#prospectSource').val(); 
+    const sourceUrl =  $('#prospectSourceUrl').val();
+    const dayToDay =  $('#prospectDayToDay').val();
+    const contacts =  $('#prospectContacts').val();
+    const comments =  $('#prospectComments').val();
+    const details =  $('#prospectDetails').val(); 
+  
+    // Creating new job prospect
+    if (!prospectId || prospectId == undefined) {
+    const jobProspect = `{"what": "${what}", "when": "${when}", "where": "${where}", "status": "${status}", "userId": "${userId}","source":  "${source}", "sourceUrl": "${sourceUrl}","dayToDay":  "${dayToDay}", "contact":  "${contacts}", "comments":  "${comments}", "details":   "${details}"}`;          
+    setTimeout(postCareerStrategyAPI(pathJobProspects, 
+      JSON.parse(jobProspect), userProfileId, function(data){  
+        refreshUserProfile();
+      }), 3000);  
   }
+  else{ 
+    // Updating existing job prospect
+    const jobProspect = `{"id":"${prospectId}","what": "${what}", "when": "${when}", "where": "${where}", "status": "${status}", "userId": "${userId}","source":  "${source}", "sourceUrl": "${sourceUrl}","dayToDay":  "${dayToDay}", "contacts":  "${contacts}", "comments":  "${comments}", "details":   "${details}"}`;  
+    setTimeout(putCareerStrategyAPI(pathJobProspects, 
+      JSON.parse(jobProspect), prospectId, function(data){       
+        refreshUserProfile();
+    }), 3000);
+  }    
+      
+  $(".js-job-prospects-form").prop("hidden", true);
+  $(".js-form").prop("hidden", true);      
 } 
 
 function  watchEditUserProfile() {       
@@ -496,7 +530,7 @@ function  watchAddSkillButtonClick() {
       if (!USER_PROFILE.skills)     {
         USER_PROFILE.skills = []
       }
-      USER_PROFILE.skills.push(JSON.parse(`{"skill": "${skill}","yearsOfExperience":${years}}`));       
+      USER_PROFILE.skills.push(JSON.parse(`{"skill": "${skill}","yearsOfExperience":"${years}"}`));       
       const userSkills = `{"id": "${userProfileId}","skills": ${JSON.stringify(USER_PROFILE.skills)}}`;                         
 
       putCareerStrategyAPI(pathUserProfile, JSON.parse(userSkills), function(data) {        
@@ -522,9 +556,10 @@ function watchEditJobProspectClick(){
     event.preventDefault();
     const id = `#${event.currentTarget.id}`; 
     const prospectId =`#Prospect-${id.split('-')[1]}`;
-    const prospectKey = $(prospectId).val();
+    const prospectKey = $(prospectId).text();
 
-    setTimeout( findCareerStrategyAPI(pathJobProspects, "", prospectKey, displayProspectsSummaryForm), 5000);     
+    setTimeout( findCareerStrategyAPI(pathJobProspects, "", prospectKey,
+     displayProspectsSummaryForm), 5000);     
   }); 
 }
 
@@ -533,8 +568,8 @@ function watchDeleteJobProspectClick(){
     event.preventDefault();
     const id = `#${event.currentTarget.id}`; 
     const prospectId =`#Prospect-${id.split('-')[1]}`;
-    const prospectKey = $(prospectId).val();
-    setTimeout( deleteCareerStrategyAPI(pathJobProspects, "", prospectKey, refreshUserProfile), 5000);     
+    const prospectKey = $(prospectId).text();
+    setTimeout(deleteCareerStrategyAPI(pathJobProspects, "", prospectKey, refreshUserProfile), 5000);     
   }); 
 }
 
@@ -614,7 +649,9 @@ function watchFormCancelClick() {
   $('#cancelEvent').click(event => {
     event.preventDefault();  
     $(".js-form").prop("hidden", "true");
-    $(".js-edit-form").prop("hidden", "true");       
+    $(".js-edit-form").prop("hidden", "true"); 
+    $('#js-error-message').empty();
+    $('#js-error-message').prop("hidden", true);      
   });  
 }
 
