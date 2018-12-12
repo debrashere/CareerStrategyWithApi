@@ -1,5 +1,5 @@
 'use strict'  
-const CAREER_STRATEGY_URL = 'http://localhost:8080/api';
+const CAREER_STRATEGY_URL ='http://localhost:8080/api';
 const pathUser = "user";
 const pathUserProfile  = "userprofiles";
 const pathSkills = "skills";
@@ -96,7 +96,7 @@ function putCareerStrategyAPI(path, update, id, callback) {
   Delete data via Career Strategy API
 */
 function deleteCareerStrategyAPI(path, update, id, callback) {
-  let url =  `${CAREER_STRATEGY_URL}/${path}/`;
+  let url =  `${CAREER_STRATEGY_URL/api}/${path}/`;
   url = id == "" ? url: `${url}${id}/`;
   const authToken = localStorage.getItem('token');
 

@@ -10,6 +10,10 @@ body, html {
   background:darkgray;   
 }
 
+p {
+  word-break: break-all;
+  white-space: normal;
+}
 main .row {
   font-family: 'IBM Plex Sans', sans-serif;
   max-width: 90%;
@@ -221,6 +225,7 @@ h2, h2, h3, address {
 .th > .td {
   white-space: normal;
   justify-content: center;
+  width: 100%;
 }
 
 .tr {
