@@ -6,7 +6,7 @@ const pathSkills = "skills";
 const pathJobProspects  = "prospects";
 let userId = "";
 let userProfileId = "";
-let USER_PROFILE
+let USER_PROFILE = {};
  
 /*     
   Retrieve data from Career Strategy API
