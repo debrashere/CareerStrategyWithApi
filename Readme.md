@@ -2,7 +2,7 @@
 
 Thinkful (https://www.thinkful.com/) API Capstone Project providing API service to manage Job Search strategy.
 
-Link to the live demo:  https://debrashere.github.io/CareerStrategyWithApi/
+Link to the live demo:  https://debrashere.github.io/CareerStrategyWithApi/public/login.html
 
 ### Summary
 

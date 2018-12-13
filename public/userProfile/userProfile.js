@@ -1,12 +1,12 @@
 'use strict'  
-const CAREER_STRATEGY_URL ='http://localhost:8080/api';
+const CAREER_STRATEGY_URL ='https://sheltered-gorge-50174.herokuapp.com/api';
 const pathUser = "user";
 const pathUserProfile  = "userprofiles";
 const pathSkills = "skills";
 const pathJobProspects  = "prospects";
 let userId = "";
 let userProfileId = "";
-let USER_PROFILE = {};
+let USER_PROFILE
  
 /*     
   Retrieve data from Career Strategy API
