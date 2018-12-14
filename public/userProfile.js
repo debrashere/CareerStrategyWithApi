@@ -158,6 +158,7 @@ function renderUserSkills(data) {
   let skillHeader = `
   <div class="flex-item-skills">
     <div class="section-header"><h3>Your Skills</h3></div>
+    <output><div id="js-skills-error-message" class="error-message" aria-live="assertive" hidden> </div></output>
     <div class="table">
       <div class="tr th"> 
         <div class="td">Skill</div> 
@@ -187,8 +188,8 @@ function renderUserSkills(data) {
      });
      skills += '</ul></div> ';     
     }
-
-    $('.js-section-user-skills').append(`${skills}`);  
+ 
+    $('.js-section-user-skills').append(skills);  
     $('.js-section-user-skills').prop("hidden", false); 
     $('.js-section-user-skills').prop("hidden", false); 
    
@@ -221,17 +222,14 @@ function displaySkillsMasterList(data) {
   let skillHeader = `
   <div flex-item>
     <div class="skills-header"><h3>Master list of skills</h3> <em> (click on a skill to add it to your list of skills)</em></div>   
-    <ul class="items flex-item-skills">`;
+    <p flex-item-skills">`;
   let skills = skillHeader;
            
   data.skill.map( function(skill) {           
-      skills +=
-       `<li class="item"> 
-          <span  data-header="Skill"><a href=# id="masterSkill${counter}" class="master-skill-link js-master-skill">${skill.skill}</a></span>
-       </li> `;
-        counter++; 
+      skills +=  `<a href=# id="masterSkill${counter}" class="master-skill-link js-master-skill">${skill.skill}</a>`;     
+      counter++; 
      });
-     skills += '</ul></div>';    
+     skills += '</p>';    
      
     $('.js-section-master-skills').append(`${skills}`);  
     $('.js-section-master-skills').prop("hidden", false); 
@@ -242,11 +240,11 @@ function generateJobSkills(skills) {
   let skillset = ""; 
   if (skills && skills.length > 0) {
       skills.map( function(skillObj) {          
-        skillset += `${skillObj.skill} `;
+        skillset += `<span class="job-skill">${skillObj.skill}</span> `;
     });
   }
   return skillset.length > 0 
-    ? `<div class="td"><span><em>Job Skills:</em> <p>${skillset}</p></span></div>`
+    ? `<div class="td"><p><em>Job Skills:</em> ${skillset}</p></div>`
     : "";
 }
 
@@ -439,7 +437,6 @@ function refreshUserProfile(id) {
     $(".js-edit-form").prop("hidden", "true");     
 } 
 
-
 function getMasterSkill(skill){
     const query = `skill=${skill}`;
     findCareerStrategyAPI(pathSkills, query, function(data) {  
@@ -484,7 +481,6 @@ function profileEditsAreValid() {
 }
 
 function validateProspectForm(prospectId) {
-
   const errors = prospectEditsAreValid();
   if (errors != "") {
     $('#js-error-message').html(errors);
@@ -532,15 +528,38 @@ function  watchEditUserProfile() {
   }); 
 }
 
+function userSkillsAreValid() { 
+  let message = "";
+  const skill = $('#newSkill').val();
+  const years = $('#skillYears').val();  
+  if (!skill || skill.length < 1) {
+    message = "Skill is required. <br />";
+  }
+  if (!years || years.length <= 0) {
+    message += "Years of Experience is required. <br />";
+  }
+  if ( !$.isNumeric(years) ) {
+    message += "Years of experience must be numeric.";
+  }
+  return message;
+}
+
 function  watchAddSkillButtonClick() {       
   $('.js-add-skill').click(event => {  
       event.preventDefault();
       let skill = $('#newSkill').val();
-      let years = $('#skillYears').val();   
-      if (!USER_PROFILE.skills)     {
+      let years = $('#skillYears').val(); 
+
+      if (userSkillsAreValid().length > 0) {
+        $('#js-skills-error-message').html(userSkillsAreValid());
+        $('#js-skills-error-message').prop("hidden", false);
+        return;
+      }
+
+      if (!USER_PROFILE.skills) {
         USER_PROFILE.skills = []
       }
-      USER_PROFILE.skills.push(JSON.parse(`{"skill": "${skill}","yearsOfExperience":"${years}"}`));       
+      USER_PROFILE.skills.push(JSON.parse(`{"skill": "${skill.trim()}","yearsOfExperience":"${years.trim()}"}`));       
       const userSkills = `{"id": "${userProfileId}","skills": ${JSON.stringify(USER_PROFILE.skills)}}`;                         
 
       setTimeout(putCareerStrategyAPI(pathUserProfile, JSON.parse(userSkills), userProfileId, function(data) {                        
@@ -548,6 +567,7 @@ function  watchAddSkillButtonClick() {
         // Clear out the input fields
         $('#newSkill').html();
         $('#skillYears').html(); 
+        $(".js-form").prop("hidden", true); 
       }), 3000);                                     
     });  
 } 

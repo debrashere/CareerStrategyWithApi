@@ -23,9 +23,14 @@ main .row {
   margin-bottom: 20px; 
 }
 
+.user-profile {
+  width: 100%;
+}
+
 .section-header{
   border: 1px solid black;
   background-color: lightgray;
+  width: 100%;
 }
 
 .user-skills{
@@ -45,9 +50,10 @@ main .row {
   vertical-align: top;
   width: 100%;
   max-width:100%;
-  color:white;
+  color:black;
   font-size:8px;
   height: 280px;
+  margin-top: 5px;
 }
 
 fieldset div {
@@ -111,7 +117,22 @@ h2, h2, h3, address {
   text-decoration: none;
   font: bold;
   border-radius: 15px;
-  border: 2px solid black 
+  border: 2px solid black ;
+  margin: 3px;
+  
+}
+
+.job-skill {
+  background-color: beige;
+  color: black;
+  padding: 5px 5px;
+  text-align: center; 
+  display: inline-block;
+  text-decoration: none;
+  font: bold;
+  border-radius: 15px;
+  border: 1px solid black;
+  margin: 3px;
 }
  
 /*
@@ -161,6 +182,7 @@ h2, h2, h3, address {
   max-width: 90%;
   margin-bottom: 5px;
   border: black solid 2px;
+  background: lightgray;
  }
 
  .flex-item-skillset {
@@ -260,7 +282,8 @@ h2, h2, h3, address {
   flex-grow: 1;
   flex-basis: 0;
   padding: 0.5em;
-  word-break: break-word;
+  /* word-break: break-word; */
+  word-break: normal;
   overflow: hidden;
   text-overflow: ellipsis;
   min-width: 0px;
