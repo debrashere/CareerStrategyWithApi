@@ -264,7 +264,7 @@ h2, h2, h3, address {
   overflow: hidden;
   text-overflow: ellipsis;
   min-width: 0px;
-  max-width: 80%;
+  max-width: 100%;
   white-space: nowrap;
   border-bottom: 1px solid #d0d0d0;  
 }
