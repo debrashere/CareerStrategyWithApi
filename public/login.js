@@ -48,7 +48,7 @@ function watchSubmitLoginClick() {
   setTimeout(loginUserAPI(pathAuth, loginJson, function(data) {           
       localStorage.setItem('token', data.userAuth.authToken);
       localStorage.setItem('userId', data.userAuth.id);
-      location.href = "./userProfile/userProfile.html";
+      location.href = "./userProfile.html";
     }), 3000);
   }); 
 }

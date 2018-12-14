@@ -101,6 +101,18 @@ h2, h2, h3, address {
   color: #171e42;
   padding: 10px;
 }
+
+.master-skill-link:link{
+  background-color: beige;
+  color: black;
+  padding: 5px 5px;
+  text-align: center; 
+  display: inline-block;
+  text-decoration: none;
+  font: bold;
+  border-radius: 15px;
+  border: 2px solid black 
+}
  
 /*
   FLEX Container
@@ -115,7 +127,7 @@ h2, h2, h3, address {
   border: black 2px solid;  
 }
 
-.flex-item {
+.flex-item {  
  flex-grow: 1;
  flex-shrink: 1;
  flex-basis: auto;

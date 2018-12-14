@@ -4,6 +4,9 @@ Thinkful (https://www.thinkful.com/) API Capstone Project providing API service 
 
 Link to the live demo:  https://debrashere.github.io/CareerStrategyWithApi/public/login.html
 
+Link to API url:
+https://sheltered-gorge-50174.herokuapp.com/api/users
+
 ### Summary
 
 

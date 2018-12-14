@@ -93,8 +93,7 @@ UserProfile
             phone:   req.body.phone,
             skills:  req.body.skills,
             roles:  req.body.roles,
-            userId: req.body.userId,   
-            jobProspects: req.body.jobProspects         
+            userId: req.body.userId,                 
             })                      
         .then( userProfile => {
           const profileUser = userProfile.serialize();              
