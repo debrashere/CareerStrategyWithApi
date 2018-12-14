@@ -15,9 +15,7 @@ function loginUserAPI(path, input, callback) {
     contentType: 'application/json',
     success: callback, 
     data: JSON.stringify(input), 
-    error: function () {
-      console.log('We are sorry but our servers are having an issue right now');
-    }
+    error: callback
   });
 }
 
@@ -28,16 +26,29 @@ function registerUserAPI(path, update, callback) {
     type: 'post',
     dataType: 'json',
     contentType: 'application/json',
-    success: function (data) {
-      location.href = "./login.html";    
-    },
+    success: callback,
     data: JSON.stringify(update),
-    error: function () {
-      console.log('We are sorry but our servers are having an issue right now');
-    }
+    error: callback
   });
 }
  
+function apiReturnedError(data) {
+  if (data) {
+    if (data.status < 400) return false;
+    if (data.status == 401)
+    {
+      $('.js-login-response').html("Invalid username and/or password");
+      $('.js-login-response').prop("hidden", false);
+      return true;
+    }
+    else {
+      $('.js-login-response').html("Oops something went wrong. Please try again.");
+      $('.js-login-response').prop("hidden", false);
+      return true;
+    }
+  }
+}
+
 function watchSubmitLoginClick() {       
   $('#submitLogin').click(event => {
     event.preventDefault(); 
@@ -45,17 +56,46 @@ function watchSubmitLoginClick() {
     const password = $("#userPassword").val(); 
     const loginJson = JSON.parse(`{"username": "${userName}","password": "${password}"}`);        
     
-  setTimeout(loginUserAPI(pathAuth, loginJson, function(data) {           
+    setTimeout(loginUserAPI(pathAuth, loginJson, function(data) {
+    if (!apiReturnedError(data)) {
       localStorage.setItem('token', data.userAuth.authToken);
       localStorage.setItem('userId', data.userAuth.id);
       location.href = "./userProfile.html";
+    }
     }), 3000);
   }); 
+}
+function submitFormIsValid() {
+  let errMsg = "";
+  const userName =  $('#userName').val();
+  const password = $("#password").val();
+  const firstName = $("#firstName").val();
+  const lastName = $("#lastName").val();
+  if (!userName || userName.trim().length <= 0 ) {
+    errMsg += " Username is required.";
+  }
+  if (!password || password.trim().length <= 0 ) {
+    errMsg += " Password is required. <br/>";
+  }
+  if (!firstName || firstName.trim().length <= 0 ) {
+    errMsg += " First name is required. <br/>";
+  }
+  if (!lastName || lastName.trim().length <= 0 ) {
+    errMsg += " Last Name is required";
+  }
+  return errMsg;
 }
 
 function watchSubmitRegistrationClick() {       
   $('#submitReg').click(event => {
-    event.preventDefault();     
+    event.preventDefault(); 
+    let errors = submitFormIsValid();
+    if (errors.length > 0) {
+      $('.js-signup-response').prop("hidden", false);
+      $('.js-signup-response').html(errors);
+      return;
+    } 
+
      const userName =  $('#userName').val();
      const password = $("#password").val();
      const firstName = $("#firstName").val();
@@ -63,20 +103,17 @@ function watchSubmitRegistrationClick() {
     
     const loginJson = JSON.parse(`{"username": "${userName}","password": "${password}","firstName": "${firstName}", "lastName": "${lastName}"}`);    
     setTimeout(registerUserAPI(pathUsers, loginJson, function(data){
-      $('#js-signup-response').prop("hidden", false);
-      if (data) {  
-        console.log("response data", data); 
-      }
-      else if (data.responseJSON.success)
+      $('.js-signup-response').prop("hidden", false);
+      if (!data.responseJSON)
       {
-        $('#js-signup-response').html("Registration was successful. Please login.");
+        $('.js-signup-response').html('Registration was successful. Please <a href="./login.html">login</a>.');
       }
-      else if (data.responseJSON.error)
+      else if (data.responseJSON && data.responseJSON.message)
       {
-        $('#js-signup-response').html(data.responseJSON.error);
+        $('.js-signup-response').html(`Registration failed.  ${data.responseJSON.location} ${data.responseJSON.message}`);
       }
       else {
-        $('#js-signup-response').html("Oops something went wrong. Please try again.");
+        $('.js-signup-response').html("Oops something went wrong. Please try again.");
       }        
     }), 3000);
   }); 

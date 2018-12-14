@@ -5,10 +5,9 @@ Thinkful (https://www.thinkful.com/) API Capstone Project providing API service 
 Link to the live demo:  https://debrashere.github.io/CareerStrategyWithApi/public/login.html
 
 Link to API url:
-https://sheltered-gorge-50174.herokuapp.com/api/users
+https://sheltered-gorge-50174.herokuapp.com/api
 
 ### Summary
-
 
   #### What you can do:
     Manage your list of skills.
@@ -17,12 +16,20 @@ https://sheltered-gorge-50174.herokuapp.com/api/users
 
     Each user will have their own login allowing them access to only their information.
 
+## Screen Shots
+
+![User Profile ](https://raw.githubusercontent.com/debrashere/Documents/master/UserProfile1.png)
+
+![User Profile ](https://raw.githubusercontent.com/debrashere/Documents/master/UserProfile3.png)
+
+
 ### API How to use it:
 
 You must request a token to access the API. 
 
 ```
   Enter User Id and password to recieve a token.
+```
 
 ## Versioning
 

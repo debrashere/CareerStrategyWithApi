@@ -91,7 +91,6 @@ function putCareerStrategyAPI(path, update, id, callback) {
     error: callback     
   });  
 } 
-
 /*     
   Delete data via Career Strategy API
 */
@@ -114,6 +113,28 @@ function deleteCareerStrategyAPI(path, update, id, callback) {
   $.ajax(settings);
 }
 
+/*     
+  Check if API response returned an error and set error message
+*/
+function apiReturnedError(data) {
+  if (data && data.responseJSON) {
+    if (data.responseJSON.error)
+    {
+      $('#js-error-message').html(data.responseJSON.error);
+      $('#js-error-message').prop("hidden", false);
+      return true;
+    }
+    else {
+      $('#js-error-message').html("Oops something went wrong. Please try again.");
+      $('#js-error-message').prop("hidden", false);
+      return true;
+    }
+  }
+}
+
+/*     
+   render profile information (user name, email address, phone number)
+*/
 function renderUserProfile(data) {
   if (!data || !data.userProfile) {
     // do not display following until the user profile has been created
@@ -129,20 +150,23 @@ function renderUserProfile(data) {
 
   let profileContent =  
     `<div class="flex-item">
-          <div class="section-header"><em>${userProfile.firstName} ${userProfile.lastName}</em> <a href=# class="js-edit-profile"><img alt="edit prospect" src="./images/icon-edit.png" /> (Edit)</a></div>
+          <div class="section-header"><em><span  tabindex="0">${userProfile.firstName} ${userProfile.lastName}</span></em> <a href=# class="js-edit-profile"><img alt="edit prospect" src="./images/icon-edit.png" /> (Edit)</a></div>
           <div> 
-            <span>${userProfile.email}</span>  </br>          
-            <span>${userProfile.phone}</span>  </br>   
+            <span  tabindex="0" class="user-profile-heading">${userProfile.email}</span>
+            <span  tabindex="0" class="user-profile-heading">${userProfile.phone}</span>  
           </div>                     
     </div> `;   
-        
+    
   $('.js-user-profile').append(`${profileContent}`);  
   $('.js-user-profile').prop("hidden", false); 
+  $('.js-flex-item-profile').prop("hidden", false); 
 
   watchEditUserProfile();
 } 
 
-
+/*     
+   render user skills)
+*/
 function renderUserSkills(data) {
   if (!data || !data.userProfile) {
     // do not display following until the user profile has been created
@@ -150,14 +174,15 @@ function renderUserSkills(data) {
     $('.js-section-master-skills').prop("hidden", true);    
     return;
   }  
-  let userProfile = data.userProfile[0];;
-  userId = userProfile.userId;
+  // retrieve the user's profile and user id
+  let userProfile = data.userProfile[0];; 
 
+  // retrieve the user's profile id
   $('.js-section-user-skills').html('');
   let counter = 0;
   let skillHeader = `
   <div class="flex-item-skills">
-    <div class="section-header"><h3>Your Skills</h3></div>
+    <div class="section-header"><h3 tabindex="0">Your Skills</h3></div>
     <output><div id="js-skills-error-message" class="error-message" aria-live="assertive" hidden> </div></output>
     <div class="table">
       <div class="tr th"> 
@@ -174,21 +199,23 @@ function renderUserSkills(data) {
     <ul class="items flex-item-skillset">`;
 
   let skills = skillHeader;
-          
+       
+   // if the user has any skills then format the html to display them
   if (userProfile.skills){
       userProfile.skills.map( function(skill) {          
       skills +=
        `<li class="item js-user-skillset"> 
-          <span  id="UserSkill-${counter}" class="js-user-skill js-user-skill-text" data-header="Skill">${skill.skill}</span>
-          <span  id="UserExp-${counter}" class="js-user-skill js-user-skill-years" data-header="Experience">${skill.yearsOfExperience}</span>
-          <span  data-header=""><a id="EditSkill-${counter}" href=# class="js-edit-skill"><img alt="edit skill" src="./images/icon-edit.png" /></a></span>
-          <span  data-header=""><a id="DeleteSkill-${counter}" href=# class="js-delete-skill"><img alt="delete skill" src="./images/icon-delete.png" /></a></span>           
+          <span  tabindex="0" id="UserSkill-${counter}" class="js-user-skill js-user-skill-text" data-header="Skill">${skill.skill}</span>
+          <span  tabindex="0" id="UserExp-${counter}" class="js-user-skill js-user-skill-years" data-header="Experience">${skill.yearsOfExperience}</span>
+          <span  tabindex="0"><a id="EditSkill-${counter}" href=# class="js-edit-skill"><img alt="edit skill" src="./images/icon-edit.png" /></a></span>
+          <span  tabindex="0"><a id="DeleteSkill-${counter}" href=# class="js-delete-skill"><img alt="delete skill" src="./images/icon-delete.png" /></a></span>           
         </li> `;
         counter++; 
      });
      skills += '</ul></div> ';     
     }
  
+    // unhide the html to display the user skills
     $('.js-section-user-skills').append(skills);  
     $('.js-section-user-skills').prop("hidden", false); 
     $('.js-section-user-skills').prop("hidden", false); 
@@ -198,7 +225,13 @@ function renderUserSkills(data) {
     watchEditSkillButtonClick(); 
 } 
 
+/*
+  After find method is executed to retrieve the user profile
+  check if data is returned, save the user profile to variable then render profile information
+*/
 function displayCareerStrategyResults(data) { 
+  if (apiReturnedError(data)) return;
+
   if (!data || !data.userProfile || data.userProfile.length == 0) {
       $('.js-section-user-skills').prop("hidden", true); 
       displayUserProfileForm(null);
@@ -211,7 +244,12 @@ function displayCareerStrategyResults(data) {
   }       
 }
 
+/*
+  After find method is executed to find the master list of skills 
+  if data is returned then setup html to display master list of skills  
+*/
 function displaySkillsMasterList(data) {
+  if (apiReturnedError(data)) return;
   if (data == null || data.skill == null || data.skill.length == 0) {
     $('.js-section-master-skills').prop('hidden', true);
     return;
@@ -221,7 +259,7 @@ function displaySkillsMasterList(data) {
   let counter = 0;
   let skillHeader = `
   <div flex-item>
-    <div class="skills-header"><h3>Master list of skills</h3> <em> (click on a skill to add it to your list of skills)</em></div>   
+    <div class="skills-header"><h3 tabindex="0">Master list of skills</h3> <em> (click on a skill to add it to your list of skills)</em></div>   
     <p flex-item-skills">`;
   let skills = skillHeader;
            
@@ -233,14 +271,19 @@ function displaySkillsMasterList(data) {
      
     $('.js-section-master-skills').append(`${skills}`);  
     $('.js-section-master-skills').prop("hidden", false); 
+
     watchAddMasterSkillButtonClick();   
 }  
 
+/*
+  After API find method is executed to retrieve collection of job prospects
+  this function is executed to format the html to display the skills requested for the job
+*/
 function generateJobSkills(skills) { 
   let skillset = ""; 
   if (skills && skills.length > 0) {
       skills.map( function(skillObj) {          
-        skillset += `<span class="job-skill">${skillObj.skill}</span> `;
+        skillset += `<span tabindex="0" class="job-skill">${skillObj.skill}</span> `;
     });
   }
   return skillset.length > 0 
@@ -248,12 +291,20 @@ function generateJobSkills(skills) {
     : "";
 }
 
+/*
+  After API find method is executed to retrieve collection of job prospects
+  this function is executed to format the html to display the job prospect details
+*/
 function renderJobProspects(data) {
+    if (apiReturnedError(data)) return;
+
+    // if no data found then display the input form for job prospect 
     if (data == null || data.prospect == null || data.prospect.length == 0) {
       if (userProfileId.length > 0)
         displayProspectsSummaryForm()
       return;
-    }    
+    }  
+
     $( ".js-section-job-prospects" ).html('');
 
     let counter = 0;       
@@ -263,22 +314,21 @@ function renderJobProspects(data) {
       let dateWhen = new Date(prospect.when);
       let formattedDate = `${dateWhen.getMonth()}/${dateWhen.getDay()}/${dateWhen.getFullYear()}  - 
        ${dateWhen.getHours()}:${dateWhen.getMinutes()}:${dateWhen.getSeconds()} `;     
-             
-      let jobSkills = generateJobSkills(prospect.jobSkills);
+      let jobSkills = generateJobSkills(prospect.jobSkills)    ;
       prospects +=
        `<div class="flex-item-job-prospect">
-            <div class="section-header"><span id="prospect${counter}">${prospect.what}</span>  <br />
+            <div class="section-header"><span  tabindex="0" id="prospect${counter}">${prospect.what}</span>  <br />
                     <a id="ProspectEdit-${counter}" href=# class="js-edit-prospect"><img alt="edit prospect" src="./images/icon-edit.png" />  (edit)</a>   
                     <a id="ProspectDelete-${counter}" href=# class="js-delete-prospect"><img alt="delete prospect" src="./images/icon-delete.png" /> (delete)</a>  </div>
-            <div class="td"><span><em>Where:</em> ${prospect.where}</span></div>            
-            <div class="td"><span><em>When: </em>${formattedDate}</span></div>
-            <div class="td"><span><em>Status:</em> ${prospect.status}</span></div>          
-            <div class="td"><span><em>Source:</em> ${prospect.source}</span></div>    
-            <div class="td"><span><em>Source Url:</em> <a href='${prospect.sourceUrl}' target=_blank>${prospect.sourceUrl}<a></span></div>              
-            <div class="td"><em>Contacts:</em><p>${prospect.contact}</p></div>            
-            <div class="td"><em>Comments:</em><p>${prospect.comments}</p></div>  
-            <div class="td"><em>Details:</em><p>${prospect.details}</p></div> 
-            <div class="td"><span><em>Day to day:</em> ${prospect.dayToDay}</span></div>                                                  
+            <div class="td"><span tabindex="0"><em>Where:</em> ${prospect.where}</span></div>            
+            <div class="td"><span tabindex="0"><em>When: </em>${formattedDate}</span></div>
+            <div class="td"><span tabindex="0"><em>Status:</em> ${prospect.status}</span></div>          
+            <div class="td"><span tabindex="0"><em>Source:</em> ${prospect.source}</span></div>    
+            <div class="td"><span tabindex="0"><em>Source Url:</em> <a href='${prospect.sourceUrl}' target=_blank>${prospect.sourceUrl}<a></span></div>              
+            <div class="td"><em>Contacts:</em><p tabindex="0">${prospect.contact}</p></div>            
+            <div class="td"><em>Comments:</em><p tabindex="0">${prospect.comments}</p></div>  
+            <div class="td"><em>Details:</em><p tabindex="0">${prospect.details}</p></div> 
+            <div class="td"><span tabindex="0"><em>Day to day:</em> ${prospect.dayToDay}</span></div>                                                  
             ${jobSkills}
             <div class="td" hidden><span id="Prospect-${counter}" hidden>${prospect.id}</span></div>
       </div>
@@ -295,9 +345,13 @@ function renderJobProspects(data) {
     watchDeleteJobProspectClick();
 }
 
+/*
+  Format the html to display the form to input data to edit or create user profile
+*/
 function displayUserProfileForm(data) { 
-  $('.js-edit-profile-form').html();
+  $('.js-edit-profile-form').html('');
  
+    // set user profile json variable with default empty values
     let hiddenProfileId = "";
     let profile = {      
       "firstName": "",
@@ -306,14 +360,16 @@ function displayUserProfileForm(data) {
       "phone": ""
     }; 
 
+    // if user clicked edit button to edit existing user profile data then set user json variable with that data
     if (data && data.userProfile.length > 0) {
       profile = data.userProfile[[0]];
       hiddenProfileId = `<label for="ProfileEditKey" class="edit-label"></label><div class="td" hidden><input id="ProfileEditKey" type="text"value=${profile.id} hidden></input></div>`;       
     }
 
+    // format the form html
     let formInputs = `
       <fieldset class="edit-form">
-        <legend><h2>User Profile</h2></legend>
+        <legend><h2 tabindex="0">User Profile</h2></legend>
         <p> <label for="profileFirst" class="edit-label"><strong>First Name: </strong></label> <input type="text" id="profileFirst" value="${profile.firstName}" aria-required="true" required /></p>    
         <p> <label for="profileLast" class="edit-label"><strong>Last Name: </strong></label>  <input   type="text"  id="profileLast" value="${profile.lastName}" aria-required="true" required /></p>
         <p> <label for="profileEmail" class="edit-label"><strong>Email: </strong></label>  <input   type="text"  id="profileEmail" value="${profile.email}" aria-required="true" required /></p>
@@ -321,11 +377,15 @@ function displayUserProfileForm(data) {
         ${hiddenProfileId}
       </fieldset>`;
 
+    // display the form
     $(".js-edit-profile-form").html(formInputs);   
     $(".js-edit-profile-form").prop("hidden", false);
     $(".js-form").prop("hidden", false);    
 } 
 
+/*
+  Validate the input data from the user profile form
+*/
 function validateProfileForm(profileId) {
     const errors = profileEditsAreValid();
     if (errors != "") {
@@ -376,9 +436,13 @@ function validateProfileForm(profileId) {
     }             
 }
 
+/*
+  Display the job prospect form to edit or create job prospect
+*/
 function displayProspectsSummaryForm(data) { 
   $('.js-job-prospects-form').html();
  
+    // create json variable with default empty values for creating a new job prospect
     let hiddenProspectId = "";
     let prospect = { 
       "id": "",     
@@ -393,15 +457,17 @@ function displayProspectsSummaryForm(data) {
       "comments": "",
       "details": "",
     }; 
-
+ 
+    // If user clicked edit for an existing job prospect then save the id for that prospect in hidden form element 
     if (data && data != undefined) {
       prospect = data.prospect;
       hiddenProspectId = `<label for="ProspectEditKey" class="edit-label"></label><div class="td" hidden><input id="ProspectEditKey" type="text"value=${prospect.id} hidden></input></div>`;      
     }
 
+    // Format the input form for job prospect
     let formInputs = `
       <fieldset class="edit-form">
-        <legend><h2>Job Prospect</h2></legend>
+        <legend>>Job Prospect</h2></legend>
           <p> <label for="prospectWhat" class="edit-label"><strong>What: </strong></label> <input type="text" id="prospectWhat" value="${prospect.what}" aria-required="true" required /></p>    
           <p> <label for="prospectWhere" class="edit-label"><strong>Company: </strong></label>  <input   type="text"  id="prospectWhere" value="${prospect.where}" aria-required="true" required /></p>
           <p> <label for="prospectWhen" class="edit-label"><strong>When: </strong></label>  <input type="datetime"  role="datetime" id="prospectWhen" value="${prospect.when}" aria-required="true" required /></p>                   
@@ -415,12 +481,19 @@ function displayProspectsSummaryForm(data) {
           ${hiddenProspectId}
       </fieldset>`;      
 
+    // display the job prospect form
     $(".js-job-prospects-form").html(formInputs);   
     $(".js-job-prospects-form").prop("hidden", false);
-    $(".js-form").prop("hidden", false);    
+    $(".js-form").prop("hidden", false);   
+    $(".js-section-job-prospects-header").prop("hidden", false);    
 } 
 
-function refreshUserProfile(id) {     
+/*
+  when page initially loads and after updates this function is called to refresh the page
+*/
+function refreshUserProfile(id) {  
+  // get the user id that's created in local storage after the user successfully logs in
+  // this id is used to find the user profile and job prospects for this particular user   
   userId = localStorage.getItem('userId');    
   if (!userId || userId.length == 0) {
     location.href = "./";
@@ -437,13 +510,9 @@ function refreshUserProfile(id) {
     $(".js-edit-form").prop("hidden", "true");     
 } 
 
-function getMasterSkill(skill){
-    const query = `skill=${skill}`;
-    findCareerStrategyAPI(pathSkills, query, function(data) {  
-      return data;
-    });
-  }
-
+/*
+   Validate data entered in the job prospect form
+*/
 function prospectEditsAreValid() {
   let message = "";
   const what =  $('#prospectWhat').val();  
@@ -462,6 +531,9 @@ function prospectEditsAreValid() {
   return message;
 }
 
+/*
+  Check if the data input from the user profile form are valid
+*/
 function profileEditsAreValid() {
   let message = "";
   const firstName =  $('#profileFirst').val();  
@@ -480,8 +552,12 @@ function profileEditsAreValid() {
   return message;
 }
 
+/*
+  Retrive the input from the job prospect form and 
+*/
 function validateProspectForm(prospectId) {
   const errors = prospectEditsAreValid();
+  // show error message if the form input is not  valie
   if (errors != "") {
     $('#js-error-message').html(errors);
     $('#js-error-message').prop("hidden", false);
@@ -519,6 +595,10 @@ function validateProspectForm(prospectId) {
   $(".js-form").prop("hidden", true);      
 } 
 
+/*
+  Executed when user clicks on edit button for the user profile
+  Will execute the API find method for the user profile data and call method to display the input form
+*/
 function  watchEditUserProfile() {       
   $('.js-edit-profile').click(event => {  
     event.preventDefault();  
@@ -528,6 +608,9 @@ function  watchEditUserProfile() {
   }); 
 }
 
+/*
+   Checks the input for errors when adding a user skills
+*/
 function userSkillsAreValid() { 
   let message = "";
   const skill = $('#newSkill').val();
@@ -537,13 +620,18 @@ function userSkillsAreValid() {
   }
   if (!years || years.length <= 0) {
     message += "Years of Experience is required. <br />";
-  }
+  }  
   if ( !$.isNumeric(years) ) {
     message += "Years of experience must be numeric.";
   }
+
   return message;
 }
 
+/*
+  Executed when user clicks on add skill link 
+  will update the user's collection of skills
+*/
 function  watchAddSkillButtonClick() {       
   $('.js-add-skill').click(event => {  
       event.preventDefault();
@@ -572,6 +660,10 @@ function  watchAddSkillButtonClick() {
     });  
 } 
 
+/*
+  Executed when user clicks on link to add a new job prospect
+  will call function to display the input form
+*/
 function watchAddJobProspectClick(){
   $('.js-add-prospect').click(event => {  
     event.preventDefault();
@@ -579,6 +671,10 @@ function watchAddJobProspectClick(){
    }); 
 }
 
+/*
+  Executed when user clicks on link to edit an existing job prospect
+  will call function to display the input form with current data 
+*/
 function watchEditJobProspectClick(){
   $('.js-edit-prospect').click(event => {  
     event.preventDefault();
@@ -591,6 +687,10 @@ function watchEditJobProspectClick(){
   }); 
 }
 
+/*
+  Executed when user clicks on link to delete a job prospect
+  will call API delete method to remove the job prospect
+*/
 function watchDeleteJobProspectClick(){
   $('.js-delete-prospect').click(event => {  
     event.preventDefault();
@@ -601,6 +701,7 @@ function watchDeleteJobProspectClick(){
   }); 
 }
 
+ 
 function  watchAddMasterSkillButtonClick() {       
   $('.js-master-skill').click(event => {  
       event.preventDefault();
@@ -613,6 +714,10 @@ function  watchAddMasterSkillButtonClick() {
     });  
 } 
 
+/*
+  Executed when user clicks link to edit and existing user skill
+  will put the existing skill data in the input fields for the user to edit
+*/
 function  watchEditSkillButtonClick() {       
   $('.js-edit-skill').click(event => {  
       event.preventDefault();
@@ -628,6 +733,12 @@ function  watchEditSkillButtonClick() {
     
     });  
 }
+
+/*
+  Executed when user clicks link to delete an existing user skill
+  will remove the skill from the user's collection of skills
+  and call the API put method to update the database
+*/
 function  watchDeleteSkillButtonClick() {       
   $('.js-delete-skill').click(event => {  
       event.preventDefault();
@@ -651,6 +762,10 @@ function  watchDeleteSkillButtonClick() {
     });  
 }
 
+/*
+  Executed when user clicks the submit button for user profile form or job prospect form
+  will call the correct function to complete the validation of inputs and submit the updates
+*/
 function watchFormSubmitButtonClick() { 
   $('#submitEvent').click(event => {
     event.preventDefault();  
@@ -671,6 +786,10 @@ function watchFormSubmitButtonClick() {
   });  
 }
 
+/*
+  Executed when user clicks the cancel button for user profile form or job prospect form
+  will close the form
+*/
 function watchFormCancelClick() { 
   $('#cancelEvent').click(event => {
     event.preventDefault();  
