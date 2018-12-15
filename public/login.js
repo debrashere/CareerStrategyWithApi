@@ -34,7 +34,7 @@ function registerUserAPI(path, update, callback) {
  
 function apiReturnedError(data) {
   if (data) {
-    if (data.status < 400) return false;
+    if (data && data.userAuth) return false;
     if (data.status == 401)
     {
       $('.js-login-response').html("Invalid username and/or password");
