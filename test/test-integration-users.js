@@ -119,33 +119,7 @@ describe('users API resource', function() {
     exit();
   });
 
-  /*
-describe('USER Registartion and Login ', function() {
-  it('should return register and login a user', (done) => {
-  chai.request(app)
-        .post('/api/users/')
-        .send(register_details) // this is like sending $http.post 
-        .end((err, res) => { // when we get a response from the endpoint
-          // in other words,the res object should have a status of 201
-          res.should.have.status(201);
-          // the property, res.body.state, we expect it to be true.
 
-          // follow up with login
-          chai.request(app)
-            .post('/api/auth/login')
-            .send(login_details)
-            .end((err, res) => {                
-              res.should.have.status(200);                    
-              res.body.userAuth.should.have.property('authToken');               
-               //token = 'Bearer ' + res.body.userAuth.authToken;    
-            })
-          })
-          .catch(err => {
-              console.error(err);             
-            })  
-      })
-})
-*/
 
   // note the use of nested `describe` blocks.
   // this allows us to make clearer, more discrete tests that focus
@@ -281,32 +255,5 @@ describe('USER Registartion and Login ', function() {
           expect(user.cuisine).to.equal(updateData.cuisine);
         });
     });
-  });
-/*  CURRENT Users are not to be deleted
-  describe('DELETE endpoint', function() {
-    // strategy:
-    //  1. get a user
-    //  2. make a DELETE request for that user's id
-    //  3. assert that response has right status code
-    //  4. prove that user with the id doesn't exist in db anymore
-    it('delete a user by id', function() {
-
-      let user;
-
-      return User
-        .findOne()
-        .then(function(_user) {
-          user = _user;
-          return chai.request(app).delete(`/api/users/${user.id}`);
-        })
-        .then(function(res) {
-          expect(res).to.have.status(204);
-          return User.findById(user.id);
-        })
-        .then(function(_user) {
-          expect(_user).to.be.null;
-        });
-    });  
   }); 
-  */
 })
