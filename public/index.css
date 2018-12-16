@@ -178,6 +178,7 @@ textarea {
   border: 1px solid black;
   margin: 3px;
 }
+
  
 /*
   FLEX Container
@@ -198,6 +199,24 @@ textarea {
  flex-basis: auto;
  margin-bottom: 5px;  
 }
+
+.flex-container-introduction {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-evenly;   
+  align-items: center;
+  max-width: 100%; 
+  border: none; 
+}
+
+.flex-item-introduction {
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: auto;
+  margin-bottom: 5px; 
+  max-width: 300px;
+ }
 
 .flex-container-profile {
   display: flex;
@@ -266,9 +285,11 @@ textarea {
   text-decoration: none;
 }   
 
-.prospectLink {
+.noBullitLink {
+  text-align: left;
   text-decoration: none;
 }
+
 .add-prospect-to:link, .add-prospect-to:visited,
 .edit-link:link, .edit-link:visited,
 .show-menu:link, .show-menu:visited {
@@ -492,6 +513,7 @@ textarea {
   .flex-item { max-width: 260px;  } 
   * {font-size: 16px;}
   .flex-item-job-prospect { max-width:300px; border: none}
+  .flex-item-introduction {  max-width: 300px; }
 }
 
 /* Small devices (portrait tablets and large phones, 600px and up) */
@@ -501,6 +523,7 @@ textarea {
   textarea {max-width: 495px;} 
   .flex-item { max-width: 260px;  }
   .flex-item-job-prospect { max-width:300px;}
+  .flex-item-introduction {  max-width: 500px; }
 }
 
 /* Medium devices (landscape tablets, 320px and up) */
@@ -511,6 +534,7 @@ textarea {
   .flex-item { max-width: 500px;  }
   * {font-size: 20px;}
   .flex-item-job-prospect { max-width:300px; border: none}
+  .flex-item-introduction {  max-width: 300px; }
 }
 
 /* Medium devices (landscape tablets, 768px and up) */
@@ -520,6 +544,7 @@ textarea {
   .flex-item { max-width: 500px;  }
   * {font-size: 20px;}
   .flex-item-job-prospect { max-width:300px;}
+  .flex-item-introduction {  max-width: 600px; }
 } 
 
 /* Large devices (laptops/desktops, 992px and up) */
@@ -530,6 +555,7 @@ textarea {
   * {font-size: 20px;}
   .add-prospect-to { font-size: 20px;}
   .flex-item-job-prospect { max-width:350px;}
+  .flex-item-introduction {  max-width: 800px; }
 } 
 
 /* Extra large devices (large laptops and desktops, 1200px and up) */
@@ -541,4 +567,5 @@ textarea {
   * {font-size: 20px;}
   .add-prospect-to { font-size: 20px;}
   .flex-item-job-prospect { max-width:350px;}
+  .flex-item-introduction {  max-width: 1000px; }
 }
