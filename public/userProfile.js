@@ -66,7 +66,7 @@ function postCareerStrategyAPI(path, query, id, callback) {
       "Authorization": `Bearer ${authToken}`
     },      
     success: callback,
-    error:callback    
+    error: callback    
   });
 }
 
@@ -91,6 +91,7 @@ function putCareerStrategyAPI(path, update, id, callback) {
     error: callback     
   });  
 } 
+
 /*     
   Delete data via Career Strategy API
 */
@@ -196,6 +197,65 @@ function renderUserSkills(data) {
         <div class="td" data-header=""><a id="AddSkill" href="#" class="js-add-skill"><img id="addNewSkill" alt="add skill" src="./images/icon-add.png">(Add)</a></div>
       </div>
     </div>              
+    <p class="items flex-item-skillset">`;
+
+  let skills = skillHeader;
+       
+   // if the user has any skills then format the html to display them
+  if (userProfile.skills){
+      userProfile.skills.map( function(skill) {          
+      skills +=
+       `<p class="item user-skill js-user-skillset"> 
+          <span  tabindex="0" id="UserSkill-${counter}" class="js-user-skill js-user-skill-text" data-header="Skill">${skill.skill}</span>
+          <span  tabindex="0" id="UserExp-${counter}" class="js-user-skill js-user-skill-years" data-header="Experience">${skill.yearsOfExperience}</span>
+          <span  tabindex="0"><a id="EditSkill-${counter}" href=# class="js-edit-skill"><img alt="edit skill" src="./images/icon-edit.png" /></a></span>
+          <span  tabindex="0"><a id="DeleteSkill-${counter}" href=# class="js-delete-skill"><img alt="delete skill" src="./images/icon-delete.png" /></a></span>           
+        </p> `;
+        counter++; 
+     });
+     skills += '</p></div> ';     
+    }
+ 
+    // unhide the html to display the user skills
+    $('.js-section-user-skills').append(skills);  
+    $('.js-section-user-skills').prop("hidden", false); 
+    $('.js-section-user-skills').prop("hidden", false); 
+   
+    watchAddSkillButtonClick();
+    watchDeleteSkillButtonClick();
+    watchEditSkillButtonClick(); 
+}
+
+
+function renderUserSkillsOLD(data) {
+  if (!data || !data.userProfile) {
+    // do not display following until the user profile has been created
+    $('.js-section-user-skills').prop("hidden", true);
+    $('.js-section-master-skills').prop("hidden", true);    
+    return;
+  }  
+  // retrieve the user's profile and user id
+  let userProfile = data.userProfile[0];; 
+
+  // retrieve the user's profile id
+  $('.js-section-user-skills').html('');
+  let counter = 0;
+  let skillHeader = `
+  <div class="flex-item-skills">
+    <div class="section-header"><h3 tabindex="0">Your Skills</h3></div>
+    <output><div id="js-skills-error-message" class="error-message" aria-live="assertive" hidden> </div></output>
+    <div class="table">
+      <div class="tr th"> 
+        <div class="td">Skill</div> 
+        <div class="td experience">Years</div>
+        <div class="td"> </div>     
+      </div>
+      <div class="tr">  
+        <div class="td" data-header="Skill"><input type="text" id="newSkill"></input></div>
+        <div class="td" data-header="Experience"> <input type="text" id="skillYears"></input></div>
+        <div class="td" data-header=""><a id="AddSkill" href="#" class="js-add-skill"><img id="addNewSkill" alt="add skill" src="./images/icon-add.png">(Add)</a></div>
+      </div>
+    </div>              
     <ul class="items flex-item-skillset">`;
 
   let skills = skillHeader;
@@ -204,7 +264,7 @@ function renderUserSkills(data) {
   if (userProfile.skills){
       userProfile.skills.map( function(skill) {          
       skills +=
-       `<li class="item js-user-skillset"> 
+       `<li class="item user-skill js-user-skillset"> 
           <span  tabindex="0" id="UserSkill-${counter}" class="js-user-skill js-user-skill-text" data-header="Skill">${skill.skill}</span>
           <span  tabindex="0" id="UserExp-${counter}" class="js-user-skill js-user-skill-years" data-header="Experience">${skill.yearsOfExperience}</span>
           <span  tabindex="0"><a id="EditSkill-${counter}" href=# class="js-edit-skill"><img alt="edit skill" src="./images/icon-edit.png" /></a></span>
@@ -240,7 +300,7 @@ function displayCareerStrategyResults(data) {
     USER_PROFILE = data.userProfile[0];
     userProfileId = USER_PROFILE.id;
     renderUserProfile(data);
-    renderUserSkills(data);   
+    renderUserSkills(data);  
   }       
 }
 
@@ -281,9 +341,17 @@ function displaySkillsMasterList(data) {
 */
 function generateJobSkills(skills) { 
   let skillset = ""; 
+  let userSkills = USER_PROFILE.skills;
+
   if (skills && skills.length > 0) {
-      skills.map( function(skillObj) {          
-        skillset += `<span tabindex="0" class="job-skill">${skillObj.skill}</span> `;
+      skills.map( function(skillObj) { 
+        const matchSkill = userSkills.filter( skill => skill.skill === skillObj.skill);  
+        if (matchSkill && matchSkill != undefined && matchSkill.length > 0)
+        {
+          skillset += `<span tabindex="0" class="job-skill-match">${skillObj.skill}</span> `;
+        }  
+        else    
+          skillset += `<span tabindex="0" class="job-skill">${skillObj.skill}</span> `;
     });
   }
   return skillset.length > 0 
@@ -306,7 +374,8 @@ function renderJobProspects(data) {
     }  
 
     $( ".js-section-job-prospects" ).html('');
-
+    console.log("renderJobProspects USER_PROFILE", USER_PROFILE);
+    
     let counter = 0;       
     let prospects = "";
 
@@ -498,12 +567,18 @@ function refreshUserProfile(id) {
   if (!userId || userId.length == 0) {
     location.href = "./";
   }
+  
       const queryPath = `userId=${userId}`;
-      setTimeout(findCareerStrategyAPI(pathUserProfile, queryPath, "" , displayCareerStrategyResults)
-      , 3000);
-            
-      setTimeout(findCareerStrategyAPI(pathJobProspects, queryPath, "", renderJobProspects)
-     , 3000);          
+      setTimeout(findCareerStrategyAPI(pathUserProfile, queryPath, "" , function(data) {
+        
+        // render user information including profile info and the user's skills
+        displayCareerStrategyResults(data);
+
+        // function displayCareerStrategyResults will save user skills as part of variable USER_PROFILE
+        // user's skills will be accessed by function renderJobProspects
+        setTimeout(findCareerStrategyAPI(pathJobProspects, queryPath, "", renderJobProspects), 3000);
+
+      }), 3000);        
 
     findCareerStrategyAPI(pathSkills, "",  "", displaySkillsMasterList);
     $(".js-form").prop("hidden", "true");

@@ -140,8 +140,34 @@ textarea {
   max-width: 335px;
 }
 
+.user-skill {
+  background-color: lightgreen;
+  color: black;
+  padding: 5px 5px;
+  text-align: center; 
+  display: inline-block;
+  text-decoration: none;
+  font: bold;
+  border-radius: 15px;
+  border: 1px solid black;
+  margin: 3px;
+}
+
 .job-skill {
   background-color: beige;
+  color: black;
+  padding: 5px 5px;
+  text-align: center; 
+  display: inline-block;
+  text-decoration: none;
+  font: bold;
+  border-radius: 15px;
+  border: 1px solid black;
+  margin: 3px;
+}
+
+.job-skill-match {
+  background-color: lightgreen;
   color: black;
   padding: 5px 5px;
   text-align: center; 

@@ -11,7 +11,7 @@ const expect = chai.expect;
 
 const {User} = require('../users/models');
 const {app, runServer, closeServer} = require('../server');
-const {TEST_DATABASE_URL} = require('../config');
+const {TEST_DATABASE_URL, TEST_PORT} = require('../config');
 
 console.log("test-users TEST_DATABASE_URL", TEST_DATABASE_URL);
 
@@ -34,26 +34,22 @@ function seedUserData() {
 }
   
 // used to generate data to put in db
-function generatePassword() {
-  const text = ['Mypass', 'Testpass', 'Regpass', 'Newpass', 'Oldpass'];
-  const numbers = ['1', '2', '3', '4', '5'];
-  const part1 = text[Math.floor(Math.random() * text.length)];
-  const part2 = numbers[Math.floor(Math.random() * numbers.length)];
-  //return   `${part1}${part2}`); 
-  //return  User.hashPassword('Mypassw0rd');
+function generatePassword(unencryptedPass) { 
+  //return  User.hashPassword(unencryptedPass);
   return '$2a$10$UHynRKStsFB63WZiNg3d/.4a/lHx1DIj4yK/TcTa1oJRf4gvZSj3y';
+}
+
+function registerAndLoginUser() {
+    
 }
 
 // generate an object represnting a user.
 // can be used to generate seed data for db
 // or request.body data
 function generateuserData() {
-  return {
-    username:faker.internet.userName(),
-    password: generatePassword(),
-    firstName: faker.name.firstName(),
-    lastName:  faker.name.lastName()
-  };
+  return { username: "userName", password: generatePassword("Mypassw0rd"), firstName: "mochoFirstName", lastName:  "mochoLastName" };
+
+
 }
 
 // this function deletes the entire database.
@@ -100,7 +96,11 @@ describe('users API resource', function() {
   // `seedUserData` and `tearDownDb` each return a promise,
   // so we return the value returned by these function calls.
   before(function() {
-    return runServer(TEST_DATABASE_URL);
+    return runServer(TEST_DATABASE_URL, TEST_PORT);
+  });
+
+  before(function() {
+    return registerAndLoginUser();
   });
 
   beforeEach(function() {
@@ -118,8 +118,6 @@ describe('users API resource', function() {
   after(function() {
     exit();
   });
-
-
 
   // note the use of nested `describe` blocks.
   // this allows us to make clearer, more discrete tests that focus

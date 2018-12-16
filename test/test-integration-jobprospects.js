@@ -17,6 +17,8 @@ const {TEST_DATABASE_URL} = require('../config');
 console.log("test-jb-prospects TEST_DATABASE_URL", TEST_DATABASE_URL);
 
 chai.use(chaiHttp);
+const register_details = {"username": "RegUserName","password": "Mypassw0rd", "firstName": "RegFirstName","lastName":  "RegLastName"};
+const login_details  = {"username": "RegUserName","password": "Mypassw0rd"};
 let token;
 
 // used to put randomish documents in db
@@ -33,21 +35,6 @@ function seedJobProspectData() {
   }
   // this will return a promise
   return JobProspect.insertMany(seedData).catch(err => console.error(err));  
-}
-
-function seedLoggedInUser() {
-  console.info('           seeding logged in User data');
-
-  const loggedInUsers = [{
-      username: "debratester",
-      password: "Mypassw0rd",
-      firstName:"debra",
-      lastName:  "tester"
-    }];
-  
-   token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InVzZXJuYW1lIjoiZGVicmF0ZXN0ZXIiLCJmaXJzdE5hbWUiOiJkZWJyYSIsImxhc3ROYW1lIjoidGVzdGVyIiwiaWQiOiI1YzBiMDg0ZGE3MWJkNDBhZDAzNWYzZjQifSwiaWF0IjoxNTQ0MjMzNzQ4LCJleHAiOjE1NDQ4Mzg1NDgsInN1YiI6ImRlYnJhdGVzdGVyIn0.nE8Vs317DX_6I5j_6VP3oLErBLOOBPBh-NoM4mLvDYk';
-  // this will return a promise  
-  //return User.insertMany(loggedInUsers);
 }
 
 function seedJobProspectDataForUser() {
@@ -190,11 +177,6 @@ describe('Prospects API resource', function() {
      return seedJobProspectData();
   });
 
-  before(function() {
-    return seedLoggedInUser();
-  });
-
-
   after(function() {
     return tearDownDb();
   });
@@ -212,6 +194,36 @@ describe('Prospects API resource', function() {
   // note the use of nested `describe` blocks.
   // this allows us to make clearer, more discrete tests that focus
   // on proving something small
+
+describe('USER Registration and Login ', function() {
+  it('should return register and login a user', (done) => {
+   
+    chai.request(app)
+        .post('/api/users/')
+        .send(register_details) 
+        .then((res, err) => {
+            expect(res).to.have.status(201);  
+              // follow up with login
+              chai.request(app)
+              .post('/api/auth/login')
+              .send(login_details)
+              .then((res, err) => {                    
+                expect(res).to.have.status(200);               
+                expect(res.body.userAuth).to.not.be.null; 
+                expect(res.body.userAuth).to.haveOwnProperty('authToken');
+                expect(res.body.userAuth).to.haveOwnProperty('id');
+                token = 'Bearer ' + res.body.userAuth.authToken;   
+                done();                                                                 
+              })          
+            }) 
+        .catch(err => {              
+            console.error(err); 
+            if (err) done(err);
+            else done();            
+        })              
+      })  
+    }) 
+
   describe('GET endpoint', function() {
 
     it('should return all existing prospects', function() {
