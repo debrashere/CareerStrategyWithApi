@@ -7,6 +7,7 @@ const pathJobProspects  = "prospects";
 let userId = "";
 let userProfileId = "";
 let USER_PROFILE = {};
+let JOB_SKILLS = [];
  
 /*     
   Retrieve data from Career Strategy API
@@ -96,7 +97,7 @@ function putCareerStrategyAPI(path, update, id, callback) {
   Delete data via Career Strategy API
 */
 function deleteCareerStrategyAPI(path, update, id, callback) {
-  let url =  `${CAREER_STRATEGY_URL/api}/${path}/`;
+  let url =  `${CAREER_STRATEGY_URL}/${path}/`;
   url = id == "" ? url: `${url}${id}/`;
   const authToken = localStorage.getItem('token');
 
@@ -166,7 +167,7 @@ function renderUserProfile(data) {
 } 
 
 /*     
-   render user skills)
+   render user skills
 */
 function renderUserSkills(data) {
   if (!data || !data.userProfile) {
@@ -224,66 +225,58 @@ function renderUserSkills(data) {
     watchAddSkillButtonClick();
     watchDeleteSkillButtonClick();
     watchEditSkillButtonClick(); 
-}
-
-
-function renderUserSkillsOLD(data) {
-  if (!data || !data.userProfile) {
-    // do not display following until the user profile has been created
-    $('.js-section-user-skills').prop("hidden", true);
-    $('.js-section-master-skills').prop("hidden", true);    
-    return;
-  }  
-  // retrieve the user's profile and user id
-  let userProfile = data.userProfile[0];; 
-
-  // retrieve the user's profile id
-  $('.js-section-user-skills').html('');
-  let counter = 0;
-  let skillHeader = `
-  <div class="flex-item-skills">
-    <div class="section-header"><h3 tabindex="0">Your Skills</h3></div>
-    <output><div id="js-skills-error-message" class="error-message" aria-live="assertive" hidden> </div></output>
-    <div class="table">
-      <div class="tr th"> 
-        <div class="td">Skill</div> 
-        <div class="td experience">Years</div>
-        <div class="td"> </div>     
-      </div>
-      <div class="tr">  
-        <div class="td" data-header="Skill"><input type="text" id="newSkill"></input></div>
-        <div class="td" data-header="Experience"> <input type="text" id="skillYears"></input></div>
-        <div class="td" data-header=""><a id="AddSkill" href="#" class="js-add-skill"><img id="addNewSkill" alt="add skill" src="./images/icon-add.png">(Add)</a></div>
-      </div>
-    </div>              
-    <ul class="items flex-item-skillset">`;
-
-  let skills = skillHeader;
-       
-   // if the user has any skills then format the html to display them
-  if (userProfile.skills){
-      userProfile.skills.map( function(skill) {          
-      skills +=
-       `<li class="item user-skill js-user-skillset"> 
-          <span  tabindex="0" id="UserSkill-${counter}" class="js-user-skill js-user-skill-text" data-header="Skill">${skill.skill}</span>
-          <span  tabindex="0" id="UserExp-${counter}" class="js-user-skill js-user-skill-years" data-header="Experience">${skill.yearsOfExperience}</span>
-          <span  tabindex="0"><a id="EditSkill-${counter}" href=# class="js-edit-skill"><img alt="edit skill" src="./images/icon-edit.png" /></a></span>
-          <span  tabindex="0"><a id="DeleteSkill-${counter}" href=# class="js-delete-skill"><img alt="delete skill" src="./images/icon-delete.png" /></a></span>           
-        </li> `;
-        counter++; 
-     });
-     skills += '</ul></div> ';     
-    }
- 
-    // unhide the html to display the user skills
-    $('.js-section-user-skills').append(skills);  
-    $('.js-section-user-skills').prop("hidden", false); 
-    $('.js-section-user-skills').prop("hidden", false); 
-   
-    watchAddSkillButtonClick();
-    watchDeleteSkillButtonClick();
-    watchEditSkillButtonClick(); 
 } 
+
+/*     
+   render job skills
+*/
+function renderJobSkills(data) {
+  let skills = "";
+  let counter = 0;
+  $(".js-job-prospects-skills-form").html('');
+
+    let skillHeader = ` 
+    <div class="flex-item-skills">
+      <div class="section-header"><h3 tabindex="0">Job Skills</h3></div>
+      <output><div id="js-job-skills-error-message" class="error-message" aria-live="assertive" hidden> </div></output>
+      <div class="table">
+        <div class="tr th"> 
+          <div class="td">Skill</div> 
+          <div class="td experience">Years</div>
+          <div class="td"> </div>     
+        </div>
+        <div class="tr">  
+          <div class="td" data-header="Skill"><input type="text" id="newJobSkill"></input></div>
+          <div class="td" data-header="Experience"> <input type="text" id="jobSkillYears"></input></div>
+          <div class="td" data-header=""><a id="AddSkill" href="#" class="js-add-job-skill"><img id="addNewJobSkill" alt="add job skill" src="./images/icon-add.png">(Add)</a></div>
+        </div>
+      </div>            
+      <div class="items flex-item-skillset">`;
+
+    skills = skillHeader;
+        
+    // format the job skills
+    if (data.length > 0) {
+        data.map( function(skill) {          
+        skills +=
+        `<p class="item job-skill js-job-skillset"> 
+            <span  tabindex="0" id="JobSkill-${counter}" class="js-job-skill js-job-skill-text" data-header="Skill">${skill.skill}</span>
+            <span  tabindex="0" id="JobExp-${counter}" class="js-job-skill js-job-skill-years" data-header="Experience">${skill.yearsOfExperience}</span>
+            <span  tabindex="0"><a id="EditJobSkill-${counter}" href=# class="js-edit-job-skill"><img alt="edit job skill" src="./images/icon-edit.png" /></a></span>
+            <span  tabindex="0"><a id="DeleteJobSkill-${counter}" href=# class="js-delete-job-skill"><img alt="delete job skill" src="./images/icon-delete.png" /></a></span>           
+          </p> `;
+          counter++; 
+      });
+      skills += '</div></div>';     
+      }  
+
+    $( ".js-job-prospects-skills-form").html(skills);
+    $( ".js-job-prospects-skills-form").prop('hidden',false);
+
+    watchAddJobSkillButtonClick();
+    watchDeleteJobSkillButtonClick();
+    watchEditJobSkillButtonClick();
+}
 
 /*
   After find method is executed to retrieve the user profile
@@ -374,7 +367,6 @@ function renderJobProspects(data) {
     }  
 
     $( ".js-section-job-prospects" ).html('');
-    console.log("renderJobProspects USER_PROFILE", USER_PROFILE);
     
     let counter = 0;       
     let prospects = "";
@@ -525,6 +517,7 @@ function displayProspectsSummaryForm(data) {
       "contact": "",
       "comments": "",
       "details": "",
+      "jobSkills": [],
     }; 
  
     // If user clicked edit for an existing job prospect then save the id for that prospect in hidden form element 
@@ -532,6 +525,9 @@ function displayProspectsSummaryForm(data) {
       prospect = data.prospect;
       hiddenProspectId = `<label for="ProspectEditKey" class="edit-label"></label><div class="td" hidden><input id="ProspectEditKey" type="text"value=${prospect.id} hidden></input></div>`;      
     }
+  
+    JOB_SKILLS = data.prospect.jobSkills
+    renderJobSkills(JOB_SKILLS);
 
     // Format the input form for job prospect
     let formInputs = `
@@ -546,7 +542,7 @@ function displayProspectsSummaryForm(data) {
           <p> <label for="prospectDayToDay" class="edit-label"><strong>Day to Day: </strong></label>  <textarea  rows="4" cols="50" id="prospectDayToDay" value="${prospect.dayToDay}" >${prospect.dayToDay}</textarea></p>
           <p> <label for="prospectContacts" class="edit-label"><strong>Contacts : </strong></label>  <textarea   rows="2" cols="50"  id="prospectContacts" value="${prospect.contact}" >${prospect.contact}</textarea></p>
           <p> <label for="prospectComments" class="edit-label"><strong>Comments: </strong></label>  <textarea   rows="4" cols="50"  id="prospectComments" value="${prospect.comments}" >${prospect.comments}</textarea></p> 
-          <p> <label for="prospectDetails"  class="edit-label"><strong>Details: </strong></label>  <textarea   rows="4" cols="50"   id="prospectDetails" value=" ${prospect.details}" >${prospect.details}</textarea></p>    
+          <p> <label for="prospectDetails"  class="edit-label"><strong>Details: </strong></label>  <textarea   rows="4" cols="50"   id="prospectDetails" value=" ${prospect.details}" >${prospect.details}</textarea></p>            
           ${hiddenProspectId}
       </fieldset>`;      
 
@@ -648,10 +644,11 @@ function validateProspectForm(prospectId) {
     const contacts =  $('#prospectContacts').val();
     const comments =  $('#prospectComments').val();
     const details =  $('#prospectDetails').val(); 
-  
+    const jobSkills = JSON.stringify(JOB_SKILLS);
+ 
     // Creating new job prospect
     if (!prospectId || prospectId == undefined) {
-    const jobProspect = `{"what": "${what}", "when": "${when}", "where": "${where}", "status": "${status}", "userId": "${userId}","source":  "${source}", "sourceUrl": "${sourceUrl}","dayToDay":  "${dayToDay}", "contact":  "${contacts}", "comments":  "${comments}", "details":   "${details}"}`;          
+    const jobProspect = `{"what": "${what}", "when": "${when}", "where": "${where}", "status": "${status}", "userId": "${userId}","source":  "${source}", "sourceUrl": "${sourceUrl}","dayToDay":  "${dayToDay}", "contact":  "${contacts}", "comments":  "${comments}", "details":   "${details}",  "jobSkills": ${jobSkills}}`;          
     setTimeout(postCareerStrategyAPI(pathJobProspects, 
       JSON.parse(jobProspect), userProfileId, function(data){  
         refreshUserProfile();
@@ -659,7 +656,7 @@ function validateProspectForm(prospectId) {
   }
   else{ 
     // Updating existing job prospect
-    const jobProspect = `{"id":"${prospectId}","what": "${what}", "when": "${when}", "where": "${where}", "status": "${status}", "userId": "${userId}","source":  "${source}", "sourceUrl": "${sourceUrl}","dayToDay":  "${dayToDay}", "contacts":  "${contacts}", "comments":  "${comments}", "details":   "${details}"}`;  
+    const jobProspect = `{"id":"${prospectId}","what": "${what}", "when": "${when}", "where": "${where}", "status": "${status}", "userId": "${userId}","source":  "${source}", "sourceUrl": "${sourceUrl}","dayToDay":  "${dayToDay}", "contacts":  "${contacts}", "comments":  "${comments}", "details":   "${details}",  "jobSkills": ${jobSkills}}`;  
     setTimeout(putCareerStrategyAPI(pathJobProspects, 
       JSON.parse(jobProspect), prospectId, function(data){       
         refreshUserProfile();
@@ -776,7 +773,99 @@ function watchDeleteJobProspectClick(){
   }); 
 }
 
+
+
+/*
+   Checks the input for errors when adding a job skills
+*/
+function jobSkillsAreValid() { 
+  let message = "";
+  const skill = $('#newJobSkill').val();
+  const years = $('#jobSkillYears').val();  
+  if (!skill || skill.length < 1) {
+    message = "Skill is required. <br />";
+  }
+  if (years && years.length <0  && !$.isNumeric(years)) {   
+    message += "Years of experience must be numeric.";
+  }
+
+  return message;
+}
+
+/*
+  Executed when user clicks on add skill link 
+  will update the job prospect's collection of skills
+*/
+function  watchAddJobSkillButtonClick() {       
+  $('.js-add-job-skill').click(event => {  
+      event.preventDefault();
+      let skill = $('#newJobSkill').val();
+      let years = $('#jobSkillYears').val(); 
+
+      if (jobSkillsAreValid().length > 0) {
+        $('#js-job-skills-error-message').html(jobSkillsAreValid());
+        $('#js-job-skills-error-message').prop("hidden", false);
+        return;
+      }
+
+      if (!JOB_SKILLS) {
+        JOB_SKILLS = []
+      }
+      JOB_SKILLS.push(JSON.parse(`{"skill": "${skill.trim()}","yearsOfExperience":"${years.trim()}"}`));       
+      renderJobSkills(JOB_SKILLS);
+
+      // Clear out the input fields
+      $('#newJobSkill').html();
+      $('#jobSkillYears').html();                                    
+    });  
+} 
+
+/*
+  Executed when user clicks link to delete an existing job skill
+  will remove the skill from the job prospect's collection of skills
+*/
+function  watchDeleteJobSkillButtonClick() {       
+  $('.js-delete-job-skill').click(event => {  
+      event.preventDefault();
+      const id = `#${event.currentTarget.id}`; 
+      const skillId =`#UserJobSkill-${id.split('-')[1]}`;
+      let skill = $(skillId).text();
+      let skillIndex = -1;
+      
+      for(let idx=0; idx< JOB_SKILLS.length ; idx++)
+      {
+          if (JOB_SKILLS[idx].skill == skill) {
+          skillIndex = idx;
+          break;
+         }
+      }
+
+      JOB_SKILLS.splice( $.inArray(skillIndex, JOB_SKILLS), 1 );          
+      renderJobSkills(JOB_SKILLS);
+    });  
+}
  
+
+/*
+  Executed when user clicks link to edit and existing job skill
+  will put the existing skill data in the input fields for the user to edit
+*/
+function  watchEditJobSkillButtonClick() {       
+  $('.js-edit-job-skill').click(event => {  
+      event.preventDefault();
+      const id = `#${event.currentTarget.id}`; 
+      const skillId =`#JobSkill-${id.split('-')[1]}`;
+      const expId =`#JobExp-${id.split('-')[1]}`;
+      let skill = $(skillId).text();  
+      let experience = $(expId).text();  
+
+      // setup the skill input field
+      $("#newJobSkill").val(skill);
+      $("#jobSkillYears").val(experience);  
+    
+    });  
+}
+
 function  watchAddMasterSkillButtonClick() {       
   $('.js-master-skill').click(event => {  
       event.preventDefault();
@@ -832,7 +921,7 @@ function  watchDeleteSkillButtonClick() {
       USER_PROFILE.skills.splice( $.inArray(skillIndex, USER_PROFILE.skills), 1 );      
       const userSkills = `{"id": "${userProfileId}","skills": ${JSON.stringify(USER_PROFILE.skills)}}`;                         
       
-      setTimeout(putCareerStrategyAPI(pathUserProfile, JSON.parse(userSkills), function(data) {                  
+      setTimeout(putCareerStrategyAPI(pathUserProfile, JSON.parse(userSkills), userProfileId, function(data) {                  
         refreshUserProfile()}), 3000);
     });  
 }
@@ -878,10 +967,16 @@ function watchFormCancelClick() {
 function setupHandleEvents() {  
   refreshUserProfile();   
   watchEditUserProfile();
-  watchAddSkillButtonClick();
   watchAddMasterSkillButtonClick();
+  
+  watchAddSkillButtonClick();
   watchDeleteSkillButtonClick();
   watchEditSkillButtonClick();
+
+  watchAddJobSkillButtonClick();
+  watchDeleteJobSkillButtonClick();
+  watchEditJobSkillButtonClick();
+
   watchFormSubmitButtonClick();
   watchEditJobProspectClick();
   watchDeleteJobProspectClick();
