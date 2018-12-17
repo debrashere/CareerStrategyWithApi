@@ -375,7 +375,8 @@ function renderJobProspects(data) {
       let dateWhen = new Date(prospect.when);
       let formattedDate = `${dateWhen.getMonth()}/${dateWhen.getDay()}/${dateWhen.getFullYear()}  - 
        ${dateWhen.getHours()}:${dateWhen.getMinutes()}:${dateWhen.getSeconds()} `;     
-      let jobSkills = generateJobSkills(prospect.jobSkills)    ;
+      let jobSkills = generateJobSkills(prospect.jobSkills);
+      
       prospects +=
        `<div class="flex-item-job-prospect">
             <div class="section-header"><span  tabindex="0" id="prospect${counter}">${prospect.what}</span>  <br />
@@ -385,13 +386,13 @@ function renderJobProspects(data) {
             <div class="td"><span tabindex="0"><em>When: </em>${formattedDate}</span></div>
             <div class="td"><span tabindex="0"><em>Status:</em> ${prospect.status}</span></div>          
             <div class="td"><span tabindex="0"><em>Source:</em> ${prospect.source}</span></div>    
-            <div class="td"><span tabindex="0"><em>Source Url:</em> <a href='${prospect.sourceUrl}' target=_blank>${prospect.sourceUrl}<a></span></div>              
+            <div class="td"><span tabindex="0"><em>Source Url:</em> <a href='${prospect.sourceUrl}' target=_blank>${prospect.sourceUrl}</a></span></div>              
             <div class="td"><em>Contacts:</em><p tabindex="0">${prospect.contact}</p></div>            
             <div class="td"><em>Comments:</em><p tabindex="0">${prospect.comments}</p></div>  
             <div class="td"><em>Details:</em><p tabindex="0">${prospect.details}</p></div> 
             <div class="td"><span tabindex="0"><em>Day to day:</em> ${prospect.dayToDay}</span></div>                                                  
             ${jobSkills}
-            <div class="td" hidden><span id="Prospect-${counter}" hidden>${prospect.id}</span></div>
+            <div class="td" hidden><span class="js-prospectId" id="Prospect-${counter}" hidden>${prospect.id}</span></div>
       </div>
       `; 
        counter++;       
@@ -596,6 +597,14 @@ function prospectEditsAreValid() {
   if (!when || when.trim().length == 0)
     message += "When is required <br/>";
 
+  if (when || when.trim().length > 0) {    
+    if (Date.parse(when)) {
+      //Valid date
+    } else {
+      message += "When must be a valid date format <br/>";
+    }
+  }
+
   if (!where || where.trim().length == 0)
     message += "Where is required";  
 
@@ -648,11 +657,11 @@ function validateProspectForm(prospectId) {
  
     // Creating new job prospect
     if (!prospectId || prospectId == undefined) {
-    const jobProspect = `{"what": "${what}", "when": "${when}", "where": "${where}", "status": "${status}", "userId": "${userId}","source":  "${source}", "sourceUrl": "${sourceUrl}","dayToDay":  "${dayToDay}", "contact":  "${contacts}", "comments":  "${comments}", "details":   "${details}",  "jobSkills": ${jobSkills}}`;          
+    const jobProspect = `{"what": "${what}", "when": "${when}", "where": "${where}", "status": "${status}", "userId": "${userId}","source":  "${source}", "sourceUrl": "${sourceUrl}","dayToDay":  "${dayToDay}", "contact":  "${contacts}", "comments":  "${comments}", "details":   "${details}",  "jobSkills": ${jobSkills}}`;            
     setTimeout(postCareerStrategyAPI(pathJobProspects, 
       JSON.parse(jobProspect), userProfileId, function(data){  
         refreshUserProfile();
-      }), 3000);  
+      }), 3000);      
   }
   else{ 
     // Updating existing job prospect
@@ -709,6 +718,7 @@ function  watchAddSkillButtonClick() {
       event.preventDefault();
       let skill = $('#newSkill').val();
       let years = $('#skillYears').val(); 
+      let skillIndex = -1;
 
       if (userSkillsAreValid().length > 0) {
         $('#js-skills-error-message').html(userSkillsAreValid());
@@ -719,7 +729,26 @@ function  watchAddSkillButtonClick() {
       if (!USER_PROFILE.skills) {
         USER_PROFILE.skills = []
       }
-      USER_PROFILE.skills.push(JSON.parse(`{"skill": "${skill.trim()}","yearsOfExperience":"${years.trim()}"}`));       
+
+      // check if skill already exists in the user's skill collection
+      // if so then update instead of add
+      for(let idx=0; idx< USER_PROFILE.skills.length ; idx++)
+      {
+          if (USER_PROFILE.skills[idx].skill == skill) {
+          skillIndex = idx;
+          break;
+         }
+      }
+
+      if (skillIndex > -1)
+      {
+        USER_PROFILE.skills[skillIndex].yearsOfExperience = years;
+      }
+      else {
+        USER_PROFILE.skills.push(JSON.parse(`{"skill": "${skill.trim()}","yearsOfExperience":"${years.trim()}"}`));       
+      }
+
+      // create json object to update the user skills
       const userSkills = `{"id": "${userProfileId}","skills": ${JSON.stringify(USER_PROFILE.skills)}}`;                         
 
       setTimeout(putCareerStrategyAPI(pathUserProfile, JSON.parse(userSkills), userProfileId, function(data) {                        
@@ -750,12 +779,12 @@ function watchAddJobProspectClick(){
 function watchEditJobProspectClick(){
   $('.js-edit-prospect').click(event => {  
     event.preventDefault();
-    const id = `#${event.currentTarget.id}`; 
-    const prospectId =`#Prospect-${id.split('-')[1]}`;
-    const prospectKey = $(prospectId).text();
-
-    setTimeout( findCareerStrategyAPI(pathJobProspects, "", prospectKey,
-     displayProspectsSummaryForm), 5000);     
+    const id = `#${event.currentTarget.id}`;   
+    let prospectId = $(id).parent().parent().find('.js-prospectId').text(); 
+  
+    setTimeout( findCareerStrategyAPI(pathJobProspects,  "", prospectId,
+     displayProspectsSummaryForm), 5000);  
+      
   }); 
 }
 
@@ -767,9 +796,10 @@ function watchDeleteJobProspectClick(){
   $('.js-delete-prospect').click(event => {  
     event.preventDefault();
     const id = `#${event.currentTarget.id}`; 
-    const prospectId =`#Prospect-${id.split('-')[1]}`;
-    const prospectKey = $(prospectId).text();
-    setTimeout(deleteCareerStrategyAPI(pathJobProspects, "", prospectKey, refreshUserProfile), 5000);     
+    let prospectId = $(id).parent().parent().find('.js-prospectId').text(); 
+ 
+    setTimeout(deleteCareerStrategyAPI(pathJobProspects, "", prospectId, refreshUserProfile), 5000);     
+  
   }); 
 }
 
@@ -800,7 +830,8 @@ function  watchAddJobSkillButtonClick() {
   $('.js-add-job-skill').click(event => {  
       event.preventDefault();
       let skill = $('#newJobSkill').val();
-      let years = $('#jobSkillYears').val(); 
+      let years = $('#jobSkillYears').val();
+      let skillIndex = -1; 
 
       if (jobSkillsAreValid().length > 0) {
         $('#js-job-skills-error-message').html(jobSkillsAreValid());
@@ -811,7 +842,25 @@ function  watchAddJobSkillButtonClick() {
       if (!JOB_SKILLS) {
         JOB_SKILLS = []
       }
-      JOB_SKILLS.push(JSON.parse(`{"skill": "${skill.trim()}","yearsOfExperience":"${years.trim()}"}`));       
+
+    
+      // Check if the job skill already exists if so update instead of add
+      for(let idx=0; idx< JOB_SKILLS.length ; idx++)
+      {
+          if (JOB_SKILLS[idx].skill == skill) {
+          skillIndex = idx;
+          break;
+          }
+      }  
+
+      if (skillIndex > -1) {
+        JOB_SKILLS[skillIndex].yearsOfExperience = years;
+      }
+      else {     
+        JOB_SKILLS.push(JSON.parse(`{"skill": "${skill.trim()}","yearsOfExperience":"${years.trim()}"}`));       
+      }
+
+      // refresh the job skills dom element
       renderJobSkills(JOB_SKILLS);
 
       // Clear out the input fields
@@ -828,19 +877,18 @@ function  watchDeleteJobSkillButtonClick() {
   $('.js-delete-job-skill').click(event => {  
       event.preventDefault();
       const id = `#${event.currentTarget.id}`; 
-      const skillId =`#UserJobSkill-${id.split('-')[1]}`;
-      let skill = $(skillId).text();
+      let skill = $(id).parent().parent().children('.js-job-skill-text').text();
       let skillIndex = -1;
-      
+;
       for(let idx=0; idx< JOB_SKILLS.length ; idx++)
       {
           if (JOB_SKILLS[idx].skill == skill) {
           skillIndex = idx;
           break;
          }
-      }
+      }  
 
-      JOB_SKILLS.splice( $.inArray(skillIndex, JOB_SKILLS), 1 );          
+      JOB_SKILLS.splice( skillIndex, 1 );          
       renderJobSkills(JOB_SKILLS);
     });  
 }
@@ -854,10 +902,8 @@ function  watchEditJobSkillButtonClick() {
   $('.js-edit-job-skill').click(event => {  
       event.preventDefault();
       const id = `#${event.currentTarget.id}`; 
-      const skillId =`#JobSkill-${id.split('-')[1]}`;
-      const expId =`#JobExp-${id.split('-')[1]}`;
-      let skill = $(skillId).text();  
-      let experience = $(expId).text();  
+      let skill = $(id).parent().parent().children('.js-job-skill-text').text();
+      let experience = $(id).parent().parent().children('.js-job-skill-years').text();
 
       // setup the skill input field
       $("#newJobSkill").val(skill);
@@ -886,11 +932,9 @@ function  watchEditSkillButtonClick() {
   $('.js-edit-skill').click(event => {  
       event.preventDefault();
       const id = `#${event.currentTarget.id}`; 
-      const skillId =`#UserSkill-${id.split('-')[1]}`;
-      const expId =`#UserExp-${id.split('-')[1]}`;
-      let skill = $(skillId).text();  
-      let experience = $(expId).text();  
-
+      let skill = $(id).parent().parent().children('.js-user-skill-text').text();
+      let experience = $(id).parent().parent().children('.js-user-skill-years').text();
+  
       // setup the skill input field
       $("#newSkill").val(skill);
       $("#skillYears").val(experience);  
@@ -907,22 +951,26 @@ function  watchDeleteSkillButtonClick() {
   $('.js-delete-skill').click(event => {  
       event.preventDefault();
       const id = `#${event.currentTarget.id}`; 
-      const skillId =`#UserSkill-${id.split('-')[1]}`;
-      let skill = $(skillId).text();
+      let skill = $(id).parent().parent().children('.js-user-skill-text').text();
       let skillIndex = -1;
-      
-      for(let idx=0; idx< USER_PROFILE.skills.length ; idx++)
+ 
+      // find the skill to be deleted
+      for(let idx=0; idx < USER_PROFILE.skills.length; idx++)
       {
           if (USER_PROFILE.skills[idx].skill == skill) {
           skillIndex = idx;
           break;
          }
       }
-      USER_PROFILE.skills.splice( $.inArray(skillIndex, USER_PROFILE.skills), 1 );      
+    
+      // Remove this skill by splicing it from the collection of skills
+      USER_PROFILE.skills.splice( skillIndex, 1 );  
       const userSkills = `{"id": "${userProfileId}","skills": ${JSON.stringify(USER_PROFILE.skills)}}`;                         
-      
+
+      // Upuate the database with the updated collection of skills
       setTimeout(putCareerStrategyAPI(pathUserProfile, JSON.parse(userSkills), userProfileId, function(data) {                  
-        refreshUserProfile()}), 3000);
+        refreshUserProfile()}), 3000);     
+        
     });  
 }
 
