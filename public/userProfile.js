@@ -363,7 +363,7 @@ function renderJobProspects(data) {
     // if no data found then display the input form for job prospect 
     if (data == null || data.prospect == null || data.prospect.length == 0) {
       if (userProfileId.length > 0)
-        displayProspectsSummaryForm()
+        displayProspectsSummaryForm();
       return;
     }  
 
@@ -506,6 +506,7 @@ function displayProspectsSummaryForm(data) {
   $('.js-job-prospects-form').html();
  
     // create json variable with default empty values for creating a new job prospect
+    JOB_SKILLS = [];
     let hiddenProspectId = "";
     let prospect = { 
       "id": "",     
@@ -527,8 +528,12 @@ function displayProspectsSummaryForm(data) {
       prospect = data.prospect;
       hiddenProspectId = `<label for="ProspectEditKey" class="edit-label"></label><div class="td" hidden><input id="ProspectEditKey" type="text"value=${prospect.id} hidden></input></div>`;      
     }
+
+    // If job prospects does not have any job skills or creating a new job prospect
+    if (data && data != undefined && data.prospect && data.prospect != undefined && data.prospect.jobSkills) {
+      JOB_SKILLS = data.prospect.jobSkills
+    }
   
-    JOB_SKILLS = data.prospect.jobSkills
     renderJobSkills(JOB_SKILLS);    
 
     // Format the input form for job prospect
