@@ -40,10 +40,12 @@ Login or Register
 After login you will be taken to the "userProfile" page.  
 If you have not entered your profile infomation the input form for profile will display.  Upon completing this information, the screen will refresh and you will be able to add job prospects and enter your skills.
 
-####Test logins:
-       **Liliane1**: profile, skills and job prospects created.
-        **Kaleb68**: profile, skills and job prospects created.
-**Isabelle.Barton**:  Registered only.  Will need to finish profile and create user skills
+#### Test logins:
+
+  Password is the same for all mocked users **Mypassw0rd**
+  * **Liliane1**: profile, skills and job prospects created.
+  * **Kaleb68**: profile, skills and job prospects created.
+  * **Isabelle.Barton**:  Registered only.  Will need to finish profile and create user skills
 
 
 ## Versioning
