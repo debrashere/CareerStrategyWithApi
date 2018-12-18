@@ -2,15 +2,12 @@
 
 Thinkful (https://www.thinkful.com/) API Capstone Project providing API service to manage Job Search strategy.
 
-Link to the live demo:  https://debrashere.github.io/CareerStrategyWithApi/public/login.html
+Link to the live demo:  https://debrashere.github.io/CareerStrategyWithApi/index.html
 
-Link to API url:
-https://sheltered-gorge-50174.herokuapp.com/api
 
 ### Summary
 
-  #### What you can do:
-    Manage your list of skills.
+  #### What you can do: 
     Manage data pertaining to jobs that you are researching or have applied for.
     You can save important information about your job search regardless of where you found the job.
 

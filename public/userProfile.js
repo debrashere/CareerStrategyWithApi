@@ -276,7 +276,8 @@ function renderJobSkills(data) {
     watchAddJobSkillButtonClick();
     watchDeleteJobSkillButtonClick();
     watchEditJobSkillButtonClick();
-}
+
+  }  
 
 /*
   After find method is executed to retrieve the user profile
@@ -528,7 +529,7 @@ function displayProspectsSummaryForm(data) {
     }
   
     JOB_SKILLS = data.prospect.jobSkills
-    renderJobSkills(JOB_SKILLS);
+    renderJobSkills(JOB_SKILLS);    
 
     // Format the input form for job prospect
     let formInputs = `
@@ -573,7 +574,9 @@ function refreshUserProfile(id) {
 
         // function displayCareerStrategyResults will save user skills as part of variable USER_PROFILE
         // user's skills will be accessed by function renderJobProspects
-        setTimeout(findCareerStrategyAPI(pathJobProspects, queryPath, "", renderJobProspects), 3000);
+        setTimeout(findCareerStrategyAPI(pathJobProspects, queryPath, "",  function(data) {
+        renderJobProspects(data);
+        }), 3000);
 
       }), 3000);        
 

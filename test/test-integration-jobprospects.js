@@ -37,16 +37,6 @@ function seedJobProspectData() {
   return JobProspect.insertMany(seedData).catch(err => console.error(err));  
 }
 
-function seedJobProspectDataForUser() {
-  const seedData = [];
-
-  for (let i=1; i<=100; i++) {   
-    seedData.push(generateJobProspectData());  
-  }
-  // this will return a promise
-  return JobProspect.insertMany(seedData).catch(err => console.error(err));  
-}
-
 function generateStatus()
 {
   const status = [ 

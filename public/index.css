@@ -322,7 +322,7 @@ textarea {
 
 .th > .td {
   white-space: normal;
-  justify-content: center;
+  justify-content: left;
   width: 100%;
 }
 
@@ -353,7 +353,11 @@ textarea {
   min-width: 0px;
   max-width: 100%;
   white-space: nowrap;
-  border-bottom: 1px solid #d0d0d0;  
+  border-bottom: 1px solid #d0d0d0; 
+}
+
+.td-with-borders {
+  border: black solid 1px;
 }
 
 .td-what {
@@ -502,6 +506,30 @@ textarea {
   border: black 2px solid; 
   background-color: whitesmoke;
   margin-top: 5px;
+}
+
+.div-skills{
+  position:absolute;
+	height:50px;
+	width:auto;
+	background:#1a5f8c;
+	border:1px solid #14496d;
+  display:inline-block;
+}
+.span-skill{
+	top:0;
+	left:0;
+	height:100%;
+	width:100%;
+	text-align: left;
+    font-size:14px;
+    font-weight:500;
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+    box-sizing:border-box;
+    padding: 10px;
+    color:#ddd;
 }
 
 /* Extra small devices (phones, 600px and down) */
