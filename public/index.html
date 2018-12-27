@@ -2,62 +2,55 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Job Strategy Planner</title> 
-  <meta name="description" content="Job Strategy Planner"> 
+  <title>Job Strategy Planner- User Profile</title> 
+  <meta name="description" content="Job Strategy Planner - User Profile"> 
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link  rel="stylesheet" href="index.css" />  
+  <link  rel="stylesheet" href="./index.css" />  
 </head>
 <body>
   <main>
-    <div class="row">      
-      <div class="header">  
-        <h1  tabindex="0" class="centered">Career Strategy Planning</h1> 
-        <img src="./images/icon-header.jpg" alt="job search image" />
-       </div>        
-        <div class="col-6"> 
-         <section class="content">                                       
-         <h2>Introduction</h2> 
-          <div  class="introduction flex-container-introduction">
-            <p class="introduction flex-item-introduction">This application can be used to maintain detailed information about your job search.
-               Only minimum information is needed about yourself.  The intention is to have one place to 
-               store details pertaining to your job search reqardless of where you find job prospects. 
-               You must register for access to the app.  
-            </p>
-          </div> 
-         </section> 
-         <div>
-            <p>Click <a href="./login.html">Login</a> to login or register.   
-             Click <a href="./userProfile.html">User Profile</a> for the user profile page.</p>
+    <div class="row">  
+      <nav>
+        <span><a href='#' class="js-nav-logout nav-link">Logout</a></span>
+      </nav>    
+      <div class="header">
+        <div class="flex-container-profile js-section-user-profile">  
+          <div class="flex-item">
+           <h1 tabindex="0">Job Strategy Planner</h1> 
+            <img  class="headerImage" src="./images/icon-header.jpg" alt="job search image" />
           </div>
-         <section class="flex-container"> 
-           <div class="flex-item">
-              <div>Example Job Prospect</div>
-              <img src="./images/JobProspect.png" alt="job prospect image" /> 
-           </div>  
-           <div class="flex-item">
-            <h2>Job Prospect Information</h2>
-              <p>You are able to save information about your job prospects such as:
-                <ul class="noBullitLink">
-                  <li ><em>What:</em> The job title. Displayed as heading. </li>
-                  <li><em>Where:</em> The name of the company. </li>
-                  <li><em>When:</em> When you applied or contacted company about this job. </li>
-                  <li><em>Status:</em> The current status. </li>
-                  <li><em>Source:</em> Where you found this job prospect. </li>
-                  <li><em>Source Url:</em> Link to this job if applicable. </li>
-                  <li><em>Contacts:</em> Information about persons who have contacted you about this job. </li>
-                  <li><em>Comments:</em> Any additional comments. </li>
-                  <li><em>Details:</em> Any details you would like to add about the job prospect. </li>
-                  <li><em>Day to Day:</em> The day to day expections of the job prospect. </li>
-                  <li><em>Job Skills:</em> Skills required or optional for the job prospect. Green indicates a match between your skills and the job skills </li>
-                </ul>
-              </p>
-           </div>                         
-        </section> 
-       </div>                
+          <div class="flex-item-profile js-flex-item-profile"  aria-hidden="true" hidden>         
+            <section class="user-profile js-user-profile"  aria-hidden="true" hidden> </section>                   
+          </div> 
+        </div> 
+      </div>        
+        <div class="col-6"> 
+         <output><div id="js-error-message" class="error-message" aria-live="assertive" hidden> </div></output>                                
+
+         <form action="#" class="js-form"  id="editForm" name="editForm" aria-hidden="true" hidden>                   
+          <output id="editProfile" name="editProfile" class="edit-form js-edit-form js-edit-profile-form" aria-hidden="true" aria-live="assertive" hidden></output>      				          
+          <output id="editProspect" name="editProspect" class="edit-form js-edit-form js-job-prospects-form" role="dialog"  aria-hidden="true" aria-live="assertive" hidden> </output>                       
+          <output id="editProspectSkills" name="editProspectSkills" class="edit-form js-edit-form js-edit-skills-form js-job-prospects-skills-form" role="dialog"  aria-hidden="true" aria-live="assertive" hidden> </output>                                 
+          <button type="submit" id="submitEvent" class="js-edit-button" >Submit</button>  
+          <button type="cancel" id="cancelEvent" class="js-edit-button" >Cancel</button>   <br /> <br />                                           
+        </form>   
+           
+        <div class="js-section-job-prospects" aria-hidden="true" hidden>
+          <div class="job-prospects-header js-user-details js-section-job-prospects-header">          
+            <h3 tabindex="0">Job Prospects </h3>         
+            <span>  <a id="AddProspect-0" href="#" class="js-add-prospect"><img alt="add prospect" src="./images/icon-add.png"></a> (Add)</span>
+          </div>        
+          <div class="flex-container js-user-details js-section-job-prospects-details"></div>                  
+        </div>
+
+        <div class="flex-container js-user-details user-skills js-section-user-skills" aria-hidden="true" hidden></div> 
+
+        <div class="flex-container js-user-details master-skills js-section-master-skills" aria-hidden="true" hidden></div>       
+      </div>                
     </div>
     </main> 
     <!-- JS ======================================================= --> 
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script type="text/javascript" src="index.js"></script>      
+    <script type="text/javascript" src="./index.js"></script>          
 </body>
 </html>

@@ -22,6 +22,26 @@ main .row {
   background: beige;  
   padding-bottom: 5px; 
   margin-bottom: 20px; 
+  text-align: right
+}
+
+.nav-link:link, .nav-link:visited {
+  background-color: beige;
+  color: black;
+  padding:  5px;
+  margin: 20px;
+  text-align: center; 
+  display: inline-block;
+  text-decoration: none;
+  font: bold;
+  border-radius: 10px;
+  border: 2px solid black   
+}
+
+.nav-link:hover, .nav-link:active {
+  background-color:lightgray;
+  border-radius: 10px; 
+  border: 2px solid black
 }
 
 .user-profile-heading {

@@ -60,7 +60,7 @@ function watchSubmitLoginClick() {
     if (!apiReturnedError(data)) {
       localStorage.setItem('token', data.userAuth.authToken);
       localStorage.setItem('userId', data.userAuth.id);
-      location.href = "./userProfile.html";
+      location.href = "./index.html";
     }
     }), 3000);
   }); 
