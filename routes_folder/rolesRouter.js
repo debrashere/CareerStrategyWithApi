@@ -27,7 +27,6 @@ const jwtAuth = passport.authenticate('jwt', { session: false });
 
 router.post("/", jwtAuth, jsonParser, (req, res) => {
   
-  console.log("Role Router post req.body", req.body);
   const requiredFields = ["role", "accessLevel", "date" ];
   for (let i = 0; i < requiredFields.length; i++) {
       const field = requiredFields[i];

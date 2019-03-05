@@ -167,6 +167,18 @@ describe('Prospects API resource', function() {
      return seedJobProspectData();
   });
 
+  beforeEach(function () {
+    return User.hashPassword(password).then(password =>
+      User.create({
+        username,
+        password,
+        firstName,
+        lastName
+      })
+    );
+  });
+
+
   after(function() {
     return tearDownDb();
   });

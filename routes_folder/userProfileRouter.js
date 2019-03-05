@@ -32,7 +32,6 @@ router.get("/:id", jwtAuth,  (req, res) => {
   });    
 
 router.get('/', jwtAuth,  (req, res) => {
-  const authHeaders = req.get("Authorization");
   let toQuery = "";
 
     if (req.query && req.query != {}) {
@@ -170,11 +169,9 @@ router.put("/:id", jwtAuth, jsonParser, (req, res) => {
       .findByIdAndUpdate(req.params.id, { $set: toUpdate }, function(err, docs) {
         if(err){
             var errorMsg = "error: " + err.message;
-            console.log(errorMsg);  
             res.status(500).json({ message: "Internal server error" })
 
         } else {
-            console.log("success");
             res.status(204).end()
         }
       })
