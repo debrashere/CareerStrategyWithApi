@@ -1,56 +1,51 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Job Strategy Planner- User Profile</title> 
-  <meta name="description" content="Job Strategy Planner - User Profile"> 
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link  rel="stylesheet" href="./index.css" />  
+    <title>Career Strategy</title>     
+    <meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge">                
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">        		
+    <meta name="description" content="Fullstack Web Developer.">
+    <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans" rel="stylesheet">
+    <link rel="stylesheet" href="./index.css" />
+    <link rel="stylesheet" href="./font-awesome.min.css" />  
+    <link rel="stylesheet" href="./main.css"  media="all">
+    <!-- Fonts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">   
+    <link rel="stylesheet" href="https://cdn.rawgit.com/konpa/devicon/df6431e323547add1b4cf45992913f15286456d3/devicon.min.css">    
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">      
 </head>
-<body>
-  <main>
-    <div class="row">  
-      <nav>
-        <span><a href='#' class="js-nav-logout nav-link">Logout</a></span>
-      </nav>    
-      <div class="header">
-        <div class="flex-container-profile js-section-user-profile">  
-          <div class="flex-item">
-           <h1 tabindex="0">Job Strategy Planner</h1> 
-            <img  class="headerImage" src="./images/icon-header.jpg" alt="job search image" />
-          </div>
-          <div class="flex-item-profile js-flex-item-profile"  aria-hidden="true" hidden>         
-            <section class="user-profile js-user-profile"  aria-hidden="true" hidden> </section>                   
-          </div> 
-        </div> 
-      </div>        
-        <div class="col-6"> 
-         <output><div id="js-error-message" class="error-message" aria-live="assertive" hidden> </div></output>                                
 
-         <form action="#" class="js-form"  id="editForm" name="editForm" aria-hidden="true" hidden>                   
-          <output id="editProfile" name="editProfile" class="edit-form js-edit-form js-edit-profile-form" aria-hidden="true" aria-live="assertive" hidden></output>      				          
-          <output id="editProspect" name="editProspect" class="edit-form js-edit-form js-job-prospects-form" role="dialog"  aria-hidden="true" aria-live="assertive" hidden> </output>                       
-          <output id="editProspectSkills" name="editProspectSkills" class="edit-form js-edit-form js-edit-skills-form js-job-prospects-skills-form" role="dialog"  aria-hidden="true" aria-live="assertive" hidden> </output>                                 
-          <button type="submit" id="submitEvent" class="js-edit-button" >Submit</button>  
-          <button type="cancel" id="cancelEvent" class="js-edit-button" >Cancel</button>   <br /> <br />                                           
-        </form>   
-           
-        <div class="js-section-job-prospects" aria-hidden="true" hidden>
-          <div class="job-prospects-header js-user-details js-section-job-prospects-header">          
-            <h3 tabindex="0">Job Prospects </h3>         
-            <span>  <a id="AddProspect-0" href="#" class="js-add-prospect"><img alt="add prospect" src="./images/icon-add.png"></a> (Add)</span>
-          </div>        
-          <div class="flex-container js-user-details js-section-job-prospects-details"></div>                  
-        </div>
-
-        <div class="flex-container js-user-details user-skills js-section-user-skills" aria-hidden="true" hidden></div> 
-
-        <div class="flex-container js-user-details master-skills js-section-master-skills" aria-hidden="true" hidden></div>       
-      </div>                
-    </div>
-    </main> 
+<body class="home" > 
+    <div class="header"></div>
+    <div class="banner"></div>
+    <output>
+        <div id="error-message" class="error-message js-error-message" aria-live="assertive" hidden></div>
+    </output>                                
+    <div class="js-page-content" ></div>        
+    <div class="footer"></div> 
     <!-- JS ======================================================= --> 
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script type="text/javascript" src="./index.js"></script>          
+    <script type="text/javascript" src="./messaging.js"></script>  
+    <script type="text/javascript" src="./validators.js"></script> 
+    <script type="text/javascript" src="./content/js/lib/my-skills.js"></script>     
+    <script type="text/javascript" src="./content/js/lib/form-login.js"></script>  
+    <script type="text/javascript" src="./content/js/lib/form-profile.js"></script>  
+    <script type="text/javascript" src="./content/js/lib/event-handlers.js"></script>
+    <script type="text/javascript" src="./content/js/lib/add-prospect.js"></script> 
+    <script type="text/javascript" src="./content/js/lib/form-register.js"></script>  
+    <script type="text/javascript" src="./index.js"></script>  
+    <script type="text/javascript" src="./api-library/api-utility.js"></script> 
+    <script type="text/javascript" src="./api-library/api-prospects.js"></script> 
+    <script type="text/javascript" src="./api-library/api-users.js"></script> 
+    <script type="text/javascript" src="./content/js/lib/navigation.js"></script>  
+    <script type="text/javascript" src="./content/js/lib/header.js"></script>  
+    <script type="text/javascript" src="./content/js/lib/banner.js"></script> 
+    <script type="text/javascript" src="./content/js/lib/landing.js"></script>         
+    <script type="text/javascript" src="./content/js/lib/master-skills-list.js"></script> 
+    <script type="text/javascript" src="./content/js/lib/job-details.js"></script>  
+    <script type="text/javascript" src="./content/js/lib/form-job-prospect.js"></script>      
+    <script type="text/javascript" src="./content/js/lib/jobs-summary.js"></script>      
 </body>
 </html>
+ 

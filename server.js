@@ -5,8 +5,8 @@ const mongoose = require('mongoose');
 const morgan = require('morgan');
 const passport = require('passport');
 const { PORT, DATABASE_URL } = require('./config');
-const app = express();
 
+const app = express();
 const { router: usersRouter } = require('./users');
 const { router: authRouter, localStrategy, jwtStrategy } = require('./auth');
 const userProfileRouter = require('./routes_folder/userProfileRouter');
@@ -18,7 +18,6 @@ mongoose.Promise = global.Promise;
 
 // Logging
 app.use(morgan('common'));
-
 
 // CORS
     app.use(function (req, res, next) {

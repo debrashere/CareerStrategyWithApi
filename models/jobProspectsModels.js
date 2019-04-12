@@ -8,6 +8,22 @@ const jobSkillsSchema = mongoose.Schema({
   yearsOfExperience:{ type: Number }
 });
 
+const contactsSchema = mongoose.Schema({
+  company: {type: String, required: true },
+  contactType: { type: String, required: true },
+  firstName: { type: String },
+  lastName: { type: String }, 
+  comment: { type: String },
+  email: { type: String },
+  phone:{ type: String }
+});
+ 
+const statusHistorySchema = mongoose.Schema({
+  date: { type: Date, required: true },
+  status: { type: String, required: true },
+  comment:{ type: String }
+});
+
 const jobProspectSchema = mongoose.Schema({
     what:  { type: String, required: true},
     where: { type: String, required: true },
@@ -20,7 +36,9 @@ const jobProspectSchema = mongoose.Schema({
     contact: { type: String},   
     comments: { type: String},
     details:  { type: String },
-    jobSkills: [jobSkillsSchema]
+    jobSkills: [jobSkillsSchema],
+    statusHistory: [statusHistorySchema],
+    contacts: [contactsSchema]
 });
 
 jobProspectSchema.methods.serialize = function() {
@@ -37,8 +55,10 @@ jobProspectSchema.methods.serialize = function() {
     contact:this.contact || [],
     comments:this.comments || '',
     details:this.details || '',
-    jobSkills:this.jobSkills || []
-  };
+    jobSkills:this.jobSkills || [],
+    statusHistory: this.statusHistory ||  [],
+    contacts:this.contacts || []
+    };
 };
 
 const JobProspect = mongoose.model('JobProspect', jobProspectSchema);

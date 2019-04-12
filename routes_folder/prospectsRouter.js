@@ -97,7 +97,9 @@ router.post("/", jwtAuth, jsonParser, (req, res) => {
               contact: req.body.contact,
               comments: req.body.comments,
               details: req.body.details,
-              jobSkills: req.body.jobSkills      
+              jobSkills: req.body.jobSkills,
+              statusHistory: req.body.statusHistory,
+              contacts: req.body.contacts    
             }) 
           .then( prospect => res.status(201).json(prospect.serialize()))                       
           .catch(err => {
@@ -123,7 +125,7 @@ router.put("/:id", jwtAuth, jsonParser, (req, res) => {
     // in document
     const toUpdate = {};
     const updateableFields = [ "what", "where", "when", "status", "source", "sourceUrl",
-    "dayToDay", "contact", "comments", "details", "jobSkills"];
+    "dayToDay", "contact", "comments", "details", "jobSkills","statusHistory", "contacts"];
   
     updateableFields.forEach(field => {
       if (field in req.body) {
