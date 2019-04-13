@@ -58,7 +58,7 @@ function generateCompanyList(data) {
     return `<div class="section-header"><h3 tabindex="0">Companies</h3></div><div>${uniqueCompanies}</div>`;
 }
 
-function generateContactList(data) {      
+function generateContactList(data) {          
     let tableRows = '';  
     data.prospect.map( function(thisProspect, index) {   
         thisProspect.contacts.map(function (contact, idx) {

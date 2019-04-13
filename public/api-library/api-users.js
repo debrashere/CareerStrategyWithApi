@@ -1,5 +1,5 @@
 'use strict'
-const CAREER_STRATEGY_URL ='https://sheltered-gorge-50174.herokuapp.com/api';
+const CAREER_STRATEGY_URL_USERS ='https://sheltered-gorge-50174.herokuapp.com/api';
 const pathUsers = "users";
 const pathAuth = "auth/login";
 
@@ -7,7 +7,7 @@ const pathAuth = "auth/login";
   Retrieve data from Career Strategy API
 */
 function loginUserAPI(path, input, callback) {
-  let url =  `${CAREER_STRATEGY_USERS_URL}/${path}/`;
+  let url =  `${CAREER_STRATEGY_URL_USERS}/${path}/`;
   $.ajax({
     url: url,
     type: 'post',
@@ -20,7 +20,7 @@ function loginUserAPI(path, input, callback) {
 }
 
 function registerUserAPI(path, input, callback) {
-  let url =  `${CAREER_STRATEGY_USERS_URL}/${path}/`;
+  let url =  `${CAREER_STRATEGY_URL_USERS}/${path}/`;
   $.ajax({
     url: url,
     type: 'post',
