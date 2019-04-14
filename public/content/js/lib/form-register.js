@@ -1,5 +1,5 @@
 
- 'use strict'
+'use strict';
  function isRegisterFormValid() {
  
   // clear form of error messages

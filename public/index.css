@@ -1,13 +1,15 @@
-
+/* toto: 
 * {
   box-sizing: border-box;
   font-size: 18px;  
 }
+*/
  
 body, html {
-  padding:0px;
-  margin:0px;
+  padding:0;
+  margin:0;
   background:darkgray;   
+  font-size: 18px;  
 }
 
 p {
@@ -33,15 +35,17 @@ main .row {
   text-align: center; 
   display: inline-block;
   text-decoration: none;
-  font: bold;
+  /* todo: font: bold; */
   border-radius: 10px;
-  border: 2px solid black   
+  border:  solid black;
+  border-width: 2px;
 }
 
 .nav-link:hover, .nav-link:active {
   background-color:lightgray;
   border-radius: 10px; 
-  border: 2px solid black
+  border: solid black;
+  border-width: 2px;
 }
 
 .user-profile-heading {
@@ -56,24 +60,28 @@ main .row {
 }
 .section-block{
   margin: 5px; 
-  border: 1px solid black;
+  border: solid black;
+  border-width: 1px;
   background-color: lightgray;
   width: 95%;
 }
 
 .section-header{ 
-  border: 1px solid black;
+  border:  solid black;
+  border-width: 1px;
   background-color: lightgray;
   width: 100%;
 }
 .section-sub-header{ 
-  border: 1px solid black;
+  border: solid black;
+  border-width: 1px;
   background-color: rgb(177, 177, 226);
   width: 100%;
 }
 
 .user-skills{
-  border: 2px solid black;
+  border: solid black;
+  border-width: 2px;
 }
 
 .header {  
@@ -102,14 +110,14 @@ input:checked ~ label {
 }
 
 .error-message {
-  font: bold;
+  /* todo: font: bold; */
   color:red;
   border: red;
   border-color: red;
   border-style: solid;    
 }
 
-h2, h2, h3, address {
+h1, h2, h3, address {
   margin: 0;
   display: inline-block;
 }
@@ -147,9 +155,10 @@ h2, h2, h3, address {
   text-align: center; 
   display: inline-block;
   text-decoration: none;
-  font: bold;
+  /* todo: font: bold; */
   border-radius: 15px;
-  border: 2px solid black ;
+  border: solid black ;
+  border-width: 2px;
   margin: 3px;
   
 }
@@ -193,9 +202,10 @@ textarea {
   text-align: center; 
   display: inline-block;
   text-decoration: none;
-  font: bold;
+   /* todo: font: bold; */
   border-radius: 15px;
-  border: 1px solid black;
+  border: solid black;
+  border-width: 1px;
   margin: 3px;
 }
 
@@ -206,9 +216,10 @@ textarea {
   text-align: center; 
   display: inline-block;
   text-decoration: none;
-  font: bold;
+  /* todo: font: bold; */
   border-radius: 15px;
-  border: 1px solid black;
+  border: solid black;
+  border-width: 1px;
   margin: 3px;
 }
 
@@ -219,9 +230,10 @@ textarea {
   text-align: center; 
   display: inline-block;
   text-decoration: none;
-  font: bold;
+  /* todo: font: bold; */
   border-radius: 15px;
-  border: 1px solid black;
+  border: solid black;
+  border-width: 1px;
   margin: 3px;
 }
 
@@ -236,7 +248,8 @@ textarea {
   justify-content: space-evenly;   
   align-items: center;
   max-width: 100%; 
-  border: black 2px solid;  
+  border: black solid;  
+  border-width: 2px;
 }
 
 .flex-item {  
@@ -281,7 +294,8 @@ textarea {
   flex-basis: auto;
   margin-bottom: 5px; 
   max-width: 300px;
-  border: black solid 2px;
+  border: black solid;
+  border-width: 2px;
  }
  
 .flex-item-skills {
@@ -290,7 +304,8 @@ textarea {
   flex-basis: auto;
   max-width: 90%;
   margin-bottom: 5px;
-  border: black solid 2px;
+  border: black solid;
+  border-width: 2px;
   background: lightgray;
  }
 
@@ -326,7 +341,8 @@ textarea {
   height: 300px;
   width: 100%;
   object-fit: cover;
-  border: solid blue 2px;
+  border: solid blue;
+  border-width: 2px;
   text-decoration: none;
 }   
 
@@ -346,7 +362,7 @@ textarea {
   text-decoration: none;
   color: black;
   display: inline-block;
-  font: bold;
+    /* todo: font: bold; */
 }
 
 .add-prospect-to:hover, .add-prospect-to:active, 
@@ -373,7 +389,8 @@ textarea {
 
 .th > .td {
   white-space: normal;
-  justify-content: left;
+  /* todo justify-content: left; */
+  justify-content: flex-start;
   width: 100%;
 }
 
@@ -401,14 +418,15 @@ textarea {
   word-break: normal;
   overflow: hidden;
   text-overflow: ellipsis;
-  min-width: 0px;
+  min-width: 0;
   max-width: 100%;
   white-space: nowrap;
   border-bottom: 1px solid #d0d0d0; 
 }
 
 .td-with-borders {
-  border: black solid 1px;
+  border: black solid;
+  border-width: 1px;
 }
 
 .td-what {
@@ -417,10 +435,10 @@ textarea {
   flex-grow: 1;
   flex-basis: 0;
   padding: 0.5em;
-  word-break: break-word;
+  /* todo: word-break: break-word; */
   overflow: hidden;
   text-overflow: ellipsis;
-  min-width: 0px;
+  min-width: 0;
   max-width: 300px;
   white-space: nowrap;
   border-bottom: 1px solid #d0d0d0;
@@ -432,10 +450,10 @@ textarea {
   flex-grow: 1;
   flex-basis: 0;
   padding: 0.5em;
-  word-break: break-word;
+  /* todo: word-break: break-word; */
   overflow: hidden;
   text-overflow: ellipsis;
-  min-width: 0px;
+  min-width: 0;
   max-width: 300px;
   white-space: nowrap;
   border-bottom: 1px solid #d0d0d0;
@@ -446,10 +464,10 @@ textarea {
   flex-grow: 1;
   flex-basis: 0;
   padding: 0.5em;
-  word-break: break-word;
+  /* todo: word-break: break-word; */
   overflow: hidden;
   text-overflow: ellipsis;
-  min-width: 0px;
+  min-width: 0;
   max-width: 150px;
   white-space: nowrap;
   border-bottom: 1px solid #d0d0d0;
@@ -460,10 +478,10 @@ textarea {
   flex-grow: 1;
   flex-basis: 0;
   padding: 0.5em;
-  word-break: break-word;
+  /* todo: word-break: break-word; */
   overflow: hidden;
   text-overflow: ellipsis;
-  min-width: 0px;
+  min-width: 0;
   max-width: 150px;
   white-space: nowrap;
   border-bottom: 1px solid #d0d0d0;
@@ -475,10 +493,10 @@ textarea {
   flex-grow: 1;
   flex-basis: 0;
   padding: 0.5em;
-  word-break: break-word;
+  /* todo: word-break: break-word; */
   overflow: hidden;
   text-overflow: ellipsis;
-  min-width: 0px;
+  min-width: 0;
   max-width: 300px;
   white-space: nowrap;
   border-bottom: 1px solid #d0d0d0;
@@ -490,10 +508,10 @@ textarea {
   flex-grow: 1;
   flex-basis: 0;
   padding: 0.5em;
-  word-break: break-word;
+  /* todo: word-break: break-word; */
   overflow: hidden;
   text-overflow: ellipsis;
-  min-width: 0px;
+  min-width: 0;
   max-width: 50px;
   white-space: nowrap;
   border-bottom: 1px solid #d0d0d0;
@@ -505,7 +523,7 @@ textarea {
   flex-grow: 1;
   flex-basis: 0;
   padding: 0.5em;
-  min-width: 0px;
+  min-width: 0;
   max-width: 150px;
 }
 
@@ -515,10 +533,10 @@ textarea {
   flex-grow: 1;
   flex-basis: 0;
   padding: 0.5em;
-  word-break: break-word;
+  /* todo: word-break: break-word; */
   overflow: hidden;
   text-overflow: ellipsis;
-  min-width: 0px;
+  min-width: 0;
   white-space: nowrap;
   border-bottom: 1px solid #d0d0d0;
 }
@@ -529,10 +547,10 @@ textarea {
   flex-grow: 1;
   flex-basis: 0;
   padding: 0.5em;
-  word-break: break-word;
+  /* todo: word-break: break-word; */
   overflow: hidden;
   text-overflow: ellipsis;
-  min-width: 0px;
+  min-width: 0;
   max-width: 50px;
   white-space: nowrap;
   border-bottom: 1px solid #d0d0d0;
@@ -543,10 +561,10 @@ textarea {
   flex-grow: 1;
   flex-basis: 0;
   padding: 0.5em;
-  word-break: break-word;
+  /* todo: word-break: break-word; */
   overflow: hidden;
   text-overflow: ellipsis;
-  min-width: 0px;
+  min-width: 0;
   max-width: 50px;
   white-space: nowrap;
   border-bottom: 1px solid #d0d0d0;
@@ -554,14 +572,16 @@ textarea {
 
 .flex-item-job-prospect {
   max-width:300px; 
-  border: black 2px solid; 
+  border: black solid; 
+  border-width: 2px;
   background-color: whitesmoke;
   margin-top: 5px;
 }
 
 .flex-item-job-summaries {
   max-width:90%; 
-  border: black 2px solid; 
+  border: black solid; 
+  border-width: 2px;
   background-color: whitesmoke;
   margin-top: 5px;
 }
@@ -580,14 +600,13 @@ textarea {
 	height:100%;
 	width:100%;
 	text-align: left;
-    font-size:14px;
-    font-weight:500;
-    font-family: arial, sans-serif;
-    border-collapse: collapse;
-    width: 100%;
-    box-sizing:border-box;
-    padding: 10px;
-    color:#ddd;
+  font-size:14px;
+  font-weight:500;
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  box-sizing:border-box;
+  padding: 10px;
+  color:#ddd;
 }
 
 	
@@ -632,8 +651,11 @@ textarea {
 	.icon {
 		text-decoration: none;
 		border-bottom: none;
-		position: relative;
-	}
+    position: relative;
+    line-height: 2.125rem;
+    font-size: 1.25rem;
+    margin: 0 .25rem 0 -.25rem;
+  }
 
 		.icon:before {
 		/*	-moz-osx-font-smoothing: grayscale; */
@@ -652,6 +674,7 @@ textarea {
 			display: none;
 		}
 
+    /* todo:
 		.icon.rounded {
 			background-color: #383b43;
 			border-radius: 100%;
@@ -731,21 +754,13 @@ textarea {
 			.icon.rounded.fa-rss {
 				background-color: #f2600b;
       }
-    
+*/    
 
 span {
   display: flex;
   position: relative;
   z-index: 1;
 }
-
-.icon {
-  line-height: 2.125rem;
-  font-size: 1.25rem;
-  margin: 0 .25rem 0 -.25rem;
-}
-
- 
 
 .btn {
   position: relative;
@@ -762,7 +777,8 @@ span {
   margin: .125rem;
   
   border-radius: .125rem;
-  border: 2px solid #3F4C5C;
+  border: solid #3F4C5C;
+  border-width: 2px;
   background-color:lightgray;
   color: black;
   text-decoration: none;
@@ -783,7 +799,7 @@ span {
   .btn {
     color: blue;	
     background-color: whitesmoke; 	
-    margin: 0px;
+    margin: 0;
     border-radius: 1.1875rem;	
     text-decoration: none;
     padding: 2px;

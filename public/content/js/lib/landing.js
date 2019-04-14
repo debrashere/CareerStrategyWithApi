@@ -1,3 +1,4 @@
+'use strict';
 function renderLandingPage(id) {  
     generateNonSecureData();
     if (props.isLoggedIn === true && props.hasProfile === true) {
@@ -58,7 +59,7 @@ function generateCompanyList(prospects) {
         
     let uniqueCompanies =  ''; 
     whereList.map( function(prospect, index) {       
-        plength = (prospect.length === 1) ? '' : `: ${prospect.length}`;
+        let plength = (prospect.length === 1) ? '' : `: ${prospect.length}`;
         uniqueCompanies += `<span class='user-skill js-prospect-by-company'>
         <a href="#" title='prospect company'>${prospect[0].where}${plength}</a></span> `         });      
          return `<div class="section-header"><h3 tabindex="0">Companies</h3></div><div>${uniqueCompanies}</div>`;

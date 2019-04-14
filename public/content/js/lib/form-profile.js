@@ -1,5 +1,4 @@
-
-'use strict'
+'use strict';
 function isProfileFormValid() {
 
  // clear form of error messages

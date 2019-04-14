@@ -1,4 +1,4 @@
-
+'use strict';
 /*     
    render user skills
 */

@@ -1,17 +1,18 @@
-function renderJobsSummaries() {  
-  if (!isUserLoggedIn()) return;
-  const queryPath = `userId=${props.userId}`;
-  // function displayCareerStrategyResults will save user skills as part of USER_PROFILE
-  setTimeout(findCareerStrategyAPI(pathJobProspects, queryPath, "",  function(data) {
-    PROSPECTS = data.prospect;
-    renderJobProspects(data);
-  }), 3000);
+'use strict';
+function renderJobsSummaries() {
+    if (!isUserLoggedIn()) return;
+      const queryPath = `userId=${props.userId}`;
+      // function displayCareerStrategyResults will save user skills as part of USER_PROFILE
+      setTimeout(findCareerStrategyAPI(pathJobProspects, queryPath, "",  function(data) {
+        PROSPECTS = data.prospect;
+        renderJobProspects(data);
+    }), 3000);
 }
 
-function generateJobSummaries(prospects) {        
+function generateJobSummaries(prospects) {
   let summaries =  '';
 
-  prospects.map( function(prospect, index) {  
+  prospects.map( function(prospect, index) {
     let dateWhen = new Date(prospect.when);
     let formattedDate = `${dateWhen.getMonth()}/${dateWhen.getDay()}/${dateWhen.getFullYear()}  - 
      ${dateWhen.getHours()}:${dateWhen.getMinutes()}:${dateWhen.getSeconds()} `;            
@@ -29,27 +30,27 @@ function generateJobSummaries(prospects) {
   return summaries;  
 }
  
-function renderJobsSummariesByStatus() {  
+function renderJobsSummariesByStatus(event) {
   if (!isUserLoggedIn() || !props.PROSPECTS) return;
 
-  const thisStatus = `${event.currentTarget.activeElement.innerHTML.split(':')[0].trim()}`;       
+  const thisStatus = `${event.currentTarget.innerText.split(':')[0].trim()}`;       
   const filteredProspects = props.PROSPECTS.filter( s => s.status === thisStatus);                  
-  $('.js-page-content').html(`${generateJobSummaries(filteredProspects)}`);  
+  $('.js-page-content').html(generateJobSummaries(filteredProspects));  
   $('.js-prospectId').hide();
 }
 
-function renderJobsSummariesByCompany() {  
+function renderJobsSummariesByCompany(event) {
   if (!isUserLoggedIn() || !props.PROSPECTS) return;
-  const thisCompany = `${event.currentTarget.activeElement.innerHTML.split(':')[0].trim()}`;      
+  const thisCompany = `${event.currentTarget.innerText.split(':')[0].trim()}`;      
   const filteredProspects = props.PROSPECTS.filter( s => s.where === thisCompany);                  
   $('.js-page-content').html(`${generateJobSummaries(filteredProspects)}`); 
   $('.js-prospectId').hide(); 
 }
 
-function renderJobsSummariesByContact() {  
+function renderJobsSummariesByContact(event) {
   if (!isUserLoggedIn() || !props.PROSPECTS) return;
 
-  const thisContact = `${event.currentTarget.activeElement.innerHTML.trim()}`;       
+  const thisContact = `${event.currentTarget.innerText.trim()}`;       
   $( ".js-page-content" ).html('');
 
   let filteredProspects = [];

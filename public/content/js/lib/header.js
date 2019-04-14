@@ -1,3 +1,4 @@
+'use strict';
 /*     
    render navigation, user userId and name
 */

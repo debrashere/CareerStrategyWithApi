@@ -1,3 +1,4 @@
+'use strict';
 let barsOrX = "fa fa-bars";
 let currentRoute = "/home";
   
@@ -66,8 +67,8 @@ function  menuFunction() {
     $('#menuButtonIcon').addClass(barsOrX); 
 }
  
-function setMenuItem(){
-    const id = `#${event.currentTarget.activeElement.id}`;       
+function setMenuItem(event){
+    const id = `#${event.currentTarget.id}`;       
     props.route = id.split('-')[1];
     $('.menuitem').removeClass("active");
     if (!$(id).hasClass( "active" )) {
