@@ -39,7 +39,7 @@ function getUserProfile() {
   setTimeout(findCareerStrategyAPI(pathUserProfile, queryPath, "" , function(data) {      
     // render user information including profile info and the user's skills
     props.USER_PROFILE = (data && data.userProfile && data.userProfile.length > 0) ? data.userProfile[0] : {};
-    props.userProfileId = USER_PROFILE && USER_PROFILE.id ? USER_PROFILE.id : "";  
+    props.userProfileId = props.USER_PROFILE && props.USER_PROFILE.id ? props.USER_PROFILE.id : "";  
     if (props.userProfileId !== "") setHasProfile(true);
     renderLanding(props.USER_PROFILE);
   }), 3000);   

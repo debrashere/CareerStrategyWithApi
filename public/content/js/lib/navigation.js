@@ -11,7 +11,7 @@ function  logoutThisUser() {
     renderLanding(); 
 }       
   
-function setSelectedMenuItem(menuItem, className)  {    
+function setClassForMenuItem(menuItem, className)  {    
     // extract current location
     const page = currentRoute.indexOf('?') > -1 ? currentRoute.split('?')[0] : currentRoute;
     let pageName = page.indexOf('/') > -1 ? page.split('/')[1] : page;  
@@ -49,17 +49,61 @@ function setSelectedMenuItem(menuItem, className)  {
 // will display "x" to enable user to close the expanded meny
 function  menuFunction() {
     $('.js-error-message').empty();
-    $('.js-error-message').prop("hidden", true);
-    let x = document.getElementById("myTopnav");      
+    $('.js-error-message').prop("hidden", true);    
     let button = document.getElementById("menuButton");
-    if (x.class === "topnav") {
-        x.class += " responsive";
+    if (!$('#myTopnav').hasClass( "responsive" )) {
+        $('#myTopnav').addClass("responsive");  
         barsOrX = button.class === "fa fa-times" ? "icon" : "fa fa-times";
     } else {
-        x.class = "topnav"  
+        $('#myTopnav').removeClass( "topnav"); 
+        $('#myTopnav').removeClass( "responsive"); 
+        $('#myTopnav').addClass( "topnav");  
         barsOrX =  button.class === "icon" ? "fa fa-bars" : "fa fa-times";                
-    }       
-}  
+    }   
+    $('#menuButtonIcon').removeClass('fa' );
+    $('#menuButtonIcon').removeClass('fa-bars'); 
+    $('#menuButtonIcon').removeClass('fa-times'); 
+    $('#menuButtonIcon').addClass(barsOrX); 
+}
+ 
+function setMenuItem(){
+    const id = `#${event.currentTarget.activeElement.id}`;       
+    props.route = id.split('-')[1];
+    $('.menuitem').removeClass("active");
+    if (!$(id).hasClass( "active" )) {
+        $(id).addClass("active");              
+    } 
+
+    switch (props.route) {
+        case "myskills":
+            renderUserSkills();
+            break;
+        case "home":
+            renderLanding();
+            break;
+        case "login":
+            renderLoginForm();
+            break;
+        case "prospect":
+            displayProspectsSummaryForm();
+            break;
+        case "register":
+            renderRegistrationForm();
+            break;
+        case "profile":
+            renderUserProfileForm();
+            break;
+        case "skills":
+            renderMasterSkillsList(displaySkillsMasterList);
+            break;     
+        case "logout":
+            logoutThisUser();
+            break;
+         case "summary":
+            renderJobsSummaries();
+            break;                                                                                   
+    }
+}
 
 function Navigation(props) {   
     $('.js-error-message').empty();
@@ -68,7 +112,7 @@ function Navigation(props) {
     let logOutButton="";        
     if (props.isLoggedIn == true) {
         logOutButton = (
-           `<a href="#"  id="menuitem-logout" class=${setSelectedMenuItem('logout','js-menuitem-logout')}> Log out</a>`  
+           `<a href="#"  id="menuitem-logout" class=${setClassForMenuItem('logout','js-menuitem-logout')}> Log out</a>`  
         );
     }
 
@@ -76,7 +120,7 @@ function Navigation(props) {
     let logInButton="";
     if (props.isLoggedIn != true) {
         logInButton = (
-            `<a href="#"  id="menuitem-login" class=${setSelectedMenuItem('login','js-menuitem-login')}> Log In</a>`
+            `<a href="#"  id="menuitem-login" class=${setClassForMenuItem('login','js-menuitem-login')}> Log In</a>`
         );
     } 
    
@@ -84,13 +128,13 @@ function Navigation(props) {
     let registerButton="";
     if (!(props.isLoggedIn === true)) {
         registerButton = (
-            `<a href="#"  id="menuitem-register" class=${setSelectedMenuItem('register','js-menuitem-register')}> Register</a>`                                     		                  
+            `<a href="#"  id="menuitem-register" class=${setClassForMenuItem('register','js-menuitem-register')}> Register</a>`                                     		                  
         );
     } 
     
     let  menuButton = (             
        `<a  href="" id="menuButton"  class="icon" >
-             <i class="${barsOrX}"></i> 
+             <i id="menuButtonIcon" class="${barsOrX}"></i> 
         </a>`                                                                 		                  
     );         
          
@@ -99,12 +143,12 @@ function Navigation(props) {
           
         return (        
             `<nav class="topnav" id="myTopnav">
-                <a id="menuitem-home"         href="#" class=${setSelectedMenuItem('home','js-menuitem-home')}>Home</a>                   			                                    		                                    
-                <a id="menuitem-profile"      href="#" class=${setSelectedMenuItem('profile','js-menuitem-profile')}>Profile</a>                   			                                    		                 
-                <a id="menuitem-myskills"    href="#" class=${setSelectedMenuItem('myskills','js-menuitem-myskills')}>My Skills</a>                   			                                    		                                 
-                <a id="menuitem-skills"       href="#" class=${setSelectedMenuItem('skills','js-menuitem-master-skiils')}> Skills</a>           
-                <a id="menuitem-summary"      href="#" class=${setSelectedMenuItem('summary','js-menuitem-view-summary')}> Summary</a>                              
-                <a id="menuitem-add-prospect" href="#" class=${setSelectedMenuItem('comments','js-menuitem-add-prospect')}> Add Prospect</a>                              
+                <a id="menuitem-home"      href="#" class=${setClassForMenuItem('home','js-menuitem-home')}>Home</a>                   			                                    		                                    
+                <a id="menuitem-profile"   href="#" class=${setClassForMenuItem('profile','js-menuitem-profile')}>Profile</a>                   			                                    		                 
+                <a id="menuitem-myskills"  href="#" class=${setClassForMenuItem('myskills','js-menuitem-myskills')}>My Skills</a>                   			                                    		                                 
+                <a id="menuitem-skills"    href="#" class=${setClassForMenuItem('skills','js-menuitem-skills')}> Skills</a>           
+                <a id="menuitem-summary"   href="#" class=${setClassForMenuItem('summary','js-menuitem-summary')}> Summary</a>                              
+                <a id="menuitem-prospect"  href="#" class=${setClassForMenuItem('comments','js-menuitem-prospect')}> Add Prospect</a>                              
                 ${registerButton}                                   		
                 ${logInButton}
                 ${logOutButton}

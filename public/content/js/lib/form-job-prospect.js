@@ -38,7 +38,7 @@ function submitProspectUpdates() {
     const contacts =  $('#prospectContacts').val();
     const comments =  $('#prospectComments').val();
     const details =  $('#prospectDetails').val(); 
-    const jobSkills = JSON.stringify(props.JOB_SKILLS);
+    const jobSkills = JSON.stringify(props.props.JOB_SKILLS);
  
     const prospectId =  $('#ProspectEditKey').val();  
     // Creating new job prospect
@@ -140,7 +140,7 @@ function displayProspectsSummaryForm(data) {
         props.JOB_SKILLS = data.prospect.jobSkills
       }
     
-      renderJobSkills(JOB_SKILLS);    
+      renderJobSkills(props.JOB_SKILLS);    
   
       // Format the input form for job prospect
       let formInputs = `

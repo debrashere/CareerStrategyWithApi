@@ -10,12 +10,19 @@
  "PROSPECTS" : {} };
  
  function  executeHandlers() {   
-    $(document).on('click','.js-menuitem-home',function(e){e.preventDefault(); renderLanding()});      
-    $(document).on('click','.js-menuitem-login',function(e){e.preventDefault(); renderLoginForm()});       
+    $(document).on('click','.js-menuitem-myskills',function(e){e.preventDefault(); setMenuItem()});      
+    $(document).on('click','.js-menuitem-home',function(e){e.preventDefault(); setMenuItem()});      
+    $(document).on('click','.js-menuitem-login',function(e){e.preventDefault(); setMenuItem()});       
+    $(document).on('click','.js-menuitem-prospect',function(e){e.preventDefault(); setMenuItem()});     
+    $(document).on('click','.js-menuitem-register',function(e){e.preventDefault(); setMenuItem()});     
+    $(document).on('click','.js-menuitem-profile',function(e){e.preventDefault(); setMenuItem()}) 
+    $(document).on('click','.js-menuitem-skills',function(e){e.preventDefault(); setMenuItem()})     
+    $(document).on('click','.js-menuitem-logout',function(e){e.preventDefault(); setMenuItem()});        
+    $(document).on('click','#menuitem-summary',function(e){e.preventDefault(); setMenuItem()})       
+    $(document).on('click','#menuButton',function(e){e.preventDefault(); menuFunction()});  
+    
     $(document).on('click','.js-login-image',function(e){e.preventDefault(); renderLoginForm()});   
-    $(document).on('click','.js-menuitem-myskills',function(e){e.preventDefault(); renderUserSkills()});  
     $(document).on('click','#submitLogin',function(e){e.preventDefault(); loginThisUser()});
-    $(document).on('click','.js-menuitem-logout',function(e){e.preventDefault(); logoutThisUser()});    
     $(document).on('click','#submitProfile',function(e){e.preventDefault(); submitProfileUpdates()}); 
     $(document).on('click','#submitProspect',function(e){e.preventDefault(); submitProspectUpdates()});     
     $(document).on('click','#registerUser',function(e){e.preventDefault(); renderRegistrationForm()}); 
@@ -30,13 +37,7 @@
     $(document).on('click','#cancelProspectEvent',function(e){e.preventDefault(); displayProspectsSummaryForm()});     
     $(document).on('click','.js-add-prospect',function(e){e.preventDefault(); displayProspectsSummaryForm()});     
     $(document).on('click','.js-edit-prospect',function(e){e.preventDefault(); displayProspectsSummaryForm()});     
-    $(document).on('click','.js-menuitem-add-prospect',function(e){e.preventDefault(); displayProspectsSummaryForm()});     
-    $(document).on('click','.js-menuitem-register',function(e){e.preventDefault(); renderRegistrationForm()});     
-    $(document).on('click','#menuButton',function(e){e.preventDefault(); menuFunction()});  
-    $(document).on('click','#menuitem-summary',function(e){e.preventDefault(); renderJobsSummaries()})       
-    $(document).on('click','.js-menuitem-master-skiils',function(e){e.preventDefault(); renderMasterSkillsList(displaySkillsMasterList)})  
-    $(document).on('click','.js-add-master-skill-to-user',function(e){e.preventDefault(); addMasterSkillToMySkills()})              
-    $(document).on('click','.js-menuitem-profile',function(e){e.preventDefault(); renderUserProfileForm()})       
+    $(document).on('click','.js-add-master-skill-to-user',function(e){e.preventDefault(); addMasterSkillToMySkills()})                    
     $(document).on('click','.js-edit-profile',function(e){e.preventDefault(); renderUserProfileForm()})       
     $(document).on('click','.js-add-master-skill',function(e){e.preventDefault(); addMasterSkill()})       
     $(document).on('click','.js-edit-master-skill',function(e){e.preventDefault(); editMasterSkill()})   

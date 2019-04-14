@@ -22,7 +22,7 @@ function generateJobSummaries(prospects) {
     <div class="td" data-header="Company"> ${prospect.where}</div>
     <div class="td" data-header="When">${formattedDate}</div>
     <div class="td" data-header="Status">${prospect.status}</div>
-    <div class="td js-prospectId" hidden><span class="js-prospectId" id="Prospect-${index}" hidden>${prospect.id}</span></div>
+    <div class="td" hidden><span class="js-prospectId" id="Prospect-${index}" hidden>${prospect.id}</span></div>
   </div>`;
   });    
 

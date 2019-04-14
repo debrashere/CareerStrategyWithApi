@@ -136,6 +136,7 @@ function renderJobDetails() {
  $('.js-page-content').append(`${ generateStatusHistory(prospect)}`); 
  $('.js-page-content').append(`${ generateComments(prospect)}`); 
  $('.js-page-content').append(`${ generateContacts(prospect) }`); 
+ $('.js-prospectId').hide();
 }
  
  

@@ -68,7 +68,7 @@ function generateContactList(data) {
               <div class="td" data-header="Name"><a href='#' title='Contact Name' class='js-prospect-by-contact'>${contact.firstName} ${contact.lastName}</a></div>        
               <div class="td" data-header="Email">${contact.email}</div>
               <div class="td" data-header="Phone">${contact.phone}</div>
-              <div class="td js-contactId" hidden><span class="js-contactId" id="Contact-${index}" hidden>${contact._id}</span></div>
+              <div class="td" hidden><span class="js-contactId" id="Contact-${index}" hidden>${contact._id}</span></div>
             </div>`;
         });                    
     });  
