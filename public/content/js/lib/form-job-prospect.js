@@ -1,7 +1,7 @@
 
 'use strict'  
  
-function prospectInputsAreValid() {
+function isProspectFormValid() {
 
  // clear form of error messages
  $( ".form-error" ).remove();
@@ -26,7 +26,7 @@ function prospectInputsAreValid() {
   Retrive the input from the job prospect form  
 */
 function submitProspectUpdates() {
-    if (!prospectInputsAreValid()) return;
+    if (!isProspectFormValid()) return;
 
     const what =  $('#prospectWhat').val();  
     const when =  $('#prospectWhen').val();  

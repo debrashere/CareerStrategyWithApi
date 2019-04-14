@@ -9,6 +9,27 @@ function renderJobsSummaries() {
 }
 
 function generateJobSummaries(prospects) {        
+  let summaries =  '';
+
+  prospects.map( function(prospect, index) {  
+    let dateWhen = new Date(prospect.when);
+    let formattedDate = `${dateWhen.getMonth()}/${dateWhen.getDay()}/${dateWhen.getFullYear()}  - 
+     ${dateWhen.getHours()}:${dateWhen.getMinutes()}:${dateWhen.getSeconds()} `;            
+      
+  summaries += `
+  <div class="section-block">  
+    <div class="section-sub-header"><a id="prospectId-${index}" href=# class="js-prospect-detail">${prospect.what}</a></div>
+    <div>${prospect.where}</div>   
+    <div>${formattedDate}</div>
+    <div>${prospect.status}</div>
+    <div hidden><span class="js-prospectId" id="Prospect-${index}" hidden>${prospect.id}</span></div>
+  </div>`;
+  });    
+
+  return summaries;  
+}
+
+function generateJobSummariesOLD(prospects) {        
   let tableRows =  '';
 
   prospects.map( function(prospect, index) {  

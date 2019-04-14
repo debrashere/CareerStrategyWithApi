@@ -54,10 +54,21 @@ main .row {
 .user-profile {
   width: 100%;
 }
+.section-block{
+  margin: 5px; 
+  border: 1px solid black;
+  background-color: lightgray;
+  width: 95%;
+}
 
 .section-header{ 
   border: 1px solid black;
   background-color: lightgray;
+  width: 100%;
+}
+.section-sub-header{ 
+  border: 1px solid black;
+  background-color: rgb(177, 177, 226);
   width: 100%;
 }
 

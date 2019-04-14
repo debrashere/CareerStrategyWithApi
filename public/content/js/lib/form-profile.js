@@ -1,6 +1,6 @@
 
 'use strict'
-function profileInputsAreInValid() {
+function isProfileFormValid() {
 
  // clear form of error messages
  $( ".form-error" ).remove();
@@ -19,7 +19,7 @@ function profileInputsAreInValid() {
   Validate the input data from the user profile form
 */
 function validateProfileForm(profileId) {
- if (profileInputsAreInValid()) return;
+ if (isProfileFormValid()) return;
  
   props.userId = localStorage.getItem('userId');  
   const firstName = $('#profileFirst').val();  

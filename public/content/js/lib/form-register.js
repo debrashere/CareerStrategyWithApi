@@ -1,6 +1,6 @@
 
  'use strict'
- function inputsAreValid() {
+ function isRegisterFormValid() {
  
   // clear form of error messages
   $( ".form-error" ).remove();
@@ -17,7 +17,7 @@
 
 //
 function submitRegistion() {         
-    if (!inputsAreValid()) return;
+    if (!isRegisterFormValid()) return;
     
     const userName =  $('#userName').val();
     const password = $("#password").val();

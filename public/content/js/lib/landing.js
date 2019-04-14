@@ -1,13 +1,18 @@
 function renderLandingPage(id) {  
     generateNonSecureData();
     if (props.isLoggedIn === true && props.hasProfile === true) {
-        const queryPath = `userId=${props.userId}`;
-        // function displayCareerStrategyResults will save user skills as part of variable USER_PROFILE
-        setTimeout(findCareerStrategyAPI(pathJobProspects, queryPath, "",  function(data) {
-        props.PROSPECTS = data.prospect;
-        generateSecureData(data);
-        }), 3000);
-    } 
+        if (jQuery.isEmptyObject(props.PROSPECTS)) {  
+            const queryPath = `userId=${props.userId}`;
+            // function displayCareerStrategyResults will save user skills as part of variable USER_PROFILE
+            setTimeout(findCareerStrategyAPI(pathJobProspects, queryPath, "",  function(data) {
+            props.PROSPECTS = data.prospect;
+            if (apiReturnedError(data)) return;
+            generateSecureData(props.PROSPECTS);
+            }), 3000);
+        }
+        else
+            generateSecureData(props.PROSPECTS); 
+    }       
 }
   
 function groupBy( array , f )
@@ -25,10 +30,10 @@ function groupBy( array , f )
   })
 }
 
-function generateStatusList(data) {
+function generateStatusList(prospects) {
     let statusList = [];
-    if (data && data.prospect ) {
-        statusList = groupBy(data.prospect, function(thisProspect)
+    if (prospects) {
+        statusList = groupBy(prospects, function(thisProspect)
         {
             return [thisProspect.status];
         });  
@@ -42,10 +47,10 @@ function generateStatusList(data) {
     return `<div class="section-header"><h3 tabindex="0">Prospect Status</h3></div><div>${uniqueStatuses}</div>`;
 }
 
-function generateCompanyList(data) { 
+function generateCompanyList(prospects) { 
     let whereList = [];
-    if (data && data.prospect ) {
-        whereList = groupBy(data.prospect, function(thisProspect)
+    if (prospects ) {
+        whereList = groupBy(prospects, function(thisProspect)
         {
             return [thisProspect.where];
         });  
@@ -59,9 +64,9 @@ function generateCompanyList(data) {
          return `<div class="section-header"><h3 tabindex="0">Companies</h3></div><div>${uniqueCompanies}</div>`;
 }
 
-function generateContactList(data) {          
+function generateContactList(prospects) {          
     let tableRows = '';  
-    data.prospect.map( function(thisProspect, index) {   
+    prospects.map( function(thisProspect, index) {   
         thisProspect.contacts.map(function (contact, idx) {
             tableRows += `
             <div class="tr">  
@@ -92,13 +97,11 @@ function generateContactList(data) {
 /*     
    render profile information (user name, email address, phone number)
 */
-function generateSecureData(data) { 
-    if (apiReturnedError(data)) return;
-       
+function generateSecureData(prospects) {         
     $( ".js-page-content" ).html('');
-    let statusList = generateStatusList(data);
-    let companyList = generateCompanyList(data);
-    let contactsList = generateContactList(data);
+    let statusList = generateStatusList(prospects);
+    let companyList = generateCompanyList(prospects);
+    let contactsList = generateContactList(prospects);
     $('.js-page-content').append(`${statusList}`);   
     $('.js-page-content').append(`${companyList}`); 
     $('.js-page-content').append(`${contactsList}`); 

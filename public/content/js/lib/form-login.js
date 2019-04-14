@@ -1,6 +1,6 @@
 'use strict'
 /* import { PromiseProvider } from "mongoose"; */
-function loginInputsAreValid() {
+function isLoginFormValid() {
 
  // clear form of error messages
  $( ".form-error" ).remove();
@@ -16,7 +16,7 @@ function loginInputsAreValid() {
 
 function loginThisUser() {     
     // check if inputs are valid
-    if (!loginInputsAreValid()) return;
+    if (!isLoginFormValid()) return;
 
     const userName =  $('#UserId').val();
     const password = $("#userPassword").val(); 
