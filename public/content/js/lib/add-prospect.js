@@ -192,8 +192,8 @@ function validateProfileForm(profileId) {
     return;
   } 
 
-  userId = localStorage.getItem('userId');  
-  if (!userId || userId.length == 0) {
+  props.userId = localStorage.getItem(props.userId);  
+  if (!props.userId || props.userId.length == 0) {
     //location.href = "./login.html";
     renderLoginForm();
   }
@@ -211,12 +211,12 @@ function validateProfileForm(profileId) {
   }
   else{        
     // create the user profile document for this user  
-    userProfile = `{"firstName": "${firstName}","lastName": "${lastName}","email": "${email}", "phone": "${phone}", "userId": "${userId}" }`;    
+    userProfile = `{"firstName": "${firstName}","lastName": "${lastName}","email": "${email}", "phone": "${phone}", "userId": "${props.userId}" }`;    
     setTimeout(postCareerStrategyAPI(pathUserProfile, 
       JSON.parse(userProfile), "", function(data){
         if (data && data.id) {
-          userProfileId = data.id;                     
-          refreshUserProfile(userProfileId); 
+          props.userProfileId = data.id;                     
+          refreshUserProfile(props.userProfileId); 
 
           $(".js-edit-profile-form").prop("hidden", true);
           $(".js-form").prop("hidden", true); 
@@ -269,7 +269,7 @@ function prospectEditsAreValid() {
 */
 function validateProspectForm(prospectId) {
   const errors = prospectEditsAreValid();
-  // show error message if the form input is not  valie
+  // show error message if the form input is not valid
   if (errors != "") {
     $('.js-error-message').html(errors);
     $('.js-error-message').prop("hidden", false);
@@ -289,15 +289,15 @@ function validateProspectForm(prospectId) {
  
     // Creating new job prospect
     if (!prospectId || prospectId == undefined) {
-    const jobProspect = `{"what": "${what}", "when": "${when}", "where": "${where}", "status": "${status}", "userId": "${userId}","source":  "${source}", "sourceUrl": "${sourceUrl}","dayToDay":  "${dayToDay}", "contact":  "${contacts}", "comments":  "${comments}", "details":   "${details}",  "jobSkills": ${jobSkills}}`;            
+    const jobProspect = `{"what": "${what}", "when": "${when}", "where": "${where}", "status": "${status}", "userId": "${props.userId}","source":  "${source}", "sourceUrl": "${sourceUrl}","dayToDay":  "${dayToDay}", "contact":  "${contacts}", "comments":  "${comments}", "details":   "${details}",  "jobSkills": ${jobSkills}}`;            
     setTimeout(postCareerStrategyAPI(pathJobProspects, 
-      JSON.parse(jobProspect), userProfileId, function(data){  
+      JSON.parse(jobProspect), props.userProfileId, function(data){  
         refreshUserProfile();
       }), 3000);      
   }
   else{ 
     // Updating existing job prospect
-    const jobProspect = `{"id":"${prospectId}","what": "${what}", "when": "${when}", "where": "${where}", "status": "${status}", "userId": "${userId}","source":  "${source}", "sourceUrl": "${sourceUrl}","dayToDay":  "${dayToDay}", "contacts":  "${contacts}", "comments":  "${comments}", "details":   "${details}",  "jobSkills": ${jobSkills}}`;  
+    const jobProspect = `{"id":"${prospectId}","what": "${what}", "when": "${when}", "where": "${where}", "status": "${status}", "userId": "${props.userId}","source":  "${source}", "sourceUrl": "${sourceUrl}","dayToDay":  "${dayToDay}", "contacts":  "${contacts}", "comments":  "${comments}", "details":   "${details}",  "jobSkills": ${jobSkills}}`;  
     setTimeout(putCareerStrategyAPI(pathJobProspects, 
       JSON.parse(jobProspect), prospectId, function(data){       
         refreshUserProfile();
@@ -306,8 +306,7 @@ function validateProspectForm(prospectId) {
     
   $(".js-form").prop("hidden", true);      
 } 
-      
- 
+       
 /*
   Executed when user clicks the submit button for user profile form or job prospect form
   will call the correct function to complete the validation of inputs and submit the updates

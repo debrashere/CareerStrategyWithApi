@@ -95,7 +95,7 @@ function renderJobDetails() {
   if (!isUserLoggedIn()) return;
   const id = `#${event.currentTarget.activeElement.id}`;   
   let prospectId = $(id).parent().parent().find('.js-prospectId').text(); 
-  let prospect = PROSPECTS.filter( id => id.id === prospectId)[0];
+  let prospect = props.PROSPECTS.filter( id => id.id === prospectId)[0];
   $( ".js-page-content" ).html('');
         
   let index = 1;
@@ -130,7 +130,7 @@ function renderJobDetails() {
 
  $('.js-page-content').append(`${table}`);
  $('.js-page-content').append(`${ generateJobSkills(prospect)}`); 
- $('.js-page-content').append(`${ generateUserSkills(USER_PROFILE)}`); 
+ $('.js-page-content').append(`${ generateUserSkills(props.USER_PROFILE)}`); 
  $('.js-page-content').append(`${ generateSource(prospect) }`); 
  $('.js-page-content').append(`${ generateDaytoDayAndDetails(prospect)}`); 
  $('.js-page-content').append(`${ generateStatusHistory(prospect)}`); 

@@ -21,7 +21,7 @@ function profileInputsAreInValid() {
 function validateProfileForm(profileId) {
  if (profileInputsAreInValid()) return;
  
-  userId = localStorage.getItem('userId');  
+  props.userId = localStorage.getItem('userId');  
   const firstName = $('#profileFirst').val();  
   const lastName =  $('#profileLast').val();  
   const email =  $('#profileEmail').val(); 
@@ -36,12 +36,12 @@ function validateProfileForm(profileId) {
   }
   else{        
     // create the user profile document for this user  
-    userProfile = `{"firstName": "${firstName}","lastName": "${lastName}","email": "${email}", "phone": "${phone}", "userId": "${userId}" }`;    
+    userProfile = `{"firstName": "${firstName}","lastName": "${lastName}","email": "${email}", "phone": "${phone}", "userId": "${props.userId}" }`;    
     setTimeout(postCareerStrategyAPI(pathUserProfile, 
       JSON.parse(userProfile), "", function(data){
         if (data && data.id) {
-          USER_PROFILE = (data && data.userProfile && data.userProfile.length > 0) ? data.userProfile[0] : [];
-          userProfileId = USER_PROFILE && USER_PROFILE.id ? USER_PROFILE.id : "";                        
+          props.USER_PROFILE = (data && data.userProfile && data.userProfile.length > 0) ? data.userProfile[0] : [];
+          props.userProfileId = props.USER_PROFILE && props.USER_PROFILE.id ? props.USER_PROFILE.id : "";                        
           renderSecureContent(); 
         }
         else if (data.responseJSON.error)
@@ -89,8 +89,8 @@ function renderUserProfileForm(data) {
         profile = data.userProfile[[0]];
         hiddenProfileId = `<label for="ProfileEditKey" class="edit-label"></label><div class="td" hidden><input id="ProfileEditKey" type="text"value=${profile.id} hidden></input></div>`;       
       }
-      else if (USER_PROFILE && USER_PROFILE != {} ) {
-        profile = USER_PROFILE;
+      else if (props.USER_PROFILE && props.USER_PROFILE != {} ) {
+        profile = props.USER_PROFILE;
         hiddenProfileId = `<label for="ProfileEditKey" class="edit-label"></label><div class="td" hidden><input id="ProfileEditKey" type="text"value=${profile.id} hidden></input></div>`;       
       }
   

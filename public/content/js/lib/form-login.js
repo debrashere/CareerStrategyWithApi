@@ -26,22 +26,22 @@ function loginThisUser() {
     if (!apiReturnedErrorOnLogin(data)) {
       localStorage.setItem('token', data.userAuth.authToken);
       localStorage.setItem('userId', data.userAuth.id);
-      userId = localStorage.getItem('userId'); 
+      props.userId = localStorage.getItem('userId'); 
       getUserProfile();      
     }
     }), 3000);
 }
   
 function getUserProfile() {
-  if (!userId || userId === "") return ;
+  if (!props.userId || props.userId === "") return ;
 
-  const queryPath = `userId=${userId}`;
+  const queryPath = `userId=${props.userId}`;
   setTimeout(findCareerStrategyAPI(pathUserProfile, queryPath, "" , function(data) {      
     // render user information including profile info and the user's skills
-    USER_PROFILE = (data && data.userProfile && data.userProfile.length > 0) ? data.userProfile[0] : {};
-    userProfileId = USER_PROFILE && USER_PROFILE.id ? USER_PROFILE.id : "";  
-    if (userProfileId !== "") setHasProfile(true);
-    renderLanding(USER_PROFILE);
+    props.USER_PROFILE = (data && data.userProfile && data.userProfile.length > 0) ? data.userProfile[0] : {};
+    props.userProfileId = USER_PROFILE && USER_PROFILE.id ? USER_PROFILE.id : "";  
+    if (props.userProfileId !== "") setHasProfile(true);
+    renderLanding(props.USER_PROFILE);
   }), 3000);   
 }
   

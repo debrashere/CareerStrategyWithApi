@@ -3,7 +3,7 @@
 */
 function renderBanner() { 
     $( ".banner" ).html('');
-    if (props && props.loggedIn === true) return;
+    if (props && props.isLoggedIn === true) return;
     if (props && props.route === 'login') return;
     let banner =  
       `<div>

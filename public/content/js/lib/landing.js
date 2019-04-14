@@ -1,11 +1,10 @@
 function renderLandingPage(id) {  
     generateNonSecureData();
-    if (props.loggedIn === true && props.hasProfile === true) {
-        const queryPath = `userId=${userId}`;
+    if (props.isLoggedIn === true && props.hasProfile === true) {
+        const queryPath = `userId=${props.userId}`;
         // function displayCareerStrategyResults will save user skills as part of variable USER_PROFILE
-        // user's skills will be accessed by function renderJobProspects
         setTimeout(findCareerStrategyAPI(pathJobProspects, queryPath, "",  function(data) {
-        PROSPECTS = data.prospect;
+        props.PROSPECTS = data.prospect;
         generateSecureData(data);
         }), 3000);
     } 
@@ -25,6 +24,7 @@ function groupBy( array , f )
     return groups[group]; 
   })
 }
+
 function generateStatusList(data) {
     let statusList = [];
     if (data && data.prospect ) {
@@ -36,9 +36,10 @@ function generateStatusList(data) {
      
     let uniqueStatuses =  ''; 
     statusList.map( function(prospect, index) {       
-        uniqueStatuses += `<span class='user-skill'>${prospect[0].status} : ${prospect.length}</span> ` 
+        uniqueStatuses += `<span id="${prospect[0].status}" class='user-skill js-prospect-by-status'>
+        <a href="#" title='prospect status'>${prospect[0].status} : ${prospect.length}</a></span> ` 
     });   
-    return `<div class="section-header"><h3 tabindex="0">Prospect Status List</h3></div><div>${uniqueStatuses}</div>`;
+    return `<div class="section-header"><h3 tabindex="0">Prospect Status</h3></div><div>${uniqueStatuses}</div>`;
 }
 
 function generateCompanyList(data) { 
@@ -53,9 +54,9 @@ function generateCompanyList(data) {
     let uniqueCompanies =  ''; 
     whereList.map( function(prospect, index) {       
         plength = (prospect.length === 1) ? '' : `: ${prospect.length}`;
-        uniqueCompanies += `<span class='user-skill'>${prospect[0].where}${plength}</span> ` 
-        });   
-    return `<div class="section-header"><h3 tabindex="0">Companies</h3></div><div>${uniqueCompanies}</div>`;
+        uniqueCompanies += `<span class='user-skill js-prospect-by-company'>
+        <a href="#" title='prospect company'>${prospect[0].where}${plength}</a></span> `         });      
+         return `<div class="section-header"><h3 tabindex="0">Companies</h3></div><div>${uniqueCompanies}</div>`;
 }
 
 function generateContactList(data) {          
@@ -64,11 +65,10 @@ function generateContactList(data) {
         thisProspect.contacts.map(function (contact, idx) {
             tableRows += `
             <div class="tr">  
-              <div class="td" data-header="Type">${contact.firstName}</div>
-              <div class="td" data-header="First"> ${contact.lastName}</div>
-              <div class="td" data-header="Last">${contact.email}</div>
-              <div class="td" data-header="Email">${contact.phone}</div>
-              <div class="td" hidden><span class="js-contactId" id="Contact-${index}" hidden>${contact._id}</span></div>
+              <div class="td" data-header="Name"><a href='#' title='Contact Name' class='js-prospect-by-contact'>${contact.firstName} ${contact.lastName}</a></div>        
+              <div class="td" data-header="Email">${contact.email}</div>
+              <div class="td" data-header="Phone">${contact.phone}</div>
+              <div class="td js-contactId" hidden><span class="js-contactId" id="Contact-${index}" hidden>${contact._id}</span></div>
             </div>`;
         });                    
     });  
@@ -79,8 +79,7 @@ function generateContactList(data) {
         <output><div id="js-status-error-message" class="error-message" aria-live="assertive" hidden> </div></output>
         <div class="table">
         <div class="tr th"> 
-            <div class="td">First</div>
-            <div class="td">Last</div>    
+            <div class="td">Name</div>          
             <div class="td">Email</div>   
             <div class="td">Phone</div>                                     
         </div>
@@ -102,10 +101,11 @@ function generateSecureData(data) {
     let contactsList = generateContactList(data);
     $('.js-page-content').append(`${statusList}`);   
     $('.js-page-content').append(`${companyList}`); 
-    $('.js-page-content').append(`${contactsList}`);                
+    $('.js-page-content').append(`${contactsList}`); 
+    $('.js-contactId').hide();                
   } 
 
-  /*     
+/*     
    render profile information (user name, email address, phone number)
 */
 function generateNonSecureData() {   
@@ -120,7 +120,3 @@ function generateNonSecureData() {
       
     $('.js-page-content').append(`${landing}`);                 
   } 
-  
-  
-  
-  

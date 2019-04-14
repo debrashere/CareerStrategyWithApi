@@ -1,5 +1,13 @@
  'use strict'
- let props = {"route":"home", "loggedIn": false, "hasProfile": false} 
+ let props = {"route":"home", 
+ "isLoggedIn": false, 
+ "hasProfile": false, 
+ "userId" : "",
+ "userProfileId" : "",
+ "USER_PROFILE" : {},
+ "JOB_SKILLS" : [],
+ "MASTER_SKILLS" : [],
+ "PROSPECTS" : {} };
  
  function  executeHandlers() {   
     $(document).on('click','.js-menuitem-home',function(e){e.preventDefault(); renderLanding()});      
@@ -33,20 +41,23 @@
     $(document).on('click','.js-add-master-skill',function(e){e.preventDefault(); addMasterSkill()})       
     $(document).on('click','.js-edit-master-skill',function(e){e.preventDefault(); editMasterSkill()})   
     $(document).on('click','.js-delete-master-skill',function(e){e.preventDefault(); deleteMasterSkill()}) 
-    
+    $(document).on('click','.js-prospect-by-status',function(e){e.preventDefault(); renderJobsSummariesByStatus()}) 
+    $(document).on('click','.js-prospect-by-company',function(e){e.preventDefault(); renderJobsSummariesByCompany()}) 
+    $(document).on('click','.js-prospect-by-contact',function(e){e.preventDefault(); renderJobsSummariesByContact()}) 
+   
 }
    
 function setHasProfile(value) {
     props.hasProfile = value;
     if (props.hasProfile === true)
-      props.loggedIn = true;
+      props.isLoggedIn = true;
   }
   
 // Called from secure pages
 // If user is not logged in redirect them to the login or profile page
 function isUserLoggedIn() { 
   let continueToPage = false;
-  props.loggedIn === true 
+  props.isLoggedIn === true 
     ? props.hasProfile === true
       ? continueToPage = true
       : renderUserProfileForm()    
@@ -58,7 +69,7 @@ function isUserLoggedIn() {
 
 function canAccessProfile() {
   let continueToPage = false;
-  props.loggedIn === true  
+  props.isLoggedIn === true  
     ? continueToPage = true
     : renderLoginForm() 
 

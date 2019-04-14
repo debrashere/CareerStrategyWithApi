@@ -38,20 +38,20 @@ function submitProspectUpdates() {
     const contacts =  $('#prospectContacts').val();
     const comments =  $('#prospectComments').val();
     const details =  $('#prospectDetails').val(); 
-    const jobSkills = JSON.stringify(JOB_SKILLS);
+    const jobSkills = JSON.stringify(props.JOB_SKILLS);
  
     const prospectId =  $('#ProspectEditKey').val();  
     // Creating new job prospect
     if (!prospectId || prospectId == undefined) {
-    const jobProspect = `{"what": "${what}", "when": "${when}", "where": "${where}", "status": "${status}", "userId": "${userId}","source":  "${source}", "sourceUrl": "${sourceUrl}","dayToDay":  "${dayToDay}", "contact":  "${contacts}", "comments":  "${comments}", "details":   "${details}",  "jobSkills": ${jobSkills}}`;            
+    const jobProspect = `{"what": "${what}", "when": "${when}", "where": "${where}", "status": "${status}", "userId": "${props.userId}","source":  "${source}", "sourceUrl": "${sourceUrl}","dayToDay":  "${dayToDay}", "contact":  "${contacts}", "comments":  "${comments}", "details":   "${details}",  "jobSkills": ${jobSkills}}`;            
     setTimeout(postCareerStrategyAPI(pathJobProspects, 
-      JSON.parse(jobProspect), userProfileId, function(data){  
+      JSON.parse(jobProspect), props.userProfileId, function(data){  
         refreshUserProfile();
       }), 3000);      
   }
   else{ 
     // Updating existing job prospect
-    const jobProspect = `{"id":"${prospectId}","what": "${what}", "when": "${when}", "where": "${where}", "status": "${status}", "userId": "${userId}","source":  "${source}", "sourceUrl": "${sourceUrl}","dayToDay":  "${dayToDay}", "contacts":  "${contacts}", "comments":  "${comments}", "details":   "${details}",  "jobSkills": ${jobSkills}}`;  
+    const jobProspect = `{"id":"${prospectId}","what": "${what}", "when": "${when}", "where": "${where}", "status": "${status}", "userId": "${props.userId}","source":  "${source}", "sourceUrl": "${sourceUrl}","dayToDay":  "${dayToDay}", "contacts":  "${contacts}", "comments":  "${comments}", "details":   "${details}",  "jobSkills": ${jobSkills}}`;  
     setTimeout(putCareerStrategyAPI(pathJobProspects, 
       JSON.parse(jobProspect), prospectId, function(data){       
         refreshUserProfile();
@@ -103,7 +103,6 @@ function renderJobSkills(data) {
       $( ".js-job-prospects-skills-form").html(skills); 
   
 } 
-
  
 /*
   Display the job prospect form to edit or create job prospect
@@ -113,7 +112,7 @@ function displayProspectsSummaryForm(data) {
     $('.js-page-content').html();
    
       // create json variable with default empty values for creating a new job prospect
-      JOB_SKILLS = [];
+      props.JOB_SKILLS = [];
       let hiddenProspectId = "";
       let prospect = { 
         "id": "",     
@@ -138,7 +137,7 @@ function displayProspectsSummaryForm(data) {
   
       // If job prospects does not have any job skills or creating a new job prospect
       if (data && data != undefined && data.prospect && data.prospect != undefined && data.prospect.jobSkills) {
-        JOB_SKILLS = data.prospect.jobSkills
+        props.JOB_SKILLS = data.prospect.jobSkills
       }
     
       renderJobSkills(JOB_SKILLS);    

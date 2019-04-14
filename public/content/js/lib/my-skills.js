@@ -70,7 +70,7 @@ function renderUserSkills() {
 
   $('.js-page-content').html(''); 
   // display users skills and master list of skills  
-  $('.js-page-content').append(generateUserSkills(USER_PROFILE));
+  $('.js-page-content').append(generateUserSkills(props.USER_PROFILE));
   $('.js-page-content').append(renderMasterSkillsList(displayMasterSkills));        
 } 
 
@@ -84,15 +84,15 @@ function  addMasterSkillToMySkills() {
     let skill = $(id).text();
 
       let skillIndex = -1;
-      if (!USER_PROFILE.skills) {
-        USER_PROFILE.skills = []
+      if (!props.USER_PROFILE.skills) {
+        props.USER_PROFILE.skills = []
       }
 
       // check if skill already exists in the user's skill collection
       // if so then update instead of add
-      for(let idx=0; idx< USER_PROFILE.skills.length ; idx++)
+      for(let idx=0; idx< props.USER_PROFILE.skills.length ; idx++)
       {
-          if (USER_PROFILE.skills[idx].skill == skill) {
+          if (props.USER_PROFILE.skills[idx].skill == skill) {
           skillIndex = idx;
           break;
          }
@@ -100,16 +100,16 @@ function  addMasterSkillToMySkills() {
 
       if (skillIndex > -1)
       {
-        USER_PROFILE.skills[skillIndex].yearsOfExperience = 1;
+        props.USER_PROFILE.skills[skillIndex].yearsOfExperience = 1;
       }
       else {
-        USER_PROFILE.skills.push(JSON.parse(`{"skill": "${skill.trim()}","yearsOfExperience":"1"}`));       
+        props.USER_PROFILE.skills.push(JSON.parse(`{"skill": "${skill.trim()}","yearsOfExperience":"1"}`));       
       }
 
       // create json object to update the user skills
-      const userSkills = `{"id": "${userProfileId}","skills": ${JSON.stringify(USER_PROFILE.skills)}}`;                         
+      const userSkills = `{"id": "${props.userProfileId}","skills": ${JSON.stringify(props.USER_PROFILE.skills)}}`;                         
 
-      setTimeout(putCareerStrategyAPI(pathUserProfile, JSON.parse(userSkills), userProfileId, function(data) {                                        
+      setTimeout(putCareerStrategyAPI(pathUserProfile, JSON.parse(userSkills), props.userProfileId, function(data) {                                        
         renderUserSkills();
       }), 3000);                                       
 } 

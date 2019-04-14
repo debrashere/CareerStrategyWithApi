@@ -6,7 +6,7 @@ function  logoutThisUser() {
     localStorage.removeItem('token'); 
     localStorage.removeItem('userId'); 
     // Redirect the to the landing page.
-    props.loggedIn = false;   
+    props.isLoggedIn = false;   
     props.hasProfile = false; 
     renderLanding(); 
 }       
@@ -66,7 +66,7 @@ function Navigation(props) {
     $('.js-error-message').prop("hidden", true);       
     // Only render the log out button if we are logged in
     let logOutButton="";        
-    if (props.loggedIn == true) {
+    if (props.isLoggedIn == true) {
         logOutButton = (
            `<a href="#"  id="menuitem-logout" class=${setSelectedMenuItem('logout','js-menuitem-logout')}> Log out</a>`  
         );
@@ -74,7 +74,7 @@ function Navigation(props) {
 
     // Only render login button if user is not logged in
     let logInButton="";
-    if (props.loggedIn != true) {
+    if (props.isLoggedIn != true) {
         logInButton = (
             `<a href="#"  id="menuitem-login" class=${setSelectedMenuItem('login','js-menuitem-login')}> Log In</a>`
         );
@@ -82,7 +82,7 @@ function Navigation(props) {
    
      // Only render Sign Up button if user is not logged in 
     let registerButton="";
-    if (!(props.loggedIn === true)) {
+    if (!(props.isLoggedIn === true)) {
         registerButton = (
             `<a href="#"  id="menuitem-register" class=${setSelectedMenuItem('register','js-menuitem-register')}> Register</a>`                                     		                  
         );

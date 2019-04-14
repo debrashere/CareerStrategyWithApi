@@ -1,11 +1,4 @@
-
 'use strict'  
-let userId = "";
-let userProfileId = "";
-let USER_PROFILE = {};
-let JOB_SKILLS = [];
-let MASTER_SKILLS = [];
-let PROSPECTS = {};
 const pathSkills = "skills";
 
 function renderLanding(data) { 
@@ -14,43 +7,46 @@ function renderLanding(data) {
   renderLandingPage(); 
 }
 
-function renderSecureContent() {
-  renderHeader(USER_PROFILE);
-  renderBanner();
-  renderJobsSummaries(userId) ;
-} 
- 
 function isUserLoggedIn() {
-  userId = localStorage.getItem('userId');   
-  return userId && userId.length > 0;
+  props.userId = localStorage.getItem('userId');   
+  return props.userId && props.userId.length > 0;
 }
 
 function userHasProfile() {
-  if (!userId || userId === "") {
-    props.hasProflie = false;
+  if (!props.userId || props.userId === "") {
+    props.hasProfile = false;
     return false;
   }
   let userProfileFound = false;
-  if (!userProfileId || userProfileId === "" ) {  
-    const queryPath = `userId=${userId}`;
+  if (!props.userProfileId || props.userProfileId === "" ) {  
+    const queryPath = `userId=${props.userId}`;
     setTimeout(findCareerStrategyAPI(pathUserProfile, queryPath, "" , function(data) {      
       // render user information including profile info and the user's skills
-      USER_PROFILE = (data && data.userProfile && data.userProfile.length > 0) ? data.userProfile[0] : [];
-      userProfileId = USER_PROFILE && USER_PROFILE.id ? USER_PROFILE.id : "";
+      const userProfile = (data && data.userProfile && data.userProfile.length > 0) ? data.userProfile[0] : {};
+      const userProfileId = userProfile ? userProfile.id : "";
       userProfileFound = userProfileId !== "";     
 
       if (userProfileFound === true) {
-        props = {"route":"home", "loggedIn": true, "hasProflie": true} 
-        renderSecureContent();
+        props = {"route":"home", "isLoggedIn": true, 
+        "hasProfile": true, 
+        "userId" : "",
+        "userProfileId" : userProfileId,
+        "USER_PROFILE" : userProfile,
+        "JOB_SKILLS" : [],
+        "MASTER_SKILLS" : [],
+        "PROSPECTS" : {} } 
       }
       else {
-        userId = "";
-        //Clear auth token and settings
-        //localStorage.removeItem('token'); 
-        //localStorage.removeItem('userId');   
-        props = {"route":"home", "loggedIn": false, "hasProfile": false} 
-        renderLanding(); 
+        props = {"route":"home", "isLoggedIn": false, 
+        "hasProfile": false, 
+        "userId": "", 
+        "userProfileId" : "",
+        "USER_PROFILE" : {},
+        "JOB_SKILLS" : [],
+        "MASTER_SKILLS" : [],
+        "PROSPECTS" : {} }    
       }
+      renderLanding(props.USER_PROFILE); 
     }), 3000); 
   } 
 }
