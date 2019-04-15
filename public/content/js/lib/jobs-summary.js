@@ -4,7 +4,7 @@ function renderJobsSummaries() {
       const queryPath = `userId=${props.userId}`;
       // function displayCareerStrategyResults will save user skills as part of USER_PROFILE
       setTimeout(findCareerStrategyAPI(pathJobProspects, queryPath, "",  function(data) {
-        PROSPECTS = data.prospect;
+        props.PROSPECTS = data.prospect;
         renderJobProspects(data);
     }), 3000);
 }

@@ -89,12 +89,12 @@ function renderJobSkills(data) {
       if (data.length > 0) {
           data.map( function(skill, index) {          
           skills +=
-          `<p class="item job-skill js-job-skillset"> 
+          `<div class="job-skill js-job-skillset"> 
               <span  tabindex="0" id="JobSkill-${index}" class="js-job-skill js-job-skill-text" data-header="Skill">${skill.skill}</span>
               <span  tabindex="0" id="JobExp-${index}" class="js-job-skill js-job-skill-years" data-header="Experience">${skill.yearsOfExperience}</span>
               <span  tabindex="0"><a id="EditJobSkill-${index}" href=# class="js-edit-job-skill"><img alt="edit job skill" src="./images/icon-edit.png" /></a></span>
               <span  tabindex="0"><a id="DeleteJobSkill-${index}" href=# class="js-delete-job-skill"><img alt="delete job skill" src="./images/icon-delete.png" /></a></span>           
-            </p> `;        
+            </div> `;        
         });
         skills += '</div></div>';     
         }  

@@ -92,9 +92,9 @@ function generateSource(prospect) {
    `;
 }
 
-function renderJobDetails() {
+function renderJobDetails(event) {
   if (!isUserLoggedIn()) return;
-  const id = `#${event.currentTarget.activeElement.id}`;   
+  const id = `#${event.currentTarget.id}`;   
   let prospectId = $(id).parent().parent().find('.js-prospectId').text(); 
   let prospect = props.PROSPECTS.filter( id => id.id === prospectId)[0];
   $( ".js-page-content" ).html('');
@@ -138,6 +138,8 @@ function renderJobDetails() {
  $('.js-page-content').append(`${ generateComments(prospect)}`); 
  $('.js-page-content').append(`${ generateContacts(prospect) }`); 
  $('.js-prospectId').hide();
+ $('.js-contactId').hide();
+ $('.js-statusId').hide(); 
 }
  
  
@@ -171,12 +173,9 @@ function generateJobSkills(prospect) {
     if (prospect && prospect.jobSkills && prospect.jobSkills.length > 0) {
       prospect.jobSkills.map( function(skill, index) {          
         skills +=
-        `<p class="item job-skill js-job-skillset"> 
-            <span  tabindex="0" id="JobSkill-${index}" class="js-job-skill js-job-skill-text" data-header="Skill">${skill.skill}</span>
-            <span  tabindex="0" id="JobExp-${index}" class="js-job-skill js-job-skill-years" data-header="Experience">${skill.yearsOfExperience}</span>
-            <span  tabindex="0"><a id="EditJobSkill-${index}" href=# class="js-edit-job-skill"><img alt="edit job skill" src="./images/icon-edit.png" /></a></span>
-            <span  tabindex="0"><a id="DeleteJobSkill-${index}" href=# class="js-delete-job-skill"><img alt="delete job skill" src="./images/icon-delete.png" /></a></span>           
-          </p> `;        
+        `<div class="job-skill js-job-skillset"> 
+            <span  tabindex="0" id="JobSkill-${index}" class="js-job-skill js-job-skill-text" data-header="Skill">${skill.skill}</span>      
+          </div> `;        
       });
       skills += '</div></div>';     
       }  

@@ -13,8 +13,8 @@ function  deleteMasterSkill() {
   deleteCareerStrategyAPI(pathSkills, "",  skillToRemove.id, displaySkillsMasterList);                                   
 }
 
-function  editMasterSkill() {        
-  const id = `#${event.currentTarget.activeElement.id}`; 
+function  editMasterSkill(event) {        
+  const id = `#${event.currentTarget.id}`; 
   let skill = $(id).text();                
   // setup the skill input field
   $("#newSkill").val(skill);

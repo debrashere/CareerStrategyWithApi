@@ -37,9 +37,9 @@ let props = {"route":"home",
     $(document).on('click','#cancelProspectEvent',function(e){e.preventDefault(); displayProspectsSummaryForm()});     
     $(document).on('click','.js-add-prospect',function(e){e.preventDefault(); displayProspectsSummaryForm()});     
     $(document).on('click','.js-edit-prospect',function(e){e.preventDefault(); displayProspectsSummaryForm()});     
-    $(document).on('click','.js-add-master-skill-to-user',function(e){e.preventDefault(); addMasterSkillToMySkills()})                    
+    $(document).on('click','.js-add-master-skill-to-user',function(e){e.preventDefault(); addMasterSkillToMySkills(e)})                    
     $(document).on('click','.js-edit-profile',function(e){e.preventDefault(); renderUserProfileForm()})       
-    $(document).on('click','.js-add-master-skill',function(e){e.preventDefault(); addMasterSkill()})       
+    $(document).on('click','.js-add-master-skill',function(e){e.preventDefault(); addMasterSkill(e)})       
     $(document).on('click','.js-edit-master-skill',function(e){e.preventDefault(); editMasterSkill()})   
     $(document).on('click','.js-delete-master-skill',function(e){e.preventDefault(); deleteMasterSkill()}) 
     $(document).on('click','.js-prospect-by-status',function(e){e.preventDefault(); renderJobsSummariesByStatus(e)}) 

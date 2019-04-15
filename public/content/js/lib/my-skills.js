@@ -29,10 +29,7 @@ function generateUserSkills(profile) {
       profile.skills.map( function(skill, index) {          
         skills +=
          `<p class="item user-skill js-user-skillset"> 
-            <span  tabindex="0" id="UserSkill-${index}" class="js-user-skill js-user-skill-text" data-header="Skill">${skill.skill}</span>
-            <span  tabindex="0" id="UserExp-${index}" class="js-user-skill js-user-skill-years" data-header="Experience">${skill.yearsOfExperience}</span>
-            <span  tabindex="0"><a id="EditSkill-${index}" href=# class="js-edit-skill"><img alt="edit skill" src="./images/icon-edit.png" /></a></span>
-            <span  tabindex="0"><a id="DeleteSkill-${index}" href=# class="js-delete-skill"><img alt="delete skill" src="./images/icon-delete.png" /></a></span>           
+            <span  tabindex="0" id="UserSkill-${index}" class="js-user-skill js-user-skill-text" data-header="Skill">${skill.skill}</span>          
           </p> `; 
        });
        skills += '</p></div> ';     
@@ -79,8 +76,8 @@ function renderUserSkills() {
   Executed when user clicks on skill in master list of skills
   will update the user's collection of skills
 */
-function  addMasterSkillToMySkills() {       
-    const id = `#${event.currentTarget.activeElement.id}`; 
+function  addMasterSkillToMySkills(event) {       
+    const id = `#${event.currentTarget.id}`; 
     let skill = $(id).text();
 
       let skillIndex = -1;

@@ -1,5 +1,5 @@
 /*     
-   render profile information (user name, email address, phone number)
+   render informational data and links to login and register if user not logged in
 */
 function renderBanner() { 
     $( ".banner" ).html('');
@@ -13,7 +13,6 @@ function renderBanner() {
         <a href="#" title="register">  Register</a></span>
       </div>`;   
       
-    $('.banner').append(`${banner}`);  
-  
+    $('.banner').append(`${banner}`);    
   } 
   
