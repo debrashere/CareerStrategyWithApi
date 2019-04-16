@@ -72,7 +72,7 @@ function displaySkillsMasterList(data) {
     let skills = skillDetailsHeader;
              
     data.skill.map( function(skill, index) {           
-        skills +=  `<a href=# id="masterSkill${index}" class="master-skill-link js-edit-master-skill">${skill.skill}</a>`;     
+        skills +=  `<a href=# id="masterSkill${index}" class="skill-link js-edit-master-skill">${skill.skill}</a>`;     
        });
        skills += '</p>';           
    

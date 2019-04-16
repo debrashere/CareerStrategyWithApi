@@ -66,35 +66,29 @@ function generateCompanyList(prospects) {
 }
 
 function generateContactList(prospects) {          
-    let tableRows = '';  
+    let contacts = '';  
     prospects.map( function(thisProspect, index) {   
         thisProspect.contacts.map(function (contact, idx) {
-            tableRows += `
-            <div class="tr">  
-              <div class="td" data-header="Name"><a href='#' title='Contact Name' class='js-prospect-by-contact'>${contact.firstName} ${contact.lastName}</a></div>        
-              <div class="td" data-header="Email">${contact.email}</div>
-              <div class="td" data-header="Phone">${contact.phone}</div>
-              <div class="td" hidden><span class="js-contactId" id="Contact-${index}" hidden>${contact._id}</span></div>
+            contacts += `
+            <div class="flex-item">  
+              <div class="border-solid border-solid background-color-sub-heading"><a href='#' title='Contact Name' class='js-prospect-by-contact'>Name: ${contact.firstName} ${contact.lastName}</a></div>        
+              <div class="flex-item border-solid background-color-content">  
+                <div>Email: ${contact.email}</div>
+                <div>Phone: ${contact.phone}</div>
+              </div>
+              <div  hidden><span class="js-contactId" id="Contact-${index}" hidden>${contact._id}</span></div>
             </div>`;
         });                    
     });  
     
-    let table =   `
-    <div class="flex-item-status">
-        <div class="section-header"><h3 tabindex="0">Contacts</h3></div>
-        <output><div id="js-status-error-message" class="error-message" aria-live="assertive" hidden> </div></output>
-        <div class="table">
-        <div class="tr th"> 
-            <div class="td">Name</div>          
-            <div class="td">Email</div>   
-            <div class="td">Phone</div>                                     
-        </div>
-        ${tableRows}   
-        </div> `;  
-        
-        return table;
-}
-   
+    let container =   `
+        <div class="section-header"><h3 tabindex="0">Contacts</h3></div>    
+            <div class="flex-container">   
+                ${contacts}                                      
+            </div>            
+        </div> `;          
+        return container;
+} 
 /*     
    render profile information (user name, email address, phone number)
 */

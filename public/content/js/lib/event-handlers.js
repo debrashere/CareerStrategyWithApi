@@ -28,10 +28,13 @@ let props = {"route":"home",
     $(document).on('click','#registerUser',function(e){e.preventDefault(); renderRegistrationForm()}); 
     $(document).on('click','.js-register-image',function(e){e.preventDefault(); renderRegistrationForm()}); 
     $(document).on('click','#submitReg',function(e){e.preventDefault(); submitRegistion()});
-    $(document).on('click','.js-prospect-detail',function(e){renderJobDetails(e)});    
-    $(document).on('click','js-add-job-skill',function(e){e.preventDefault(); addSkillToUserProfile()});
-    $(document).on('click','js-delete-job-skill',function(e){e.preventDefault(); deleteSkillFromUserProfile()});
-    $(document).on('click','js-edit-job-skill',function(e){e.preventDefault(); editUserProfileSkill()});     
+    $(document).on('click','.js-prospect-detail',function(e){renderJobDetails(e)});     
+    $(document).on('click','.js-edit-user-skill',function(e){e.preventDefault(); setSelectedSkillToInput(e)});   
+    $(document).on('click','.js-add-job-skill',function(e){e.preventDefault(); addSkillToUserProfile()});
+    $(document).on('click','.js-delete-job-skill',function(e){e.preventDefault(); deleteSkillFromUserProfile()});
+    $(document).on('click','.js-edit-job-skill',function(e){e.preventDefault(); editUserProfileSkill()});  
+    $(document).on('click','.js-add-user-skill',function(e){e.preventDefault(); addUserSkill(e)});      
+    $(document).on('click','.js-delete-user-skill',function(e){e.preventDefault(); deleteUserSkill(e)}); 
     $(document).on('click','.js-delete-prospect',function(e){e.preventDefault(); deleteJobProspect()});    
     $(document).on('click','.js-edit-prospect',function(e){e.preventDefault(); editJobProspect()}); 
     $(document).on('click','#cancelProspectEvent',function(e){e.preventDefault(); displayProspectsSummaryForm()});     
