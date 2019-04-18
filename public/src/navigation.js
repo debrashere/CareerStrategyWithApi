@@ -18,6 +18,11 @@ function setClassForMenuItem(menuItem, className)  {
     let pageName = page.indexOf('/') > -1 ? page.split('/')[1] : page;  
      pageName = pageName === "" ? "home" : pageName;
 
+     if (localStorage.getItem('route') === null){
+        localStorage.setItem('route', 'home');
+        props.route =  'home';
+     }  
+     
     // map current location to menuItem to be selected in menu bar
     const navProps = [
             { name: "home", isSecure: false, page: "home"},
@@ -49,8 +54,8 @@ function setClassForMenuItem(menuItem, className)  {
 // small Screens: display collased menu with hamburger icon which when clicks
 // will display "x" to enable user to close the expanded meny
 function  menuFunction() {
-    $('.js-error-message').empty();
-    $('.js-error-message').prop("hidden", true);    
+    $('.js-page-message').empty();
+    $('.js-page-message').prop("hidden", true);    
     let button = document.getElementById("menuButton");
     if (!$('#myTopnav').hasClass( "responsive" )) {
         $('#myTopnav').addClass("responsive");  
@@ -72,9 +77,10 @@ function setMenuItem(event){
     props.route = id.split('-')[1];
     $('.menuitem').removeClass("active");
     if (!$(id).hasClass( "active" )) {
-        $(id).addClass("active");              
+        $(id).addClass("active");    
+        localStorage.setItem('route', props.route);          
     } 
-
+    
     switch (props.route) {
         case "myskills":
             renderUserSkills();
@@ -107,8 +113,8 @@ function setMenuItem(event){
 }
 
 function Navigation(props) {   
-    $('.js-error-message').empty();
-    $('.js-error-message').prop("hidden", true);       
+    $('.js-page-message').empty();
+    $('.js-page-message').prop("hidden", true);       
     // Only render the log out button if we are logged in
     let logOutButton="";        
     if (props.isLoggedIn == true) {

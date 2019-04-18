@@ -62,8 +62,7 @@ function renderLoginForm() {
           </section>                 
       </form> 
           <button type="submit" id="submitLogin" class="js-edit-event js-edit-button" >Login</button>  
-          <button type="submit" id="registerUser" class="js-edit-event js-edit-button" >Register</button>                                         
-          <button type="submit" id="submitReg" class="js-edit-event js-edit-button" hidden>Submit</button>              
+          <button type="submit" id="registerUser" class="js-edit-event js-edit-button" >Register</button>                                                     
     </div>                
   </div>`;
 

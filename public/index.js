@@ -20,31 +20,35 @@ function userHasProfile() {
   let userProfileFound = false;
   if (!props.userProfileId || props.userProfileId === "" ) {  
     const queryPath = `userId=${props.userId}`;
-    setTimeout(findCareerStrategyAPI(pathUserProfile, queryPath, "" , function(data) {      
-      // render user information including profile info and the user's skills
-      const userProfile = (data && data.userProfile && data.userProfile.length > 0) ? data.userProfile[0] : {};
+    setTimeout(findCareerStrategyAPI(pathUserProfile, queryPath, "" , function(data) {
+      const userProfile = (data && data.userProfile && data.userProfile.length > 0) ? data.userProfile[0]  : {};
       const userProfileId = userProfile ? userProfile.id : "";
       userProfileFound = userProfileId !== "";     
 
       if (userProfileFound === true) {
-        props = {"route":"home", "isLoggedIn": true, 
+        props = {
+        "route":"home", 
+        "isLoggedIn": true, 
         "hasProfile": true, 
         "userId" : "",
         "userProfileId" : userProfileId,
         "USER_PROFILE" : userProfile,
         "JOB_SKILLS" : [],
         "MASTER_SKILLS" : [],
-        "PROSPECTS" : {} } 
+        "PROSPECTS" : {} };
       }
       else {
-        props = {"route":"home", "isLoggedIn": false, 
+        props = {
+        "route":"home", 
+        "isLoggedIn": false, 
         "hasProfile": false, 
         "userId": "", 
         "userProfileId" : "",
         "USER_PROFILE" : {},
         "JOB_SKILLS" : [],
         "MASTER_SKILLS" : [],
-        "PROSPECTS" : {} }    
+        "PROSPECTS" : {}
+        };    
       }
       renderLanding(props.USER_PROFILE); 
     }), 3000); 

@@ -8,13 +8,13 @@ const pathJobProspects  = "prospects";
   Retrieve data from Career Strategy API
 */
 function findCareerStrategyAPI(path, query, id,  callbackFn) {  
-  $('.js-error-message').empty();
-  $('.js-error-message').prop("hidden", true);
+  $('.js-page-message').empty();
+  $('.js-page-message').prop("hidden", true);
   const encodedQuery = encodeURIComponent(query);
   let url =  `${CAREER_STRATEGY_URL}/${path}`;
   url = id == "" ? url: `${url}/${id}/`;
   url = query == "" ? url: `${url}?${query}`;  
- 
+
   const authToken = localStorage.getItem('token'); 
   return fetch(url, {
     method: 'GET',
@@ -40,8 +40,8 @@ function findCareerStrategyAPI(path, query, id,  callbackFn) {
   .then(responseJson => callbackFn(responseJson))
   .catch(error => { 
 
-    $('.js-error-message').prop("hidden", false);
-    $('.js-error-message').text(`Something went wrong: ${error}`);
+    $('.js-page-message').prop("hidden", false);
+    $('.js-page-message').text(`Something went wrong: ${error}`);
   }); 
 } 
 
@@ -49,8 +49,8 @@ function findCareerStrategyAPI(path, query, id,  callbackFn) {
   Post data via Career Strategy API
 */
 function postCareerStrategyAPI(path, query, id, callback) {
-  $('.js-error-message').empty();
-  $('.js-error-message').prop("hidden", true);
+  $('.js-page-message').empty();
+  $('.js-page-message').prop("hidden", true);
   let url =  `${CAREER_STRATEGY_URL}/${path}`; 
   const authToken = localStorage.getItem('token');
 

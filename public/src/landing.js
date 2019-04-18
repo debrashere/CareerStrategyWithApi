@@ -42,7 +42,7 @@ function generateStatusList(prospects) {
      
     let uniqueStatuses =  ''; 
     statusList.map( function(prospect, index) {       
-        uniqueStatuses += `<span id="${prospect[0].status}" class='user-skill js-prospect-by-status'>
+        uniqueStatuses += `<span id="${prospect[0].status}" class='user-skill js-prospects-by-status'>
         <a href="#" title='prospect status'>${prospect[0].status} : ${prospect.length}</a></span> ` 
     });   
     return `<div class="section-header"><h3 tabindex="0">Prospect Status</h3></div><div>${uniqueStatuses}</div>`;
@@ -60,7 +60,7 @@ function generateCompanyList(prospects) {
     let uniqueCompanies =  ''; 
     whereList.map( function(prospect, index) {       
         let plength = (prospect.length === 1) ? '' : `: ${prospect.length}`;
-        uniqueCompanies += `<span class='user-skill js-prospect-by-company'>
+        uniqueCompanies += `<span class='user-skill js-prospects-by-company'>
         <a href="#" title='prospect company'>${prospect[0].where}${plength}</a></span> `         });      
          return `<div class="section-header"><h3 tabindex="0">Companies</h3></div><div>${uniqueCompanies}</div>`;
 }
@@ -71,7 +71,7 @@ function generateContactList(prospects) {
         thisProspect.contacts.map(function (contact, idx) {
             contacts += `
             <div class="flex-item">  
-              <div class="border-solid border-solid background-color-sub-heading"><a href='#' title='Contact Name' class='js-prospect-by-contact'>Name: ${contact.firstName} ${contact.lastName}</a></div>        
+              <div class="border-solid border-solid background-color-sub-heading"><a href='#' title='Contact Name' class='js-prospects-by-contact'>Name: ${contact.firstName} ${contact.lastName}</a></div>        
               <div class="flex-item border-solid background-color-content">  
                 <div>Email: ${contact.email}</div>
                 <div>Phone: ${contact.phone}</div>

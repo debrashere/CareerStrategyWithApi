@@ -169,7 +169,12 @@ h1, h2, h3, address {
 
 .message-success {
   background-color: #5CB85C;
-  color: white;
+  color: black;
+}
+
+.message-information{
+  background-color: lightgray;
+  color: black;
 }
 
 .message-error, .form-error {

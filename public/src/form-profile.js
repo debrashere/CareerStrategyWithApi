@@ -45,12 +45,12 @@ function validateProfileForm(profileId) {
         }
         else if (data.responseJSON.error)
         {
-          $('.js-error-message').html(data.responseJSON.error);
-          $('.js-error-message').prop("hidden", false);
+          $('.js-page-message').html(data.responseJSON.error);
+          $('.js-page-message').prop("hidden", false);
         }
         else {
-          $('.js-error-message').html("Oops something went wrong. Please try again.");
-          $('.js-error-message').prop("hidden", false);
+          $('.js-page-message').html("Oops something went wrong. Please try again.");
+          $('.js-page-message').prop("hidden", false);
         }
           
     }), 3000);

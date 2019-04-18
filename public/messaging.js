@@ -12,3 +12,9 @@ function displayError(text, element) {
         $( error ).insertAfter( $(`.${element}`));   
     }
 }
+function displayInformation(text, element) {
+    if (text !== undefined) {       
+        let error = `<div class="message-information" aria-hidden="false" >${text}</div>`;   
+        $( error ).insertAfter( $(`.${element}`));   
+    }
+}

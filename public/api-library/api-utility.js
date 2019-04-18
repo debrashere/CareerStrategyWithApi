@@ -20,16 +20,21 @@ function apiReturnedErrorOnLogin(data) {
   Check if API response returned an error and set error message
 */
 function apiReturnedError(data) {
-  if (data && data.responseJSON) {
-    if (data.responseJSON.error)
-    {
-      $('.js-error-message').html(data.responseJSON.error);
-      $('.js-error-message').prop("hidden", false);
+  if (data && data.status) {
+    console.log(`"api-utilityh apiReturnedError data: ${data}`)
+    if (data.status == '400')  { 
+      $('.js-page-message').html(data.statusText);
+      $('.js-page-message').show();
+      return true;
+    } 
+    if (data.responseJSON.error) {
+      $('.js-page-message').html(data.responseJSON.error);
+      $('.js-page-message').prop("hidden", false);
       return true;
     }
     else {
-      $('.js-error-message').html("Oops something went wrong. Please try again.");
-      $('.js-error-message').prop("hidden", false);
+      $('.js-page-message').html("Oops something went wrong. Please try again.");
+      $('.js-page-message').prop("hidden", false);
       return true;
     }
   }

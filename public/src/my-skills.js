@@ -33,7 +33,7 @@ function generateUserSkills(profile) {
       return skills;
   }
   
-  function setSelectedSkillToInput(event) {
+  function selectSkillFromUserSkills(event) {
     const id = `#${event.currentTarget.id}`; 
     let skill = $(id).text();
     $("#newSkill").val(skill);

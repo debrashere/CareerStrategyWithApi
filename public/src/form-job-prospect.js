@@ -58,9 +58,7 @@ function submitProspectUpdates() {
   }               
 } 
 
-/*     
-   render job skills
-*/
+/*
 function renderJobSkills(data) {
     let skills = "";
     $(".js-job-prospects-skills-form").html('');
@@ -102,6 +100,7 @@ function renderJobSkills(data) {
       $( ".js-job-prospects-skills-form").html(skills); 
   
 } 
+*/
  
 /*
   Display the job prospect form to edit or create job prospect
@@ -139,7 +138,8 @@ function displayProspectsSummaryForm(data) {
         props.JOB_SKILLS = data.prospect.jobSkills
       }
     
-      renderJobSkills(props.JOB_SKILLS);    
+      //TODO: renderJobSkills(props.JOB_SKILLS);  
+      $( ".js-job-prospects-skills-form").html( generateJobSkills(props.JOB_SKILLS));   
   
       // Format the input form for job prospect
       let formInputs = `

@@ -92,7 +92,7 @@ function generateSource(prospect) {
    `;
 }
 
-function renderJobDetails(event) {
+function renderJobProspectDetails(event) {
   if (!isUserLoggedIn()) return;
   const id = `#${event.currentTarget.id}`;   
   let prospectId = $(id).parent().parent().find('.js-prospectId').text(); 
