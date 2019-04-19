@@ -92,7 +92,7 @@ function setMenuItem(event){
             renderLoginForm();
             break;
         case "prospect":
-            displayProspectsSummaryForm();
+            renderProspectForm();
             break;
         case "register":
             renderRegistrationForm();
@@ -101,7 +101,7 @@ function setMenuItem(event){
             renderUserProfileForm();
             break;
         case "skills":
-            renderMasterSkillsList(displaySkillsMasterList);
+            renderMasterSkillsList();
             break;     
         case "logout":
             logoutThisUser();

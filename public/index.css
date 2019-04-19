@@ -59,7 +59,7 @@ main .row {
 }
 .section-block{
   margin: 5px; 
-  border: solid black;
+  border-top: solid black;
   border-width: 1px;
   background-color: lightgray;
   width: 95%;
@@ -100,6 +100,10 @@ fieldset div {
   align-items: center;
 }
 
+.input-block {
+  display: block;
+}
+
 input:focus ~ label, textarea:focus ~ label, select:focus ~ label {
   color: #933;
 }
@@ -120,6 +124,9 @@ h1, h2, h3, address {
   display: inline-block;
 }
 
+.background-color-white {
+  background-color: whitesmoke;
+}
 .skill {
   width:  150px;
 }
@@ -156,8 +163,20 @@ h1, h2, h3, address {
   border-radius: 15px;
   border: solid black ;
   border-width: 2px;
-  margin: 3px;
-  
+  margin: 3px;  
+}
+
+.skill-span{
+  background-color: beige;
+  color: black;
+  padding: 5px 5px;
+  text-align: center; 
+  display: inline-block;
+  text-decoration: none;
+  border-radius: 15px;
+  border: solid black ;
+  border-width: 2px;
+  margin: 3px;  
 }
 
 /*
@@ -199,6 +218,7 @@ textarea {
 
 .border-solid {
   border-style: solid;
+  border-color: black;
 }
 
 .background-color-sub-heading {
@@ -256,18 +276,19 @@ textarea {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: space-evenly;   
-  align-items: center;
+  justify-content: flex-start;   
+  align-items: flex-start;  
   max-width: 100%; 
   border: black solid;  
   border-width: 2px;
+  margin: 5px;
 }
 
 .flex-item {  
  flex-grow: 1;
  flex-shrink: 1;
  flex-basis: auto;
- margin-bottom: 5px;  
+ margin: 5px; 
 }
 
 .flex-container-introduction {
@@ -327,6 +348,12 @@ textarea {
   max-width: 100%;
   margin-bottom: 5px;
  }
+
+.inline-title {
+  display: inline;
+  font-weight: bold;
+  padding: 5px;   
+}
 
 .title {
     clear: left;

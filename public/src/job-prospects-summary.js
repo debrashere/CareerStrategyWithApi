@@ -50,7 +50,7 @@ function renderJobsSummariesByCompany(event) {
 function renderJobsSummariesByContact(event) {
   if (!isUserLoggedIn() || !props.PROSPECTS) return;
 
-  const thisContact = `${event.currentTarget.innerText.split(':')[1].trim()}`;       
+  const thisContact = `${event.currentTarget.innerText.trim()}`;   
   $( ".js-page-content" ).html('');
 
   let filteredProspects = [];
@@ -69,7 +69,7 @@ function renderJobProspects(data) {
     if (apiReturnedError(data)) return;
     
     if (!data || !data.prospect || data.prospect === []) {
-      displayProspectsSummaryForm();
+      renderProspectForm();
       return;
     }
                  

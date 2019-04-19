@@ -1,6 +1,6 @@
 
 'use strict';
- function isRegisterFormValid() {
+ function isRegisterFormInValid() {
  
   // clear form of error messages
   $( ".form-error" ).remove();
@@ -8,16 +8,16 @@
   displayError(validateField($("#firstName").val(), ['required', 'nonEmpty', 'isTrimmed']), 'js-input-firstname');
   displayError(validateField($("#lastName").val(), ['required', 'nonEmpty', 'isTrimmed']), 'js-input-lastname');
   displayError(validateField($("#userName").val(), ['required', 'nonEmpty', 'isTrimmed']), 'js-input-username');
-  displayError(validateField($("#password").val(), ['required', 'nonEmpty', 'isTrimmed']), 'js-input-password'); 
+  displayError(validateField($("#password").val(), ['required', 'nonEmpty', 'isTrimmed', 'validationIsLength']), 'js-input-password'); 
 
   // check if errors found in form
   const errors = $('.form-error');
-  return !errors && errors.length === 0;
+  return errors && errors.length > 1;
 } 
 
 //
 function submitRegistion() {         
-    if (!isRegisterFormValid()) return;
+    if (isRegisterFormInValid()) return;
     
     const userName =  $('#userName').val();
     const password = $("#password").val();
@@ -26,17 +26,17 @@ function submitRegistion() {
     
     const loginJson = JSON.parse(`{"username": "${userName}","password": "${password}","firstName": "${firstName}", "lastName": "${lastName}"}`);    
     setTimeout(registerUserAPI(pathUsers, loginJson, function(data){
-      $('.js-register-response').prop("hidden", false);
+      $('.js-page-message').prop("hidden", false);
       if (!data.responseJSON)
       {
-        $('.js-register-response').html('Registration was successful. Please <a href="#" class="js-menuitem-login">login</a>.');
+        $('.js-page-message').html('Registration was successful. Please <a href="#" class="js-menuitem-login">login</a>.');
       }
       else if (data.responseJSON && data.responseJSON.message)
       {
-        $('.js-register-response').html(`Registration failed.  ${data.responseJSON.location} ${data.responseJSON.message}`);
+        $('.js-page-message').html(`Registration failed.  ${data.responseJSON.location} ${data.responseJSON.message}`);
       }
       else {
-        $('.js-register-response').html("Oops something went wrong. Please try again.");
+        $('.js-page-message').html("Oops something went wrong. Please try again.");
       }  
     }), 3000);  
   }
@@ -59,8 +59,8 @@ function renderRegistrationForm() {
                 </div>
             </section>                  
           </form> 
+          <button type="submit" id="submitReg" class="js-edit-event js-edit-button js-form-register-user">Submit</button>              
           <button type="submit" id="submitLogin" class="js-edit-event js-edit-button" >Login</button>  
-          <button type="submit" id="submitReg" class="js-edit-event js-edit-button">Submit</button>              
         </div>                
       </div>`;
 

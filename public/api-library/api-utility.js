@@ -21,7 +21,6 @@ function apiReturnedErrorOnLogin(data) {
 */
 function apiReturnedError(data) {
   if (data && data.status) {
-    console.log(`"api-utilityh apiReturnedError data: ${data}`)
     if (data.status == '400')  { 
       $('.js-page-message').html(data.statusText);
       $('.js-page-message').show();

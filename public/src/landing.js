@@ -65,30 +65,32 @@ function generateCompanyList(prospects) {
          return `<div class="section-header"><h3 tabindex="0">Companies</h3></div><div>${uniqueCompanies}</div>`;
 }
 
-function generateContactList(prospects) {          
-    let contacts = '';  
+
+function generateContactList(prospects) {
+    if (!prospects) return '';
+  
+    let contacts = '';
     prospects.map( function(thisProspect, index) {   
-        thisProspect.contacts.map(function (contact, idx) {
-            contacts += `
-            <div class="flex-item">  
-              <div class="border-solid border-solid background-color-sub-heading"><a href='#' title='Contact Name' class='js-prospects-by-contact'>Name: ${contact.firstName} ${contact.lastName}</a></div>        
-              <div class="flex-item border-solid background-color-content">  
-                <div>Email: ${contact.email}</div>
-                <div>Phone: ${contact.phone}</div>
-              </div>
-              <div  hidden><span class="js-contactId" id="Contact-${index}" hidden>${contact._id}</span></div>
-            </div>`;
-        });                    
-    });  
-    
-    let container =   `
-        <div class="section-header"><h3 tabindex="0">Contacts</h3></div>    
-            <div class="flex-container">   
-                ${contacts}                                      
-            </div>            
-        </div> `;          
-        return container;
-} 
+        thisProspect.contacts.map(function (contact, idx) {  
+        contacts += `
+        <div class="flex-item background-color-white"> 
+            <div tabindex="0"><span class="inline-title">Name: </span><a href='#' title='Contact Name' id="ContactLink-${index}"  class='js-prospects-by-contact'>${contact.firstName} ${contact.lastName}</a></div>  
+            <div tabindex="0"><span class="inline-title">Email:</span> ${contact.email}</div>
+            <div tabindex="0"><span class="inline-title">Phone:</span> ${contact.phone}</div>
+            <div hidden><span class="js-contactId" id="Contact-${index}" hidden>${contact._id}</span></div>
+        </div>`;
+        });
+    });
+       
+    let contactsHeaderAndDetails = `
+    <div class="flex-container">
+      <div class="section-header"><h3 tabindex="0">Contacts</h3></div>         
+        ${contacts}   
+    </div> `;  
+         
+    return contactsHeaderAndDetails;
+  }
+ 
 /*     
    render profile information (user name, email address, phone number)
 */

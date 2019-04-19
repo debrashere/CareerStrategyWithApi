@@ -107,6 +107,12 @@ function generateUserSkills(profile) {
     }
   }  
  
+function generateMasterSkillsForUser() {
+  setTimeout(findCareerStrategyAPI(pathSkills, "",  "", function(data) {       
+    displayMasterSkills(data)
+  }), 3000); 
+}
+
 /*
     Display master set of skills that the user can click on to add it to their skillset
     When a user types in a skill that is not in the master skillset, it will automatically
@@ -125,7 +131,7 @@ function displayMasterSkills(data) {
       skills +=  `<a href=# id="masterSkill${index}" class="skill-link js-add-master-skill-to-user">${skill.skill}</a>`;     
      });
      skills += '</p>';           
- 
+  
   $('.js-page-content').append(`${skills}`);        
 }  
 
@@ -137,7 +143,7 @@ function renderUserSkills() {
 
   // display users skills and master list of skills  
   $('.js-page-content').html(generateUserSkills(props.USER_PROFILE));
-  $('.js-page-content').append(renderMasterSkillsList(displayMasterSkills));        
+  generateMasterSkillsForUser();        
 } 
 
 /*
