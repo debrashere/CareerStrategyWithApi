@@ -21,6 +21,7 @@ function renderHeader(data) {
 function renderUserProfile(userProfile) {
   if (!isUserLoggedIn() ) return "";
   if (!userProfile || userProfile === {}) return "";
+  
  let userInfo =
     `<div class="section-header user-header">
         <em><span  tabindex="0">${userProfile.firstName} ${userProfile.lastName}</span></em> 

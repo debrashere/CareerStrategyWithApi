@@ -10,8 +10,8 @@ function generateContacts(prospect) {
        <div tabindex="0"><span class="inline-title">Type:</span> ${contact.contactType}</div>
        <div tabindex="0"><span class="inline-title">First name:</span> ${contact.firstName}</div>
        <div tabindex="0"><span class="inline-title">Last name:</span> ${contact.lastName}</div>
-       <div tabindex="0"><span class="inline-title">Email:</span> ${contact.email}</div>
-       <div tabindex="0"><span class="inline-title">Phone:</span> ${contact.phone}</div>
+       <div tabindex="0"><span class="inline-title">Email:</span> <a href="mailto:${contact.email}">${contact.email}</a> </div>
+       <div tabindex="0"><span class="inline-title">Phone:</span> <a href="tel:${contact.phone}">${contact.phone}</a></div>
        <div hidden><span class="js-contactId" id="Contact-${index}" hidden>${prospect.id}</span></div>
      </div>`;
   });
@@ -163,6 +163,8 @@ function generateWhatWhereDate(prospect) {
 
 function renderJobProspectDetails(event) {
   if (!isUserLoggedIn()) return;
+  if (!canAccessProfile()) return; 
+
   const id = `#${event.currentTarget.id}`;   
   let prospectId = $(id).parent().parent().find('.js-prospectId').text(); 
   props.prospectId = prospectId;

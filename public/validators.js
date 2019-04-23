@@ -51,8 +51,7 @@ function  validationIsEmailFormatValid( value ) {
     }
 }
 
-function  validationIsPhoneFormatValid( value ) {
-    
+function  validationIsPhoneFormatValid( value ) {                       
     const phone_pattern = /([0-9]{10})|(\([0-9]{3}\)\s+[0-9]{3}\-[0-9]{4})/; 
     if (phone_pattern.test( value )) {
         return undefined;

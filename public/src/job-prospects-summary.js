@@ -1,6 +1,8 @@
 'use strict';
 function renderJobsSummaries() {
     if (!isUserLoggedIn()) return;
+    if (!canAccessProfile()) return; 
+    
       const queryPath = `userId=${props.userId}`;
       // function displayCareerStrategyResults will save user skills as part of USER_PROFILE
       setTimeout(findCareerStrategyAPI(pathJobProspects, queryPath, "",  function(data) {
@@ -9,7 +11,24 @@ function renderJobsSummaries() {
     }), 3000);
 }
 
+
+/*
+  If user has not entered any job prospect yet display this content
+*/
+function generateNoProspectsMessage() {
+  let message =  `
+  <div class="flex-container section-block">  
+    <div class="flex-item section-sub-header">Welcome to Career Strategy</div>
+    <div> You have not entered any job prospects yet. You can do so now by going to <a href=# class="js-add-new-job-prospect"> new job prospect</a>.</div>   
+  </div>`;
+    
+  return message;  
+}
+
 function generateJobSummaries(prospects) {
+  if ( !props.PROSPECTS || props.PROSPECTS.length === 0) 
+    return generateNoProspectsMessage();
+
   let summaries =  '';
 
   prospects.map( function(prospect, index) {
@@ -31,24 +50,25 @@ function generateJobSummaries(prospects) {
 }
  
 function renderJobsSummariesByStatus(event) {
-  if (!isUserLoggedIn() || !props.PROSPECTS) return;
+  if (!isUserLoggedIn()) return;
 
   const thisStatus = `${event.currentTarget.innerText.split(':')[0].trim()}`;       
-  const filteredProspects = props.PROSPECTS.filter( s => s.status === thisStatus);                  
+  const filteredProspects = props.PROSPECTS.filter( s => s.status.trim() === thisStatus);                  
   $('.js-page-content').html(generateJobSummaries(filteredProspects));  
   $('.js-prospectId').hide();
 }
 
 function renderJobsSummariesByCompany(event) {
-  if (!isUserLoggedIn() || !props.PROSPECTS) return;
+  if (!isUserLoggedIn()) return;
+
   const thisCompany = `${event.currentTarget.innerText.split(':')[0].trim()}`;      
-  const filteredProspects = props.PROSPECTS.filter( s => s.where === thisCompany);                  
+  const filteredProspects = props.PROSPECTS.filter( s => s.where.trim() === thisCompany);                  
   $('.js-page-content').html(`${generateJobSummaries(filteredProspects)}`); 
   $('.js-prospectId').hide(); 
 }
 
 function renderJobsSummariesByContact(event) {
-  if (!isUserLoggedIn() || !props.PROSPECTS) return;
+  if (!isUserLoggedIn()) return;
 
   const thisContact = `${event.currentTarget.innerText.trim()}`;   
   $( ".js-page-content" ).html('');
@@ -56,7 +76,7 @@ function renderJobsSummariesByContact(event) {
   let filteredProspects = [];
   props.PROSPECTS.forEach(function (prospect, index) {
     prospect.contacts.forEach(function (contact, index){
-      if (`${contact.firstName} ${contact.lastName}` === thisContact)
+      if (`${contact.firstName.trim()} ${contact.lastName.trim()}` === thisContact)
         filteredProspects.push(prospect);
     })
   });

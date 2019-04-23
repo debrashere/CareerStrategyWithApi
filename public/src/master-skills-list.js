@@ -3,6 +3,9 @@ let masterSkills = [];
 //const pathSkills = "skills";
 
 function renderMasterSkillsList() {
+  if (!isUserLoggedIn()) return;
+  if (!canAccessProfile()) return; 
+  
   setTimeout(findCareerStrategyAPI(pathSkills, "",  "", function(data) {       
       displaySkillsMasterList(data)
   }), 3000); 

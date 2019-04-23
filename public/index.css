@@ -1,4 +1,4 @@
-/* toto: 
+/* todo: 
 * {
   box-sizing: border-box;
   font-size: 18px;  
@@ -110,6 +110,18 @@ input:focus ~ label, textarea:focus ~ label, select:focus ~ label {
 
 input:checked ~ label {
   font-weight: bold;
+}
+
+label{
+    display: inline-block;
+    float: left;
+    clear: left;
+    width: 250px;
+    text-align: left;
+}
+input {
+  display: inline-block;
+  float: left;
 }
 
 .error-message {
@@ -686,8 +698,6 @@ textarea {
   }
 
 		.icon:before {
-		/*	-moz-osx-font-smoothing: grayscale; */
-		/*	-webkit-font-smoothing: antialiased; */
 			font-family: FontAwesome;
 			font-style: normal;
 			font-weight: normal;
@@ -738,28 +748,47 @@ span {
 
   .btn a { 
     color: black;
-    }
-      
-  
-/*
-  .btn {
-    color: blue;	
-    background-color: whitesmoke; 	
-    margin: 0;
-    border-radius: 1.1875rem;	
-    text-decoration: none;
-    padding: 2px;
-    align-self: auto;
-    width: unset;
-    flex: 1 1 auto;
-  }  
-  */
+    }      
 
 .btn:hover, .btn:active, .btn:focus {
   color: black;	
   background-color: lightblue; 		
 }
-       
+  
+.toggle {
+	display: flex;
+	flex-direction: column-reverse;
+}
+.toggle__input:not(checked) {
+    display: none;
+}
+.toggle__input + label {	
+  background-color: lightgray;
+	border-radius: 5px; 
+	color: black;
+	cursor: pointer;
+	font-size: 0.8em;
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+	padding: 0.5em;
+	text-align: center;
+	width: 12em;
+}
+
+.toggle__input:not(checked) ~ .toggle__content {
+    display: none;
+}
+.toggle__input:checked ~ .toggle__content {       
+    display: block;
+}
+
+.toggle__input + label .toggle__less, .toggle__input:checked + label .toggle__more  {
+    display: none;
+}
+.toggle__input:checked + label .toggle__less {
+    display: inline;
+}
+
   /* When the screen is less than 600 pixels wide, hide all links, except for the first one ("Home"). Show the link that contains should open and close the topnav (.icon) */
 @media screen and (max-width: 600px) {
     .topnav a:not(:first-child) {display: none;}

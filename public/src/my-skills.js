@@ -140,7 +140,8 @@ function displayMasterSkills(data) {
 */
 function renderUserSkills() { 
   if (!isUserLoggedIn()) return; 
-
+  if (!canAccessProfile()) return; 
+  
   // display users skills and master list of skills  
   $('.js-page-content').html(generateUserSkills(props.USER_PROFILE));
   generateMasterSkillsForUser();        

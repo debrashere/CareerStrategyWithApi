@@ -75,8 +75,8 @@ function generateContactList(prospects) {
         contacts += `
         <div class="flex-item background-color-white"> 
             <div tabindex="0"><span class="inline-title">Name: </span><a href='#' title='Contact Name' id="ContactLink-${index}"  class='js-prospects-by-contact'>${contact.firstName} ${contact.lastName}</a></div>  
-            <div tabindex="0"><span class="inline-title">Email:</span> ${contact.email}</div>
-            <div tabindex="0"><span class="inline-title">Phone:</span> ${contact.phone}</div>
+            <div tabindex="0"><span class="inline-title">Email:</span> <a href="mailto: ${contact.email}">${contact.email}</a></div>
+            <div tabindex="0"><span class="inline-title">Phone:</span> <a href="tel:${contact.phone}">${contact.phone}</a></div>
             <div hidden><span class="js-contactId" id="Contact-${index}" hidden>${contact._id}</span></div>
         </div>`;
         });
@@ -90,12 +90,28 @@ function generateContactList(prospects) {
          
     return contactsHeaderAndDetails;
   }
+
+  function generateNoProspectsMessage() {
+    let message =  `
+    <div class="flex-container section-block">  
+      <div class="flex-item section-sub-header">Welcome to Career Strategy</div>
+      <div> You have not entered any job prospects yet. You can do so now by going to <a href=# class="js-add-new-job-prospect"> new job prospect</a>.</div>   
+    </div>`;
+      
+    return message;  
+  }
+
  
 /*     
    render profile information (user name, email address, phone number)
 */
 function generateSecureData(prospects) {         
     $( ".js-page-content" ).html('');
+    if (!prospects || prospects.length === 0) {
+        $('.js-page-content').append(generateNoProspectsMessage());
+        return;
+    }
+
     let statusList = generateStatusList(prospects);
     let companyList = generateCompanyList(prospects);
     let contactsList = generateContactList(prospects);

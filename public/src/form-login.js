@@ -13,7 +13,6 @@ function isLoginFormValid() {
  return errors.length === 0;
 } 
 
-
 function loginThisUser() {     
     // check if inputs are valid
     if (!isLoginFormValid()) return;
@@ -21,12 +20,13 @@ function loginThisUser() {
     const userName =  $('#UserId').val();
     const password = $("#userPassword").val(); 
     const loginJson = JSON.parse(`{"username": "${userName}","password": "${password}"}`);        
-    
+    props.isLoggedIn = false;
     setTimeout(loginUserAPI(pathAuth, loginJson, function(data) {
     if (!apiReturnedErrorOnLogin(data)) {
       localStorage.setItem('token', data.userAuth.authToken);
       localStorage.setItem('userId', data.userAuth.id);
-      props.userId = localStorage.getItem('userId'); 
+      props.userId = localStorage.getItem('userId');
+      props.isLoggedIn = true; 
       getUserProfile();      
     }
     }), 3000);
@@ -38,10 +38,10 @@ function getUserProfile() {
   const queryPath = `userId=${props.userId}`;
   setTimeout(findCareerStrategyAPI(pathUserProfile, queryPath, "" , function(data) {      
     // render user information including profile info and the user's skills
-    props.USER_PROFILE = (data && data.userProfile && data.userProfile.length > 0) ? data.userProfile[0] : {};
-    props.userProfileId = props.USER_PROFILE && props.USER_PROFILE.id ? props.USER_PROFILE.id : "";  
-    if (props.userProfileId !== "") setHasProfile(true);
-    renderLanding(props.USER_PROFILE);
+    props.USER_PROFILE = data && data.userProfile ? data.userProfile[0] : {};
+    props.userProfileId = props.USER_PROFILE && props.USER_PROFILE.userId ? props.USER_PROFILE.id : "";  
+    props.userProfileId === "" ? setHasProfile(false) : setHasProfile(true);
+    props.hasProfile === true ? renderLanding(props.USER_PROFILE) : renderUserProfileForm();
   }), 3000);   
 }
   

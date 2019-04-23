@@ -33,9 +33,16 @@ let props = {"route":"home",
     $(document).on('click','.js-form-register-user',function(e){e.preventDefault(); submitRegistion(); });        
     $(document).on('click','.js-register-image',function(e){e.preventDefault(); renderRegistrationForm(); }); 
     $(document).on('click','.js-edit-profile',function(e){e.preventDefault(); renderUserProfileForm(); });      
+    $(document).on('click','.js-delete-job-status',function(e){e.preventDefault(); deleteJobStatusForm(e); });            
+    $(document).on('click','.js-delete-job-contact',function(e){e.preventDefault(); deleteJobContactForm(e); });
+    $(document).on('click','.js-add-job-status',function(e){e.preventDefault(); addJobStatusForm(e); });
+    $(document).on('click','.js-add-job-contact',function(e){e.preventDefault(); addJobContactForm(e); });
+    $(document).on('click','.js-prospect-add-job-skill',function(e){e.preventDefault(); addJobSkillProspectForm(e); });    
+    $(document).on('click','.js-prospect-delete-job-skill',function(e){e.preventDefault(); deleteJobSkillProspectForm(e); });    
+    
     /* manage job prospects */ 
-    $(document).on('click','.js-prospect-detail',function(e){renderJobProspectDetails(e); }); 
-    $(document).on('click','#cancelProspectEvent',function(e){e.preventDefault(); renderProspectForm(); });     
+    $(document).on('click','.js-prospect-detail',function(e){renderJobProspectDetails(e); });     
+    $(document).on('click','.js-add-new-job-prospect',function(e){e.preventDefault(); renderProspectForm(); }); 
     $(document).on('click','.js-delete-prospect',function(e){e.preventDefault(); deleteJobProspect(); });    
     $(document).on('click','.js-edit-prospect',function(e){e.preventDefault(); editJobProspect(); });   
     $(document).on('click','.js-edit-this-job-prospect',function(e){e.preventDefault(); editProspectForm(props.prospect); });   
@@ -76,12 +83,14 @@ function isUserLoggedIn() {
     renderLoginForm()
 
     return continueToPage;
-}  
+}
 
 function canAccessProfile() {
   let continueToPage = false;
   props.isLoggedIn === true  
-    ? continueToPage = true
+    ? props.hasProfile === true 
+        ? continueToPage = true 
+        : renderUserProfileForm()
     : renderLoginForm() 
 
     return continueToPage;
