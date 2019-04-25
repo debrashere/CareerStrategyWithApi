@@ -6,8 +6,6 @@ function generatePropectDetails(prospect) {
     <div class="header">
       <h1>Career Strategy</h1>
       <h3 tabindex="0">Job Prospects <img  class="js-edit-this-job-prospect" alt="edit job prospect" src="./images/icon-add.png">(Edit)</a></h3>
-      <button type="submit" id="submitProspect" class="js-edit-button" >Submit</button>  
-      <a  href="*" class="form-link js-render-landing" >Cancel</a> 
     </div>
     <div class="responsive-tabs">
       <input class="state" type="radio" title="tab-one" name="tabs-state" id="tab-one" checked />

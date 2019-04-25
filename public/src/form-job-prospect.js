@@ -37,7 +37,7 @@ function isInputValid(value, validations, errorPosition) {
     <h1>Career Strategy</h1>
     <h3>Select each tab to enter all information. After you are done click "Submit" to complete your edits or new job prospect entry.</h3>
     <button type="submit" id="submitProspect" class="js-edit-button" >Submit</button>  
-    <button type="cancel" id="cancelProspect" class="js-edit-button" >Cancel</button> 
+    <a  href="*" class="form-link js-render-landing" >Cancel</a> 
   </div>
   <div class="responsive-tabs">
     <input class="state" type="radio" title="tab-one" name="tabs-state" id="tab-one" checked />
@@ -255,11 +255,11 @@ let newContactFields = `
   </fieldset> `;
     
   let contactForms =  `  
-  <div class="input-form-body">
-    <form action="" method="post" class="flex-container form form-element">
+  <div class="input-form-body flex-container">
+    <form action="" method="post" class="form form-element">
       ${newContactFields}     
     </form>
-    <form action="" method="post" class="flex-container form form-edit-element">
+    <form action="" method="post" class="form form-edit-element">
       ${contactsList}   
     </form>        
   </div>`;
@@ -312,11 +312,11 @@ let newStatusFields = `
   
 
   let statusForms =  `  
-  <div class="input-form-body">
-    <form action="" method="post" class="flex-container form form-element">
+  <div class="input-form-body flex-container">
+    <form action="" method="post" class="form form-element">
       ${newStatusFields}     
     </form>
-    <form action="" method="post" class="flex-container form form-edit-element">
+    <form action="" method="post" class="form form-edit-element">
       ${statusList}   
     </form>        
   </div>`;
