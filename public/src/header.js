@@ -24,8 +24,7 @@ function renderUserProfile(userProfile) {
   
  let userInfo =
     `<div class="section-header user-header">
-        <em><span  tabindex="0">${userProfile.firstName} ${userProfile.lastName}</span></em> 
-        <a href=# class="js-edit-profile"><img alt="edit prospect" src="./images/icon-edit.png" /> (Edit)</a>
+        <em><span  tabindex="0">${userProfile.firstName} ${userProfile.lastName}</span></em>   
     </div>  `;  
     
   return userInfo;

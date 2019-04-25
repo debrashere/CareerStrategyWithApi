@@ -1,30 +1,69 @@
 'use strict';
 
-function generateContacts(prospect) {
-  if (!prospect) return '';
+function generatePropectDetails(prospect) {
 
-  let contacts ='';
-  prospect.contacts.map( function(contact, index) {   
-     contacts += `
-     <div class="flex-item background-color-white">  
-       <div tabindex="0"><span class="inline-title">Type:</span> ${contact.contactType}</div>
-       <div tabindex="0"><span class="inline-title">First name:</span> ${contact.firstName}</div>
-       <div tabindex="0"><span class="inline-title">Last name:</span> ${contact.lastName}</div>
-       <div tabindex="0"><span class="inline-title">Email:</span> <a href="mailto:${contact.email}">${contact.email}</a> </div>
-       <div tabindex="0"><span class="inline-title">Phone:</span> <a href="tel:${contact.phone}">${contact.phone}</a></div>
-       <div hidden><span class="js-contactId" id="Contact-${index}" hidden>${prospect.id}</span></div>
-     </div>`;
-  });
-     
-  let contactsHeaderAndDetails = `
-  <div class="flex-container">
-    <div class="section-header"><h3 tabindex="0">Contacts</h3></div>         
-      ${contacts}   
-  </div> `;  
-       
-  return contactsHeaderAndDetails;
+    return `
+    <div class="header">
+      <h1>Career Strategy</h1>
+      <h3 tabindex="0">Job Prospects <img  class="js-edit-this-job-prospect" alt="edit job prospect" src="./images/icon-add.png">(Edit)</a></h3>
+      <button type="submit" id="submitProspect" class="js-edit-button" >Submit</button>  
+      <a  href="*" class="form-link js-render-landing" >Cancel</a> 
+    </div>
+    <div class="responsive-tabs">
+      <input class="state" type="radio" title="tab-one" name="tabs-state" id="tab-one" checked />
+      <input class="state" type="radio" title="tab-two" name="tabs-state" id="tab-two" />
+      <input class="state" type="radio" title="tab-three" name="tabs-state" id="tab-three" />
+      <input class="state" type="radio" title="tab-four" name="tabs-state" id="tab-four" />
+  
+      <div class="tabs flex-tabs">
+        <label for="tab-one" id="tab-one-label" class="tab">Summary</label>
+        <label for="tab-two" id="tab-two-label" class="tab">Job Skills</label>
+        <label for="tab-three" id="tab-three-label" class="tab">Contacts</label>
+        <label for="tab-four" id="tab-four-label" class="tab">Status History</label>
+        <div id="tab-one-panel"   class="panel active"> ${generateWhatWhereDate(prospect)} </div>
+        <div id="tab-two-panel"   class="panel"> ${generateUserAndJobSkills(props.USER_PROFILE, prospect)} </div>
+        <div id="tab-three-panel" class="panel"> ${generateContacts(prospect)} </div>
+        <div id="tab-four-panel"  class="panel"> ${generateStatusHistory(prospect)} </div>
+      </div>
+    </div>`;
 }
 
+
+function generateContacts(prospect) {  
+  let contactsList = '';
+
+  prospect.contacts.map( function(contact, index) { 
+    contactsList += ` 
+    <div class="flex-item-widget">  
+      <div class="form-field">
+          <div class="widget-label">First name: </div>
+          <div class="widget-texbox"  tabindex="0">${contact.firstName}</div>
+      </div>
+      <div class="form-field">
+          <div class="widget-label">Last name: </div>
+          <div class="widget-texbox"  tabindex="0">${contact.lastName}</div>
+      </div>
+      <div class="form-field">
+          <div class="widget-label">Email: </div>
+          <div class="widget-texbox"  tabindex="0">${contact.email}</div>
+      </div>
+      <div class="form-field">
+          <div class="widget-label">Phone: </div>
+          <div class="widget-texbox"  tabindex="0">${contact.phone}</div>
+      </div>
+    </div> `;
+  });
+    
+  let contactDetails =  `  
+  <div class="input-form-body">
+    <div class="flex-container">
+      ${contactsList}   
+    </div>        
+  </div>`;
+ 
+  return contactDetails;
+}
+ 
 function generateStatusHistory(prospect) {
   let statusList = '';
 
@@ -33,28 +72,38 @@ function generateStatusHistory(prospect) {
     let formattedDate = `${dateStatus.getMonth()}/${dateStatus.getDay()}/${dateStatus.getFullYear()}
      - ${dateStatus.getHours()}:${dateStatus.getMinutes()}:${dateStatus.getSeconds()} `;     
 
-     statusList += `
-     <div class="flex-item background-color-white">  
-       <div tabindex="0"><span class="inline-title">Date: </span> ${formattedDate}</div>
-       <div tabindex="0"><span class="inline-title">Status: </span> ${status.status}</div>
-       <div tabindex="0"><span class="inline-title">Comment: </span> ${status.comment}</div>
-       <div hidden><span class="js-statusId" id="Prospect-${index}" hidden>${prospect.id}</span></div>
-     </div>`;
-    }); 
+     statusList += ` 
+     <div class="flex-item-widget">  
+       <div class="form-field">
+           <div class="widget-label">Date: </div>
+           <div class="widget-texbox"  tabindex="0">${formattedDate}</div>
+       </div>
+       <div class="form-field">
+           <div class="widget-label">Status: </div>
+           <div class="widget-texbox"  tabindex="0">${status.status}</div>
+       </div>
+       <div class="form-field">
+           <div class="widget-label">Comment: </div>
+           <div class="widget-texbox"  tabindex="0">${status.comment}</div>
+       </div>
+      </div> `;
+      });
     
-    let headerAndDetails = `
-      <div class="flex-container">
-        <div class="section-header"><h3 tabindex="0">Status History</h3></div>        
-         ${statusList}   
+
+      let headerAndDetails =  `  
+      <div class="input-form-body">
+        <div class="flex-container">
+          ${statusList}   
+        </div>        
       </div>`;
-       
+
       return headerAndDetails;
 }
   
 /*     
    render user skills
 */
-function generateUserSkillsForProspect(profile) { 
+function generateUserAndJobSkills(profile, prospect) { 
 
   let skills = "";       
    // if the user has any skills, format the html to display them
@@ -71,10 +120,11 @@ function generateUserSkillsForProspect(profile) {
        ${skills}
       </p>
     </div>`;  
+    
+    skillHeaderAndDetails += generateJobSkills(prospect);
 
     return skillHeaderAndDetails;
 }
-
 
 /*     
    render job skills
@@ -93,72 +143,75 @@ function generateJobSkills(prospect) {
 
   let headerAndSkills = `
     <div class="flex-item-skills js-master-skills">
-      <div class="section-header"><h3 tabindex="0">Job skills</h3></div>
-      <div class="table">
-        <div class="tr th"> 
-          <div class="td">Skill</div> 
-          <div class="td"> </div>     
-        </div>
-        <div class="tr">  
-          <div class="td" data-header="Skill"><input type="text" id="newJobSkill"></input></div>
-          <div class="td" data-header=""><a id="AddJobSkill" href="#" class="js-add-job-skill"><img id="addNewSkill" alt="add skill" src="./images/icon-add.png">(Add/Edit)</a>
-          <a id="DeleteMasterSkill" href="#" class="js-delete-job-skill"><img id="deleteThisJobSkill" alt="delete job skill" src="./images/icon-delete.png">(Delete)</a></div>
-        </div>
-      </div>
+      <div class="section-header"><h3 tabindex="0">Job skills</h3></div>  
       ${skills}
     </div> `; 
 
   return headerAndSkills; 
 }
 
-function generateSourceDayToDayComments(prospect) {
-  return `
-    <div class="flex-container background-color-white">
-      <div class="flex-item">
-        <div class="section-header"><h3 tabindex="0">Source and Details </h3></div>
-        <div tabindex="0"><span class="inline-title">Source: </span> ${prospect.source}</span></div>    
-        <div tabindex="0"><span class="inline-title">Source Url: </span> <a href='${prospect.sourceUrl}' target=_blank>${prospect.sourceUrl}</a></span></div>                                     
-        <div tabindex="0"><span class="inline-title">Details: </span> ${prospect.details}</span></div> 
-        <div tabindex="0"><span class="inline-title">Day to day: </span> ${prospect.dayToDay}</span></div> 
-        <div tabindex="0"><span class="inline-title">Comments: </span> ${prospect.comments}</span></div>          
-      </div>
-    </div>
-  `;
-}
-
 function generateWhatWhereDate(prospect) {      
-  let index = 1;
   let dateWhen = new Date(prospect.when);
 
   let formattedDate = `${dateWhen.getMonth()}/${dateWhen.getDay()}/${dateWhen.getFullYear()}  - 
     ${dateWhen.getHours()}:${dateWhen.getMinutes()}:${dateWhen.getSeconds()} `;     
-
-    let whatWhereDate = `
-    <div class="tr">  
-      <div class="td" data-header="Title">${prospect.what}</div>
-      <div class="td" data-header="Company"> ${prospect.where}</div>
-      <div class="td" data-header="When">${formattedDate}</div>
-      <div class="td" data-header="Status">${prospect.status}</div>
-      <div class="td" hidden><span class="js-prospectId" id="Prospect-${index}" hidden>${prospect.id}</span></div>
-    </div>`;
-    
-    
-    let headerAndDetails = `
-    <div class="flex-item-skills">
-      <div class="section-header"><h3 tabindex="0">Job Prospects <img  class="js-edit-this-job-prospect" alt="edit job prospect" src="./images/icon-add.png">(Edit)</a></h3></div>
-      <output><div id="js-skills-error-message" class="error-message" aria-live="assertive" hidden> </div></output>
-      <div class="table">
-        <div class="tr th"> 
-          <div class="td">Title</div> 
-          <div class="td">Company</div>
-          <div class="td">When</div> 
-          <div class="td">Status</div>    
+      
+      let summary = `  
+      <div class="flex-item-widget">
+        <div class="form-field">
+            <div class="widget-label">What</div>
+            <div class="widget-texbox">${prospect.what}</div>
+        </div>    
+        <div class="form-field">
+            <div class="widget-label">Where</div>
+            <div class="widget-texbox">${prospect.where}</div>
         </div>
-        ${whatWhereDate}   
+        <div class="form-field">
+            <div class="widget-label">Date</div>
+            <div class="widget-texbox">${formattedDate}</div>
+        </div>
+        <div class="form-field">
+            <div class="widget-label">Status</div>
+            <div class="widget-texbox">${prospect.status}</div>
+        </div>    
+        <div class="form-field">
+            <div class="widget-label">Source</div>
+            <div class="widget-texbox">${prospect.source}</div>
+        </div>
+        <div class="form-field">
+          <div class="widget-label">Source URL</div>
+          <div class="widget-texbox">${prospect.sourceUrl}</div>
+        </div>
+      </div>`;
+
+      summary += `
+      <div class="flex-item-widget">
+        <div class="form-field">
+          <div class="widget-label">Day to Day</div>
+          <textarea  rows="4" cols="40" alue="${prospect.dayToDay}" >${prospect.dayToDay}</textarea>
+        </div>
+        <div class="form-field">
+          <div>Contact</div>
+          <textarea rows="2" cols="40" value="${prospect.contact}" >${prospect.contact}</textarea>
+        </div>
+        <div class="form-field">
+          <div>Comments</div>
+          <textarea rows="4" cols="40" value="${prospect.comments}" >${prospect.comments}</textarea>
+        </div>
+        <div class="form-field">
+          <div>Details</div>
+          <textarea  rows="4" cols="40"  value="${prospect.details}" >${prospect.details}</textarea>
+        </div>
       </div> `; 
 
-  return headerAndDetails;            
+    const summaryDetails = `
+    <div class="input-form-body">
+      <div class="flex-container">
+        ${summary}   
+      </div>        
+    </div>`;
 
+  return summaryDetails;            
 }
 
 function renderJobProspectDetails(event) {
@@ -182,88 +235,11 @@ function refreshJobProspectDetails(prospectId) {
 }
 
 function generateJobProspectDetails(prospectId) {  
-  let prospect = props.PROSPECTS.filter( id => id.id === prospectId)[0];
-  props.prospect = prospect;
-
-  $('.js-page-content').html('');  
-  $('.js-page-content').append(`${ generateWhatWhereDate(prospect)}`);
-  $('.js-page-content').append(`${ generateJobSkills(prospect)}`); 
-  $('.js-page-content').append(`${ generateUserSkillsForProspect(props.USER_PROFILE)}`); 
-  $('.js-page-content').append(`${ generateSourceDayToDayComments(prospect) }`);  
-  $('.js-page-content').append(`${ generateStatusHistory(prospect)}`); 
-  $('.js-page-content').append(`${ generateContacts(prospect) }`); 
-  $('.js-prospectId').hide();
-  $('.js-contactId').hide();
-  $('.js-statusId').hide(); 
-}
-
+    let prospect = props.PROSPECTS.filter( id => id.id === prospectId)[0];
+    props.prospect = prospect;
   
-function  deleteSkillFromJobProspect() {        
-    let skill = $(`#newJobSkill`).val();
-
-    let skillIndex = -1;
-    if (!props.prospect.jobSkills) {
-      props.prospect.jobSkills = []
-    }
-
-    // check if skill exists in the user's skill collection
-    // if so then delete otherwise do nothing
-    for(let idx=0; idx<props.prospect.jobSkills.length ; idx++)
-    {
-        if (props.prospect.jobSkills[idx].skill == skill) {
-        skillIndex = idx;
-        break;
-       }
-    }
-
-    if (skillIndex > -1)
-    {  
-      // Remove this skill by splicing it from the collection of skills
-      props.prospect.jobSkills.splice( skillIndex, 1 );  
-      const skillsToKeep = `{"id": "${props.prospectId}","jobSkills": ${JSON.stringify(props.prospect.jobSkills)}}`;                         
-      setTimeout(putCareerStrategyAPI(pathJobProspects, JSON.parse(skillsToKeep), props.prospectId, function(data) {                                        
-        refreshJobProspectDetails(props.prospectId);
-      }), 3000); 
-    }    
-}
- 
-function  editSkillForJobSprospect(event) {        
-  const id = `#${event.currentTarget.id}`; 
-  let skill = $(id).text();                
-  // setup the skill input field
-  $("#newJobSkill").val(skill);     
-}
-
-function  addSkillToJobProspect() {        
-  let skill = $('#newJobSkill').val();
-
-  let skillIndex = -1;
-  if (!props.prospect.skills) {
-    props.prospect.skills = []
-  }
-
-  // check if skill already exists in the job skill collection
-  // if so then update instead of add
-  for(let idx=0; idx< props.prospect.jobSkills.length ; idx++)
-  {
-      if (props.prospect.jobSkills[idx].skill == skill) {
-      skillIndex = idx;
-      break;
-     }
-  }
-
-  if (skillIndex > -1)
-  {
-    props.prospect.jobSkills[skillIndex].yearsOfExperience = 1;
-  }
-  else {
-    props.prospect.jobSkills.push(JSON.parse(`{"skill": "${skill.trim()}","yearsOfExperience":"1"}`));       
-  }
-
-  // create json object to update the user skills
-  const jobSkills = `{"id": "${props.prospectId}","jobSkills": ${JSON.stringify(props.prospect.jobSkills)}}`;                         
-
-  setTimeout(putCareerStrategyAPI(pathJobProspects, JSON.parse(jobSkills), props.prospectId, function(data) {                                        
-    renderUserSkills();
-  }), 3000); 
+    $('.js-page-content').html(`${ generatePropectDetails(prospect)}`);
+    $('.js-prospectId').hide();
+    $('.js-contactId').hide();
+    $('.js-statusId').hide(); 
 }

@@ -65,8 +65,44 @@ function generateCompanyList(prospects) {
          return `<div class="section-header"><h3 tabindex="0">Companies</h3></div><div>${uniqueCompanies}</div>`;
 }
 
-
 function generateContactList(prospects) {
+  if (!prospects) return '';
+
+  let contacts = '';
+  prospects.map( function(thisProspect, index) {   
+      thisProspect.contacts.map(function (contact, idx) {  
+      contacts += ` 
+    <div class="flex-item-widget">  
+      <div class="form-field">
+          <div class="widget-label">First name: </div>
+          <div class="widget-texbox"  tabindex="0"><a href='#' title='Contact Name' id="ContactLink-${index}"  class='js-prospects-by-contact'>${contact.firstName} ${contact.lastName}</a></div>
+      </div>
+      <div class="form-field">
+          <div class="widget-label">Email: </div>
+          <div class="widget-texbox"  tabindex="0"><a href="mailto: ${contact.email}">${contact.email}</a></div>
+      </div>
+      <div class="form-field">
+          <div class="widget-label">Phone: </div>
+          <div class="widget-texbox"  tabindex="0"><a href="tel:${contact.phone}">${contact.phone}</a></div>
+      </div>
+      <div hidden><span class="js-contactId" id="Contact-${index}" hidden>${contact._id}</span></div>
+    </div> `;
+    });
+  });
+    
+  let contactDetails =  `  
+  <div class="section-header"><h3>Contacts</h3></div>
+  <div class="input-form-body">
+    <div class="flex-container">
+      ${contacts}   
+    </div>        
+  </div>`;
+ 
+  return contactDetails;
+}
+ 
+
+function generateContactListOLD(prospects) {
     if (!prospects) return '';
   
     let contacts = '';
@@ -91,6 +127,9 @@ function generateContactList(prospects) {
     return contactsHeaderAndDetails;
   }
 
+  /*
+    If user has not entered any job prospect yet display this content
+  */
   function generateNoProspectsMessage() {
     let message =  `
     <div class="flex-container section-block">  

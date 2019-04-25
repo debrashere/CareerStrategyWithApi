@@ -31,7 +31,7 @@ function validateProfileForm(profileId) {
     // update the user profile document for this user
     userProfile = `{"id": "${profileId}", "firstName": "${firstName}", "lastName": "${lastName}", "email": "${email}", "phone": "${phone}"}`; 
     setTimeout(putCareerStrategyAPI(pathUserProfile, 
-      JSON.parse(userProfile), profileId, renderSecureContent),  3000);
+      JSON.parse(userProfile), profileId, refreshUserProfile),  3000);
   }
   else{        
     // create the user profile document for this user  
@@ -64,13 +64,15 @@ function validateProfileForm(profileId) {
   will call the correct function to complete the validation of inputs and submit the updates
 */
 function submitProfileUpdates() {            
-    const profileKey = $('#ProfileEditKey').val();
+    const profileKey = $('#profileEditKey')[0].textContent
     validateProfileForm(profileKey);   
 } 
+
 /*
   Format the html to display the form to input data to edit or create user profile
-*/
-function renderUserProfileForm(data) { 
+*/ 
+
+function renderUserProfileForm() {  
   /* user can access profile form if they are logged in */
   if (!isUserLoggedIn()) return;
 
@@ -86,33 +88,60 @@ function renderUserProfileForm(data) {
       skills: []
     }; 
 
-    // if user clicked edit button to edit existing user profile data then set user json variable with that data
-    if (data && data.userProfile && data.userProfile.length > 0) {
-      profile = data.userProfile[0];
-      hiddenProfileId = `<label for="ProfileEditKey" class="edit-label"></label><div class="td" hidden><input id="ProfileEditKey" type="text"value=${profile.id} hidden></input></div>`;       
-    }
-    else if (props.USER_PROFILE && props.USER_PROFILE.userId ) {
+    if (props.USER_PROFILE && props.USER_PROFILE.userId ) {
       profile = props.USER_PROFILE;
-      hiddenProfileId = `<label for="ProfileEditKey" class="edit-label"></label><div class="td" hidden><input id="ProfileEditKey" type="text"value=${profile.id} hidden></input></div>`;       
+      hiddenProfileId = `<span id="profileEditKey" class="js-profileEditKey" value=${profile.id} hidden>${profile.id}</span>`;       
     }
 
     // format the form html
-    let formInputs = `
-    <div class="col-6">       
-      <form id="Profile" class="flex-container" method="post">      
-          <fieldset class="edit-form">
-              <legend><h2 tabindex="0">User Profile</h2></legend>
-              <p> <label for="profileFirst" class="edit-label"><strong>First Name: </strong></label> <input type="text" id="profileFirst" class="js-input-firstname" value="${profile.firstName}" aria-required="true" required /></p>    
-              <p> <label for="profileLast" class="edit-label"><strong>Last Name: </strong></label>  <input   type="text"  id="profileLast" class="js-input-lastname"  value="${profile.lastName}" aria-required="true" required /></p>
-              <p> <label for="profileEmail" class="edit-label"><strong>Email: </strong></label>  <input   type="text"  id="profileEmail" class="js-input-email" value="${profile.email}" aria-required="true" required /></p>
-              <p> <label for="profilePhone" class="edit-label"><strong>Phone: </strong></label>  <input   type="text"  id="profilePhone" class="js-input-phone"  value="${profile.phone}" /></p>
-              ${hiddenProfileId}
-          </fieldset>
-      </form>
-      <button type="submit" id="submitProfile" class="js-edit-event js-edit-button" >Submit</button>  
-    </div> `;
-
-    // display the form
-    $('.js-page-content').html(formInputs);  
-    $('#ProfileEditKey').hide();      
+    const profileFields = ` 
+    <fieldset class="flex-item js-new-contact-form">  
+       <div class="form-field">
+          <label  for="profileFirst"><span >First name</span></label>
+          <input id="profileFirst" type="text" class="form-input  js-profileFirst" placeholder="Your first name" value="${profile.firstName}" aria-required="true" required>
+      </div>
+      <div class="form-field">
+          <label for="profileLast"><span>Last name</span></label>
+          <input id="profileLast" type="text" class="form-input  js-profileLast" placeholder="Your last name" value="${profile.lastName}" aria-required="true" required>
+      </div>
+      <div class="form-field">
+          <label for="profileEmail"><span>Email</span></label>
+          <input id="profileEmail" type="text" class="form-input  js-profileEmail" placeholder="email" value="${profile.email}" >
+      </div>
+      <div class="form-field">
+          <label for="profilePhone"><span>Phone</span></label>
+          <input id="profilePhone" type="text" class="form-input  js-profilePhone" placeholder="Phone" value="${profile.phone}">
+      </div>
+      <div class="form-field">
+        <button type="submit" id="submitProfile" class="js-edit-event js-edit-button  js-form-profile-update" >Submit</button>            
+        <a  href="*" class="form-link js-render-landing" >cancel</a>  
+      </div>         
+    </fieldset> `;
+    
+  let profileForm =  `  
+  <div class="input-form-body">
+    <form action="" method="post" class="flex-container form form-element">
+      ${profileFields} 
+      ${hiddenProfileId}      
+    </form>         
+  </div>`;
+ 
+  $(".js-page-content").html(profileForm); 
+  $('.js-profileEditKey').hide();
 }
+
+function refreshUserProfile(data) {
+  if (apiReturnedError(data)) {
+    return;
+  }
+
+  const queryPath = `userId=${props.userId}`;
+  setTimeout(findCareerStrategyAPI(pathUserProfile, queryPath, "" , function(data) {
+    const userProfile = (data && data.userProfile && data.userProfile.length > 0) ? data.userProfile[0]  : {};
+    props.userProfileId  = userProfile ? userProfile.id : "";
+    props.USER_PROFILE = userProfile; 
+    displayPageMessageSuccess("Profile update/submission successful.");
+    renderUserProfileForm();
+  }), 3000); 
+} 
+ 

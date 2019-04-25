@@ -18,3 +18,18 @@ function displayInformation(text, element) {
         $( error ).insertAfter( $(`.${element}`));   
     }
 }
+
+function displayPageMessageSuccess(text) {
+    if (text !== undefined) {       
+        let message = `<div class="message-success " aria-hidden="false" >${text}</div>`;   
+        $( '.js-page-message' ).html(message);   
+        $( '.js-page-message' ).show();   
+    }
+}
+function displayPageMessageFailure(text) {
+    if (text !== undefined) {       
+        let message = `<div class="form-error" aria-hidden="false" >${text}</div>`;   
+        $( '.js-page-message' ).html(message); 
+        $( '.js-page-message' ).show();    
+    }
+}

@@ -30,6 +30,34 @@ function isInputValid(value, validations, errorPosition) {
   return errors.length === 0;
  } 
 
+ function generateProspectForms(prospect, profile) {
+
+  return ` 
+  <div class="header">
+    <h1>Career Strategy</h1>
+    <h3>Select each tab to enter all information. After you are done click "Submit" to complete your edits or new job prospect entry.</h3>
+    <button type="submit" id="submitProspect" class="js-edit-button" >Submit</button>  
+    <button type="cancel" id="cancelProspect" class="js-edit-button" >Cancel</button> 
+  </div>
+  <div class="responsive-tabs">
+    <input class="state" type="radio" title="tab-one" name="tabs-state" id="tab-one" checked />
+    <input class="state" type="radio" title="tab-two" name="tabs-state" id="tab-two" />
+    <input class="state" type="radio" title="tab-three" name="tabs-state" id="tab-three" />
+    <input class="state" type="radio" title="tab-four" name="tabs-state" id="tab-four" />
+
+    <div class="tabs flex-tabs">
+      <label for="tab-one" id="tab-one-label" class="tab">Summary</label>
+      <label for="tab-two" id="tab-two-label" class="tab">Job Skills</label>
+      <label for="tab-three" id="tab-three-label" class="tab">Contacts</label>
+      <label for="tab-four" id="tab-four-label" class="tab">Status History</label>
+      <div id="tab-one-panel"   class="panel active">${generateProspectSummaryForm(prospect)} </div>
+      <div id="tab-two-panel"   class="panel"> ${generateUserAndJobSkillsForm(prospect, profile)} </div>
+      <div id="tab-three-panel" class="panel"> ${generateContactsForm(prospect)} </div>
+      <div id="tab-four-panel"  class="panel"> ${generateStatusHistoryForm(prospect)} </div>
+    </div>
+  </div>`;
+  }
+
 /*
   Retrive the input from the job prospect form  
 */
@@ -124,7 +152,7 @@ function submitProspectUpdates() {
 /*     
    render job skills
 */
-function generateJobSkillsForm(prospect) {  
+function generateUserAndJobSkillsForm(prospect, profile) {  
   let skills = '';  
 
   /* formats links for the existing job skills */
@@ -133,189 +161,253 @@ function generateJobSkillsForm(prospect) {
         skills +=  `<a href="#" id="jobSkill-${index}" class="skill-link js-edit-job-skill">${skill.skill}</a>`;            
       });    
   }  
-  const skillsList = `<div class="input-block"><p class="js-job-skills-list">${skills}</p></div>`; 
+  const jobSkills = `
+    <fieldset id="skillsFieldset" class="flex-item js-skillsFieldset">  
+      <div class="form-field">
+          <label for="newJobSkill">
+            <a id="AddJobSkill" href="#" class="form-link js-prospect-add-job-skill"><img id="addNewSkill" alt="add skill" src="./images/icon-add.png">(Add/Edit)</a>
+            <a id="DeleteMasterSkill" href="#" class="form-link js-prospect-delete-job-skill"><img id="deleteThisJobSkill" alt="delete job skill" src="./images/icon-delete.png">(Delete)</a>      
+          </label>
+          <input id="newJobSkill" type="text" class="form-input  js-input-skill" placeholder="skill" value="" >
+          <div class="input-block"><p class="js-job-skills-list">${skills}</p></div>  
+      </div>
+    </fieldset>`;
 
-  let headerAndSkills = `
-    <div class="flex-container">
-      <fieldset class="edit-form"> 
-        <div class="section-header"><h3 tabindex="0">Job skills</h3></div>             
-            <label for="newJobSkill">  
-              <a id="AddJobSkill" href="#" class="js-prospect-add-job-skill"><img id="addNewSkill" alt="add skill" src="./images/icon-add.png">(Add/Edit)</a>
-              <a id="DeleteMasterSkill" href="#" class="js-prospect-delete-job-skill"><img id="deleteThisJobSkill" alt="delete job skill" src="./images/icon-delete.png">(Delete)</a>
-            </label>          
-            <div class="input-block"><input type="text" id="newJobSkill"></input> </div>
-          ${skillsList}      
-      </fieldset> 
-    </div> `; 
 
-    let showHideJobSkills = `
-    <div class="toggle">
-    <input type="checkbox" value="selected" id="skillsToggle" class="toggle__input">
-    <label for="skillsToggle" class="toggle__label"><span class="toggle__more"> Show Job Skills</span> <span class="toggle__less">Hide Job Skills</span></label>                            
-    <div class="toggle__content">
-      ${headerAndSkills}
-    </div>     
+  let userSkills = "";       
+    // if the user has any skills, format the html to display them
+   if (profile.skills) {
+     profile.skills.map( function(skill, index) {          
+      userSkills +=  `<span "userSkill${index}" class="skill-span js-edit-user-skill">${skill.skill}</span>`;            
+      });  
+     } 
+   
+     let userSkillsSection = `
+     <div class="flex-item-skills">
+       <div class="section-header"><h3 tabindex="0">Your Skills (go to "My Skills" to edit")</h3></div>             
+       <div class="items flex-item-skillset">
+        ${userSkills}
+       </div>
+     </div>`;
+
+  let skillsForm =  `  
+    <div class="input-form-body">
+      <div>
+          <div class="logo">Career Strategy</div>
+          <div class="logo">Skills</div>
+          <div class="form-item">
+              <form action="" method="post" class="form flex-container">
+              ${jobSkills}    
+              </form>
+              ${userSkillsSection}
+          </div>      
+    </div>
   </div>`;
 
-  return showHideJobSkills; 
+  return skillsForm;
 }
 
-function generateContactsForm(prospect) {
+
+function generateContactsForm(prospect) {  
+  let contactsList = '';
+
+  prospect.contacts.map( function(contact, index) { 
+    contactsList += ` 
+    <fieldset id="contactFieldset-${index}" class="flex-item js-contactFieldset">  
+    <div class="input-block">
+          <a id="DeleteContact-${index}" href="#" class="form-link js-delete-job-contact"><img  alt="delete job contact" src="./images/icon-delete.png">(Delete)</a>
+    </div>
+    <div class="form-field">
+        <label  for="prospectContactFirstName-${index}"><span >First name</span></label>
+        <input id="prospectContactFirstName-${index}" type="text" class="form-input  js-input-firstname" placeholder="Contact first name" value="${contact.firstName}" aria-required="true" required>
+    </div>
+    <div class="form-field">
+        <label for="prospectContactLastName-${index}"><span>Last name</span></label>
+        <input id="prospectContactLastName-${index}" type="text" class="form-input  js-input-lastname" placeholder="Contact last name" value="${contact.lastName}" aria-required="true" required>
+    </div>
+    <div class="form-field">
+        <label for="prospectContactEmail-${index}"><span>Email</span></label>
+        <input id="prospectContactEmail-${index}" type="text" class="form-input  js-input-email" placeholder="Contact email" value="${contact.email}" >
+    </div>
+    <div class="form-field">
+        <label for="prospectContactPhone-${index}"><span>Phone</span></label>
+        <input id="prospectContactPhone-${index}" type="text" class="form-input  js-input-phone" placeholder="Contact Phone" value="${contact.phone}">
+    </div>
+    </fieldset> `;
+});
 
 
-  let contactsList ='';
-  prospect.contacts.map( function(contact, index) {    
-      contactsList += `
-      <div id="contactFieldset-${index}" class="flex-item background-color-white js-contactFieldset">  
-      <fieldset class="edit-form js-contacts-input-form">    
-        <div class="input-block">
-          <a id="DeleteContact-${index}" href="#" class="js-delete-job-contact"><img  alt="delete job contact" src="./images/icon-delete.png">(Delete)</a>
-        </div>
-        <p class="input-block"><label for="prospectContactFirstName-${index}"  class="edit-label"><strong>First name: </strong><input type="text"  id="prospectContactFirstName-${index}" class="js-input-contact-firstname" value="${contact.firstName}"></input></p>
-        <p class="input-block"><label for="prospectContactLastName-${index}"   class="edit-label"><strong>Last name: </strong> <input type="text"  id="prospectContactLastName-${index}"  class="js-input-contact-lastname" value="${contact.lastName}"></input></p> 
-        <p class="input-block"><label for="prospectContactEmail-${index}"      class="edit-label"><strong>Email: </strong>     <input type="email" id="prospectContactEmail-${index}"     class="js-input-contact-email" value="${contact.email}"></input></p>
-        <p class="input-block"><label for="prospectContactPhone-${index}"      class="edit-label"><strong>Phone: </strong>     <input type="phone" id="prospectContactPhone-${index}"     class="js-input-contact-phone" value="${contact.phone}"></input></p>
-        </fieldset">
-      </div>`;
-  });
-
-  let newContactFields = `
-      <div class="flex-item background-color-white js-new-contact-form">  
-        <fieldset class="edit-form">   
-          <a id="AddContact" href="#" class="js-add-job-contact"><img id="addNewContact" alt="add status" src="./images/icon-add.png">(Add)</a> 
-          <p class="input-block"><label for="prospectNewContactFirstName"  class="edit-label js-prospectNewContactFirstName"><strong>First name: </strong><input type="text"  id="prospectNewContactFirstName"  value=""></input></p>
-          <p class="input-block"><label for="prospectNewContactLastName"   class="edit-label js-prospectNewContactLastName"><strong>Last name: </strong> <input type="text"  id="prospectNewContactLastName"   value=""></input></p> 
-          <p class="input-block"><label for="prospectNewContactEmail"      class="edit-label js-prospectNewContactEmail"><strong>Email: </strong>     <input type="email" id="prospectNewContactEmail"      value=""></input></p>
-          <p class="input-block"><label for="prospectNewContactPhone"      class="edit-label js-prospectNewContactPhone"><strong>Phone: </strong>     <input type="phone" id="prospectNewContactPhone"      value=""></input></p>
-        </fieldset">
-      </div>`; 
-        
-  let headerAndContacts = `
-    <div class="flex-container js-contacts-container">
-      <div class="section-header"><h3 tabindex="0">Contacts</h3></div> 
-      ${newContactFields}
-      ${contactsList}
-    </div> `;  
-       
-    let showHideContacts = `
-    <div class="toggle">
-    <input type="checkbox" value="selected" id="contactsToggle" class="toggle__input">
-    <label for="contactsToggle" class="toggle__label"><span class="toggle__more"> Show Contacts</span> <span class="toggle__less">Hide Contacts</span></label>                            
-    <div class="toggle__content">
-      ${headerAndContacts}
-    </div>     
+let newContactFields = `
+<fieldset class="flex-item js-new-contact-form">  
+  <a id="AddContact" href="#" class="form-link js-add-job-contact"><img id="addNewContact" alt="add status" src="./images/icon-add.png">(Add)</a>           
+  <div class="form-field">
+       <input id="prospectNewContactFirstName" type="text" class="form-input  js-prospectNewContactFirstName" placeholder="Contact first name" value="" aria-required="true" required>
+  </div>
+  <div class="form-field">
+       <input id="prospectNewContactLastName" type="text" class="form-input  js-prospectNewContactLastName" placeholder="Contact last name" value="" aria-required="true" required>
+  </div>
+  <div class="form-field">
+       <input id="prospectNewContactEmail" type="text" class="form-input  js-prospectNewContactEmai" placeholder="Contact email" value="" >
+  </div>
+  <div class="form-field">
+       <input id="prospectNewContactPhone" type="text" class="form-input  js-prospectNewContactPhone" placeholder="Contact phone" value="">
+  </div>
+  </fieldset> `;
+    
+  let contactForms =  `  
+  <div class="input-form-body">
+    <form action="" method="post" class="flex-container form form-element">
+      ${newContactFields}     
+    </form>
+    <form action="" method="post" class="flex-container form form-edit-element">
+      ${contactsList}   
+    </form>        
   </div>`;
-
-    return showHideContacts;
+ 
+  return contactForms;
 }
-
-function generateStatusHistoryForm(prospect) {
-
-  let statusList ='';
- prospect.statusHistory.map( function(status, index) {  
+  
+function generateStatusHistoryForm(prospect) {  
+  let statusList = '';
+   
+  prospect.statusHistory.map( function(status, index) {  
     let dateStatus = new Date(status.date);    
     let formattedDate =  `${dateStatus.getFullYear()}-${('0' + (dateStatus.getMonth()+1)).slice(-2)}-${('0' + (dateStatus.getDate())).slice(-2)}`;
       
      statusList += `
-     <div id="statusFieldset-${index}" class="flex-item background-color-white js-statusFieldset"> 
-     <fieldset class="edit-form"> 
-        <div>
-          <a id="DeleteStatus-${index}" href="#" class="js-delete-job-status"><img alt="delete job status" src="./images/icon-delete.png">(Delete)</a>
-        </div>
-        <div class="input-block"><label for="prospectStatusDate-${index}"     class="edit-label"><strong>Date: </strong><input type="date" id="prospectStatusDate-${index}"   class="js-input-status-date" value="${formattedDate}" ></input></div>
-        <div class="input-block"><label for="prospectStatusStatus-${index}"   class="edit-label"><strong>Status: </strong><input type="text" id="prospectStatusStatus-${index}"  class="js-input-status-status" value="${status.status}"></input></div>
-        <div class="input-block"><label for="prospectStatusComment-${index}"  class="edit-label"><strong>Comments: </strong></label>  <textarea   rows="4" cols="50" id="prospectStatusComment-${index}"  class="js-input-status-comment"  value="${status.comment}">${status.comment}</textarea></div>  
-      </fieldset">
-     </div>`;
- });
+    <fieldset id="statusFieldset-${index}" class="flex-item js-statusFieldset">  
+    <div>
+      <a id="DeleteStatus-${index}" href="#" class="form-link js-delete-job-status"><img alt="delete job status" src="./images/icon-delete.png">(Delete)</a>
+    </div>
+    <div class="form-field">
+        <label  for="prospectStatusDate-${index}">Date</label>
+        <input id="prospectStatusDate-${index}" type="text" class="form-input  js-input-status-date" placeholder="Date" value="${formattedDate}" aria-required="true" required>
+    </div>
+    <div class="form-field">
+        <label for="prospectStatusStatus-${index}">Status</label>
+        <input id="prospectStatusStatus-${index}" type="text" class="form-input  js-input-status-status" placeholder="Status" value="${status.status}" aria-required="true" required>
+    </div>
+    <div class="form-field">
+        <label for="prospectStatusComment-${index}">Comment</label>
+        <input id="prospectStatusComment-${index}" type="text" class="form-input  js-input-status-comment" placeholder="Comment" value="${status.comment}" >
+    </div>
+    </fieldset> `;
+});
 
 
-  let newStatus = `
-     <div id="statusFieldset" class="flex-item background-color-white js-new-status-form"> 
-      <fieldset class="edit-form"> 
-        <a id="AddStatus" href="#" class="js-add-job-status"><img id="addNewSkill" alt="add status" src="./images/icon-add.png">(Add)</a>
-        <div class="input-block"><label for="prospectStatusDate"     class="edit-label  js-prospectStatusDate"><strong>Date: </strong><input type="date" id="prospectStatusDate" ></input></div>
-        <div class="input-block"><label for="prospectStatusStatus"   class="edit-label  js-prospectStatusStatus"><strong>Status: </strong><input type="text" id="prospectStatusStatus" value=""></input></div>
-        <div class="input-block"><label for="prospectStatusComment"  class="edit-label  js-prospectStatusComment"><strong>Comments: </strong></label>  <textarea   rows="4" cols="50" id="prospectStatusComment" value=""></textarea></div>  
-      </fieldset">
-     </div>`; 
-     
- let headerAndStatus = `
-  <div class="flex-container js-status-container">
-    <div class="section-header"><h3 tabindex="0">Status History</h3></div> 
-    ${newStatus}
-    ${statusList}
-  </div> `;  
-       
-  let showHideStatus = `
-  <div class="toggle">
-    <input type="checkbox" value="selected" id="statusToggle" class="toggle__input">
-    <label for="statusToggle" class="toggle__label">
-       <span class="toggle__more"> Show Status History</span> <span class="toggle__less">Hide Status History</span></label>                            
-    <div class="toggle__content">
-      ${headerAndStatus}
-    </div>     
+let newStatusFields = `
+<fieldset id="statusFieldset" class="flex-item js-new-status-form">   
+<a id="AddStatus" href="#" class="form-link js-add-job-status"><img id="addNewSkill" alt="add status" src="./images/icon-add.png">(Add)</a>
+<div class="form-field">
+      <input id="prospectStatusDate" type="text" class="form-input js-prospectStatusDate" placeholder="Status Date" value="" aria-required="true" required>
+  </div>
+  <div class="form-field">
+      <input id="prospectStatusStatus" type="text" class="form-input js-prospectStatusStatus" placeholder="Status" value="" aria-required="true" required>
+  </div>
+  <div class="form-field">
+      <input id="prospectStatusComment" type="text" class="form-input js-prospectStatusComment" placeholder="Comment" value="" >
+  </div>
+  </fieldset> `;
+    
+  
+
+  let statusForms =  `  
+  <div class="input-form-body">
+    <form action="" method="post" class="flex-container form form-element">
+      ${newStatusFields}     
+    </form>
+    <form action="" method="post" class="flex-container form form-edit-element">
+      ${statusList}   
+    </form>        
+  </div>`;
+ 
+  return statusForms;
+}
+ 
+function generateProspectSummaryForm(prospect) {  
+  $('.js-page-content').html();
+           
+  let hiddenProspectId = "";
+  let dateStatus = new Date();    
+  let formattedDate =  `${dateStatus.getFullYear()}-${('0' + (dateStatus.getMonth()+1)).slice(-2)}-${('0' + (dateStatus.getDate())).slice(-2)}`;    
+ 
+  // If user clicked edit for an existing job prospect then save the id for that prospect in hidden form element 
+  if (prospect && prospect.id && prospect.id != '') {  
+    hiddenProspectId = `<label for="ProspectEditKey" class="edit-label"></label><div class="td" hidden><input id="ProspectEditKey" type="text"value=${prospect.id} hidden></input></div>`;      
+    dateStatus = new Date(prospect.when);
+    formattedDate =  `${dateStatus.getFullYear()}-${('0' + (dateStatus.getMonth()+1)).slice(-2)}-${('0' + (dateStatus.getDate())).slice(-2)}`;    
+  }  
+
+    // Format the input form for job prospect
+    let prospectSummary = `  
+    <fieldset>  
+    <div>
+      <a id="DeleteStatus" href="#" class="form-link js-delete-job-status"><img alt="delete job status" src="./images/icon-delete.png">(Delete)</a>
+    </div>
+    <div class="form-field">
+        <label  for="prospectWhat">What</label>
+        <input id="prospectWhat" type="text" class="form-input  js-input-whate" placeholder="What" value="${prospect.what}" aria-required="true" required>
+    </div>    
+    <div class="form-field">
+        <label  for="prospectWhere">Where</label>
+        <input id="prospectWhere" type="text" class="form-input  js-input-where" placeholder="Where" value="${prospect.where}" aria-required="true" required>
+    </div>
+    <div class="form-field">
+        <label for="prospectWhen">Date</label>
+        <input id="prospectWhen" type="text" class="form-input  js-input-when" placeholder="Date" value="${status.formattedDate}" aria-required="true" required>
+    </div>
+    <div class="form-field">
+        <label for="prospectStatus">Status</label>
+        <input id="prospectStatus" type="text" class="form-input  js-input-status" placeholder="Status" value="${prospect.status}" >
+    </div>    
+    <div class="form-field">
+        <label for="prospectSource">Source</label>
+        <input id="prospectSource" type="text" class="form-input js-input-source" placeholder="Source" value="${prospect.source}" >
+    </div>
+    <div class="form-field">
+      <label for="prospectSourceUrl">Source URL</label>
+      <input id="prospectSourceUrl" type="text" class="form-input  js-input-sourceurl" placeholder="Source Url" value="${prospect.sourceUrl}" >
+    </div>
+    <div class="form-field">
+      <label for="prospectDayToDay">Day to Day</label>
+      <textarea id="prospectDayToDay" class="form-input js-input-daytoday"  rows="4" cols="40" placeholder="Day to Day" value="${prospect.dayToDay}" >${prospect.dayToDay}</textarea>
+    </div>
+    <div class="form-field">
+      <label for="prospectContacts">Contact</label>
+      <textarea id="prospectContacts" class="form-input js-input-contacts"  rows="2" cols="40" placeholder="Contacts" value="${prospect.contact}" >${prospect.contact}</textarea>
+    </div>
+    <div class="form-field">
+      <label for="prospectComments">Comments</label>
+      <textarea id="prospectComments" class="form-input js-input-comments"  rows="4" cols="40"  placeholder="Comments" value="${prospect.comments}" >${prospect.comments}</textarea>
+    </div>
+    <div class="form-field">
+      <label for="prospectDetails">Details</label>
+      <textarea id="prospectDetails" class="form-input js-input-details" rows="4" cols="40" placeholder="Details" value="${prospect.details}" >${prospect.details}</textarea>
+    </div>
+    </fieldset> `; 
+    
+    let prospectForm =  `  
+    <div class="input-form-body">
+      <div>
+          <div class="form-item">
+              <form action="" method="post" class="form flex-container">
+              ${prospectSummary}
+              ${hiddenProspectId}
+              </form>
+          </div>
+    </div>
   </div>`;
 
-  return showHideStatus;
-}    
+  return prospectForm;
+} 
 
 /*
   Display the job prospect form to edit or create job prospect
 */
-function generateProspectForm(prospect) { 
-    $('.js-page-content').html();
-             
-    let hiddenProspectId = "";
-    let dateStatus = new Date();    
-    let formattedDate =  `${dateStatus.getFullYear()}-${('0' + (dateStatus.getMonth()+1)).slice(-2)}-${('0' + (dateStatus.getDate())).slice(-2)}`;    
-   
-    // If user clicked edit for an existing job prospect then save the id for that prospect in hidden form element 
-    if (prospect && prospect.id && prospect.id != '') {  
-      hiddenProspectId = `<label for="ProspectEditKey" class="edit-label"></label><div class="td" hidden><input id="ProspectEditKey" type="text"value=${prospect.id} hidden></input></div>`;      
-      dateStatus = new Date(prospect.when);
-      formattedDate =  `${dateStatus.getFullYear()}-${('0' + (dateStatus.getMonth()+1)).slice(-2)}-${('0' + (dateStatus.getDate())).slice(-2)}`;    
-    }  
- 
-      // Format the input form for job prospect
-      let formInputs = `
-      <button type="submit" id="submitProspect" class="js-edit-button" >Submit</button>  
-      <button type="cancel" id="cancelProspect" class="js-edit-button" >Cancel</button>   <br /> <br />                                                   
-        <form id="Login" class="flex-container" method="post">        
-            <legend>Job Prospect</h2></legend>
-              <div class="flex-container">
-                <fieldset class="edit-form">
-                  <p> <label for="'js-input-what'" class="edit-label"><strong>What: </strong></label> <input type="text" id="prospectWhat" class="js-input-what" value="${prospect.what}" aria-required="true" required /></p>    
-                  <p> <label for="prospectWhere" class="edit-label"><strong>Company: </strong></label>  <input   type="text"  id="prospectWhere" class="js-input-where"   value="${prospect.where}" aria-required="true" required /></p>
-                  <p> <label for="prospectWhen" class="edit-label"><strong>When: </strong></label>  <input type="date"  id="prospectWhen" class="js-input-when" role="datetime"  value="${formattedDate}" aria-required="true" required /></p>                   
-                  <p> <label for="prospectStatus"  class="edit-label"><strong>Status: </strong></label>  <input type="text"  id="prospectStatus" class="js-input-status"  value=" ${prospect.status}" /></p>    
-                  <p> <label for="prospectSource" class="edit-label"><strong>Source: </strong></label>  <input   type="text"  id="prospectSource" class="js-input-source"  value="${prospect.source}" /></p>
-                  <p> <label for="prospectSourceUrl" class="edit-label"><strong>Source Url: </strong></label>  <input   type="text"  id="prospectSourceUrl" class="js-input-sourceurl"  value="${prospect.sourceUrl}" /></p>
-                  <p> <label for="prospectDayToDay" class="edit-label"><strong>Day to Day: </strong></label>  <textarea  rows="4" cols="50" id="prospectDayToDay" class="js-input-daytoday"  value="${prospect.dayToDay}" >${prospect.dayToDay}</textarea></p>
-                  <p> <label for="prospectContacts" class="edit-label"><strong>Contacts : </strong></label>  <textarea   rows="2" cols="50"  id="prospectContacts" class="js-input-contacts"  value="${prospect.contact}" >${prospect.contact}</textarea></p>
-                  <p> <label for="prospectComments" class="edit-label"><strong>Comments: </strong></label>  <textarea   rows="4" cols="50"  id="prospectComments" class="js-input-comments""  value="${prospect.comments}" >${prospect.comments}</textarea></p> 
-                  <p> <label for="prospectDetails"  class="edit-label"><strong>Details: </strong></label>  <textarea   rows="4" cols="50"   id="prospectDetails" class="js-input-details"  value=" ${prospect.details}" >${prospect.details}</textarea></p>                                                 
-                </fieldset>  
-              </div> 
-              ${generateJobSkillsForm(prospect)}                                                    
-              ${generateContactsForm(prospect)}   
-              ${generateStatusHistoryForm(prospect)} 
-              ${hiddenProspectId}                             
-          </form>
-          `    
-  
-      // display the job prospect form
-      $(".js-page-content").html(formInputs);  
-      $('#ProspectEditKey').hide();       
-  } 
-
-/*
-  Display the job prospect form to edit or create job prospect
-*/
-function renderProspectForm() { 
+function renderProspectForm(event, options) { 
   if (!isUserLoggedIn()) return;
   if (!canAccessProfile()) return; 
-  
+
     $('.js-page-content').html();
    
       // create json variable with default empty values for creating a new job prospect
@@ -336,8 +428,8 @@ function renderProspectForm() {
         "contacts": [],
         "statusHistory": []
       }; 
-           
-      generateProspectForm(prospect)        
+      $('.js-page-content').html(generateProspectForms(prospect, props.USER_PROFILE));   
+      $('#ProspectEditKey').hide();      
   } 
 
 /*
@@ -346,8 +438,8 @@ function renderProspectForm() {
 function editProspectForm(prospect) { 
   if (!isUserLoggedIn()) return;
   
-  $('.js-page-content').html();   
-  generateProspectForm(prospect)                        
+  $('.js-page-content').html(generateProspectForms(prospect, props.USER_PROFILE));   
+  $('#ProspectEditKey').hide();                        
 } 
 
 function deleteJobSkillProspectForm(e) {
@@ -433,9 +525,9 @@ function addJobStatusForm(event) {
   <div id="statusFieldset-${index}" class="flex-item background-color-white js-statusFieldset"> 
   <fieldset class="edit-form"> 
      <div>
-       <a id="DeleteStatus-${index}" href="#" class="js-delete-job-status"><img alt="delete job status" src="./images/icon-delete.png">(Delete)</a>
+       <a id="DeleteStatus-${index}" href="#" class="form-link js-delete-job-status"><img alt="delete job status" src="./images/icon-delete.png">(Delete)</a>
      </div>
-     <div class="input-block"><label for="prospectStatusDate-${index}"     class="edit-label"><strong>Date: </strong><input type="date" id="prospectStatusDate-${index}" class="js-input-status-date" value="${thisDate.value}" ></input></div>
+     <div class="input-block"><label for="prospectStatusDate-${index}"     class="edit-label"><strong>Date: </strong><input type="datetime-local" id="prospectStatusDate-${index}" class="js-input-status-date" value="${thisDate.value}" ></input></div>
      <div class="input-block"><label for="prospectStatusStatus-${index}"   class="edit-label"><strong>Status: </strong><input type="text" id="prospectStatusStatus-${index}" class="js-input-status-status" value="${thisStatus.value}"></input></div>
      <div class="input-block"><label for="prospectStatusComment-${index}"  class="edit-label"><strong>Comments: </strong></label>  <textarea   rows="4" cols="50" id="prospectStatusComment-${index}" class="js-input-status-comment"  value="${thisComment.value}">${thisComment.value}</textarea></div>  
    </fieldset">
@@ -491,15 +583,15 @@ function addJobContactForm(event) {
   if (jQuery.inArray(true, allPassed) !== -1) return;
 
   const newContact = `  
-  <div id="contactFieldset-${index}" class="flex-item background-color-white js-contactFieldset">  
+  <div id="contactFieldset-${index}" class="js-contactFieldset">  
     <fieldset class="edit-form js-contacts-input-form">      
       <div class="input-block">
-        <a id="DeleteContact-${index}" href="#" class="js-delete-job-contact"><img  alt="delete job contact" src="./images/icon-delete.png">(Delete)</a>
+        <a id="DeleteContact-${index}" href="#" class="form-link js-delete-job-contact"><img  alt="delete job contact" src="./images/icon-delete.png">(Delete)</a>
       </div>
       <p class="input-block"><label for="prospectContactFirstName-${index}"  class="edit-label"><strong>First name: </strong><input type="text"  id="prospectContactFirstName-${index}"  class="js-input-contact-firstname" value="${thisFirstname.value}"></input></p>
       <p class="input-block"><label for="prospectContactLastName-${index}"   class="edit-label"><strong>Last name: </strong> <input type="text"  id="prospectContactLastName-${index}"   class="js-input-contact-lastname" value="${thisLastname.value}"></input></p> 
       <p class="input-block"><label for="prospectContactEmail-${index}"      class="edit-label"><strong>Email: </strong>     <input type="email" id="prospectContactEmail-${index}"      class="js-input-contact-email" value="${thisEmail.value}"></input></p>
-      <p class="input-block"><label for="prospectContactPhone-${index}"      class="edit-label"><strong>Phone: </strong>     <input type="phone" id="prospectContactPhone-${index}"      class="js-input-contact-phone" value="${thisPhone.value}"></input></p>
+      <p class="input-block"><label for="prospectContactPhone-${index}"      class="edit-label"><strong>Phone: </strong>     <input type="tel"   pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" id="prospectContactPhone-${index}"      class="js-input-contact-phone" value="${thisPhone.value}"></input></p>
     </fieldset">
   </div>`;
  

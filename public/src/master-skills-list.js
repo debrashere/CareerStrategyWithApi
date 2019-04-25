@@ -70,7 +70,6 @@ function displaySkillsMasterList(data) {
   let headerAndSkills = `
     <div class="flex-item-skills js-master-skills">
       <div class="section-header"><h3 tabindex="0">Master list of skills</h3></div>
-      <output><div id="js-skills-error-message" class="error-message" aria-live="assertive" hidden> </div></output>
       <div class="table">
         <div class="tr th"> 
           <div class="td">Skill</div> 

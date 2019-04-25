@@ -12,7 +12,6 @@ const { JobProspect} = require('../models/jobProspectsModels');
 const passport = require('passport');
 const jwtAuth = passport.authenticate('jwt', { session: false });
 
-
 router.get("/:id", jwtAuth,  (req, res) => {
   JobProspect.findOne({_id: req.params.id})     
   .then(prospect => {

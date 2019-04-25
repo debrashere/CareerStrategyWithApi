@@ -19,7 +19,7 @@
 function submitRegistion() {         
     if (isRegisterFormInValid()) return;
     
-    const userName =  $('#userName').val();
+    const userName = $('#userName').val();
     const password = $("#password").val();
     const firstName = $("#firstName").val();
     const lastName = $("#lastName").val();    
@@ -40,32 +40,40 @@ function submitRegistion() {
       }  
     }), 3000);  
   }
+
+function renderRegistrationForm(data) {  
+  
+    // format the form html
+    const registrationFields = ` 
+    <fieldset class="flex-item">  
+      <div class="form-field">
+          <label  for="firstName"><span >First name</span></label>
+          <input id="firstName" type="text" class="form-input  js-input-firstname" placeholder="Your first name" value="" aria-required="true" required>
+      </div>
+      <div class="form-field">
+          <label for="lastName"><span>Last name</span></label>
+          <input id="lastName" type="text" class="form-input  js-input-lastname" placeholder="Your last name" value="" aria-required="true" required>
+      </div>
+      <div class="form-field">
+          <label for="userName"><span>Email</span></label>
+          <input id="userName" type="text" class="form-input  js-input-usernam" placeholder="User name" value="" aria-required="true" required>
+      </div>
+      <div class="form-field">
+          <label for="password"><span>Password</span></label>
+          <input id="password" type="password" class="form-input   js-input-password" placeholder="Password"value="" aria-required="true" required>
+      </div>
+      <div class="form-field">
+      <button type="submit" id="submitReg" class="js-edit-event js-edit-button  js-form-register-user" >Register</button>            
+      <a  href="*" id="submitLogin" >Login</a>  
+   </div>        
+    </fieldset> `;
+    
+  let profileForm =  `  
+  <div class="input-form-body">
+    <form action="" method="post" class="flex-container form form-element">
+      ${registrationFields}     
+    </form>         
+  </div>`;
  
-
-function renderRegistrationForm() {
-    $(".js-page-content").html('');
-    let registrationForm = `
-      <div class="row">      
-        <div class="header">  
-          <h1  tabindex="0" class="section-header"> Career Strategy and Planning</h1> 
-        </div>        
-        <div class="col-6">  
-          <form id="register" class="flex-container" method="post">
-            <section class="js-register-form flex-item">
-                <div><label>First Name:</label><br><input type="text" id="firstName" class="js-input-firstname"  placeholder="Your first name" required><br>
-                    <label>Last Name:</label><br><input type="text" id="lastName" class="js-input-lastname"  placeholder="Your last name" required><br>
-                    <label>User Id: </label><br><input type="text" id="userName" class="js-input-username"  placeholder="Your user id" required><br>           
-                    <label>Password: </label><br><input type="password" id="password" class="js-input-password" placeholder="Your password" required><br>                           
-                </div>
-            </section>                  
-          </form> 
-          <button type="submit" id="submitReg" class="js-edit-event js-edit-button js-form-register-user">Submit</button>              
-          <button type="submit" id="submitLogin" class="js-edit-event js-edit-button" >Login</button>  
-        </div>                
-      </div>`;
-
-        $(".js-page-content").html(registrationForm);         
-}
-
-
- 
+  $(".js-page-content").html(profileForm); 
+} 

@@ -7,7 +7,6 @@ function generateUserSkills(profile) {
     let skillHeader = `
     <div class="flex-item-skills">
       <div class="section-header"><h3 tabindex="0">Your Skills</h3></div>
-      <output><div id="js-skills-error-message" class="error-message" aria-live="assertive" hidden> </div></output>
       <div class="table">
         <div class="tr th"> 
           <div class="td">Skill</div> 
