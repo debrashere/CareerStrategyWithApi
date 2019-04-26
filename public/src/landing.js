@@ -4,7 +4,7 @@ function renderLandingPage(id) {
     if (props.isLoggedIn === true && props.hasProfile === true) {
         if (jQuery.isEmptyObject(props.PROSPECTS)) {  
             const queryPath = `userId=${props.userId}`;
-            // function displayCareerStrategyResults will save user skills as part of variable USER_PROFILE
+            // function displayCareerStrategyResults will save user skills as part of variable USER_PROFILE  
             setTimeout(findCareerStrategyAPI(pathJobProspects, queryPath, "",  function(data) {
             props.PROSPECTS = data.prospect;
             if (apiReturnedError(data)) return;
@@ -101,32 +101,6 @@ function generateContactList(prospects) {
   return contactDetails;
 }
  
-
-function generateContactListOLD(prospects) {
-    if (!prospects) return '';
-  
-    let contacts = '';
-    prospects.map( function(thisProspect, index) {   
-        thisProspect.contacts.map(function (contact, idx) {  
-        contacts += `
-        <div class="flex-item background-color-white"> 
-            <div tabindex="0"><span class="inline-title">Name: </span><a href='#' title='Contact Name' id="ContactLink-${index}"  class='js-prospects-by-contact'>${contact.firstName} ${contact.lastName}</a></div>  
-            <div tabindex="0"><span class="inline-title">Email:</span> <a href="mailto: ${contact.email}">${contact.email}</a></div>
-            <div tabindex="0"><span class="inline-title">Phone:</span> <a href="tel:${contact.phone}">${contact.phone}</a></div>
-            <div hidden><span class="js-contactId" id="Contact-${index}" hidden>${contact._id}</span></div>
-        </div>`;
-        });
-    });
-       
-    let contactsHeaderAndDetails = `
-    <div class="flex-container">
-      <div class="section-header"><h3 tabindex="0">Contacts</h3></div>         
-        ${contacts}   
-    </div> `;  
-         
-    return contactsHeaderAndDetails;
-  }
-
   /*
     If user has not entered any job prospect yet display this content
   */

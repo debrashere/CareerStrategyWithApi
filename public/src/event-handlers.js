@@ -22,17 +22,16 @@ let props = {"route":"home",
     $(document).on('click','.js-menuitem-profile',function(e){e.preventDefault(); setMenuItem(e); }) 
     $(document).on('click','.js-menuitem-skills',function(e){e.preventDefault(); setMenuItem(e); })     
     $(document).on('click','.js-menuitem-logout',function(e){e.preventDefault(); setMenuItem(e); });        
-    $(document).on('click','#menuitem-summary',function(e){e.preventDefault(); setMenuItem(e); });       
-    $(document).on('click','#menuButton',function(e){e.preventDefault(); menuFunction(); });          
+    $(document).on('click','.js-menuitem-summary',function(e){e.preventDefault(); setMenuItem(e); });       
+    $(document).on('click','.js-menuButton',function(e){e.preventDefault(); menuFunction(); });          
     $(document).on('click','.js-render-landing',function(e){e.preventDefault(); renderLanding(); });          
-
    
     /* form functions */
     $(document).on('click','.js-login-image',function(e){e.preventDefault(); renderLoginForm(); });   
     $(document).on('click','#submitLogin',function(e){e.preventDefault(); loginThisUser(); });
     $(document).on('click','#submitProfile',function(e){e.preventDefault(); submitProfileUpdates(); }); 
     $(document).on('click','#submitProspect',function(e){e.preventDefault(); submitProspectUpdates(); });     
-    $(document).on('click','#registerUser',function(e){e.preventDefault(); renderRegistrationForm(); }); 
+    $(document).on('click','.js-delete-job-prospect',function(e){e.preventDefault(); submitProspectDelete(); }); 
     $(document).on('click','.js-form-register-user',function(e){e.preventDefault(); submitRegistion(); });        
     $(document).on('click','.js-register-image',function(e){e.preventDefault(); renderRegistrationForm(); }); 
     $(document).on('click','.js-delete-job-status',function(e){e.preventDefault(); deleteJobStatusForm(e); });            
@@ -41,7 +40,12 @@ let props = {"route":"home",
     $(document).on('click','.js-add-job-contact',function(e){e.preventDefault(); addJobContactForm(e); });
     $(document).on('click','.js-prospect-add-job-skill',function(e){e.preventDefault(); addJobSkillProspectForm(e); });    
     $(document).on('click','.js-prospect-delete-job-skill',function(e){e.preventDefault(); deleteJobSkillProspectForm(e); });    
-    
+    $(document).on('click','.js-menuitem-myskills-prospect-link',function(e){e.preventDefault(); setMenuItem(e); });     
+    $(document).on('click','.js-menuitem-myskills-details-link',function(e){e.preventDefault(); setMenuItem(e); });     
+    $(document).on('click','#registerUser',function(e){e.preventDefault(); renderRegistrationForm(); }); 
+    $(document).on('click','.js-register-login-link',function(e){e.preventDefault(); setMenuItem(e); }); 
+    $(document).on('click','.js-login-register-link',function(e){e.preventDefault(); setMenuItem(e); }); 
+
     /* manage job prospects */ 
     $(document).on('click','.js-prospect-detail',function(e){renderJobProspectDetails(e); })   
     $(document).on('click','.js-add-new-job-prospect',function(e){e.preventDefault(); renderProspectForm(); }); 

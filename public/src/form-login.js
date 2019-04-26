@@ -55,11 +55,11 @@ function renderLoginForm() {
     </div>
     <div class="form-field">
         <label for="userPassword"><span>Password</span></label>
-        <input id="userPassword" type="text" class="form-input   js-input-password" placeholder="Password" value="" aria-required="true" required>
+        <input id="userPassword" type="password" class="form-input   js-input-password" placeholder="Password" value="" aria-required="true" required>
     </div>
     <div class="form-field">
       <button type="submit" id="submitLogin" class="js-edit-event js-edit-button" >Login</button>  
-      <a href="#" id="registerUser" class="js-edit-event js-edit-button" >Register</a> 
+      <a href="#" id="menuItem-register" class="js-login-register-link" >Register</a> 
     </div>       
   </fieldset> `;
   

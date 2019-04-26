@@ -2,33 +2,32 @@
 /*     
    render user skills
 */
-function generateUserSkills(profile) { 
-
-    let skillHeader = `
-    <div class="flex-item-skills">
-      <div class="section-header"><h3 tabindex="0">Your Skills</h3></div>
-      <div class="table">
-        <div class="tr th"> 
-          <div class="td">Skill</div> 
-          <div class="td"> </div>     
-        </div>
-        <div class="tr">  
-          <div class="td" data-header="Skill"><input type="text" id="newSkill"></input></div>
-          <div class="td" data-header=""><a id="AddSkill" href="#" class="js-add-user-skill"><img id="addNewSkill" alt="add skill" src="./images/icon-add.png">(Add/Edit)</a>
-          <a id="DeleteSkill" href="#" class="js-delete-user-skill"><img id="deleteThisSkill" alt="delete skill" src="./images/icon-delete.png">(Delete)</a></div>
-        </div>
-      </div>              
-      <p class="items flex-item-skillset">`;
-  
-    let skills = skillHeader;
-         
+function generateMyUserSkills(profile) { 
+    let skillsList = '';
      // if the user has any skills, format the html to display them
     if (profile.skills) {
-      profile.skills.map( function(skill, index) {          
-        skills +=  `<a href=# id="userSkill${index}" class="skill-link js-edit-user-skill">${skill.skill}</a>`;            
-       });
-       skills += '</p></div> ';     
-      }  
+        profile.skills.map( function(skill, index) {          
+        skillsList +=  `<a href=# id="userSkill${index}" class="skill-link js-edit-user-skill">${skill.skill}</a>`;            
+       });       
+      } 
+      
+      let skills = `
+      <div class="flex-item-skills">
+        <div class="section-header"><h3 tabindex="0">Your Skills</h3></div>
+        <div class="table">
+          <div class="tr th"> 
+            <div class="td">Skill</div> 
+            <div class="td"> </div>     
+          </div>
+          <div class="tr">  
+            <div class="td" data-header="Skill"><input type="text" id="newSkill"></input></div>
+            <div class="td" data-header=""><a id="AddSkill" href="#" class="js-add-user-skill"><img id="addNewSkill" alt="add skill" src="./images/icon-add.png">(Add/Edit)</a>
+            <a id="DeleteSkill" href="#" class="js-delete-user-skill"><img id="deleteThisSkill" alt="delete skill" src="./images/icon-delete.png">(Delete)</a></div>
+          </div>
+        </div>              
+        <div class="items flex-item-skillset">${skillsList}</div>
+      </div>`;
+
       return skills;
   }
   
@@ -142,7 +141,7 @@ function renderUserSkills() {
   if (!canAccessProfile()) return; 
   
   // display users skills and master list of skills  
-  $('.js-page-content').html(generateUserSkills(props.USER_PROFILE));
+  $('.js-page-content').html(generateMyUserSkills(props.USER_PROFILE));
   generateMasterSkillsForUser();        
 } 
 

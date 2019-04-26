@@ -140,7 +140,7 @@ function Navigation(props) {
     } 
     
     let  menuButton = (             
-       `<a  href="" id="menuButton"  class="icon" >
+       `<a  href="" id="menuButton"  class="icon js-menuButton" >
              <i id="menuButtonIcon" class="${barsOrX}"></i> 
         </a>`                                                                 		                  
     );         

@@ -6,6 +6,8 @@ function generatePropectDetails(prospect) {
     <div class="header">
       <h1>Career Strategy</h1>
       <h3 tabindex="0">Job Prospects <img  class="js-edit-this-job-prospect" alt="edit job prospect" src="./images/icon-add.png">(Edit)</a></h3>
+      <h2 tabindex="0">${prospect.what}</h3>
+      <h2 tabindex="0">${prospect.where}</h3>
     </div>
     <div class="responsive-tabs">
       <input class="state" type="radio" title="tab-one" name="tabs-state" id="tab-one" checked />
@@ -103,25 +105,10 @@ function generateStatusHistory(prospect) {
 */
 function generateUserAndJobSkills(profile, prospect) { 
 
-  let skills = "";       
-   // if the user has any skills, format the html to display them
-  if (profile.skills) {
-    profile.skills.map( function(skill, index) {          
-      skills +=  `<span "userSkill${index}" class="skill-span js-edit-user-skill">${skill.skill}</span>`;            
-     });  
-    } 
-  
-    let skillHeaderAndDetails = `
-    <div class="flex-item-skills">
-      <div class="section-header"><h3 tabindex="0">Your Skills (go to "My Skills" to edit")</h3></div>             
-      <p class="items flex-item-skillset">
-       ${skills}
-      </p>
-    </div>`;  
-    
-    skillHeaderAndDetails += generateJobSkills(prospect);
+  let skills = generateJobSkills(prospect);
+      skills += generateUserSkills(profile);
 
-    return skillHeaderAndDetails;
+    return skills;
 }
 
 /*     
@@ -146,6 +133,30 @@ function generateJobSkills(prospect) {
     </div> `; 
 
   return headerAndSkills; 
+}
+
+
+/*     
+   render user skills
+*/
+function generateUserSkills(profile) {  
+  let skills = "";       
+   // if the user has any skills, format the html to display them
+  if (profile.skills) {
+    profile.skills.map( function(skill, index) {          
+      skills +=  `<span "userSkill${index}" class="skill-span">${skill.skill}</span>`;            
+     });  
+    } 
+  
+    let skillHeaderAndDetails = `
+    <div class="flex-item-skills">          
+      <div class="section-header"><h3 tabindex="0">Your Skills (go to <a href="#" id="menuitem-myskills" class="js-menuitem-myskills-details-link" title="My Skills">My Skills"</a> to edit")</h3></div>                  
+      <p class="items flex-item-skillset">
+       ${skills}
+      </p>
+    </div>`;  
+    
+    return skillHeaderAndDetails;
 }
 
 function generateWhatWhereDate(prospect) {      

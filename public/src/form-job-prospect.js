@@ -36,8 +36,11 @@ function isInputValid(value, validations, errorPosition) {
   <div class="header">
     <h1>Career Strategy</h1>
     <h3>Select each tab to enter all information. After you are done click "Submit" to complete your edits or new job prospect entry.</h3>
-    <button type="submit" id="submitProspect" class="js-edit-button" >Submit</button>  
-    <a  href="*" class="form-link js-render-landing" >Cancel</a> 
+    <button type="submit" id="submitProspect" class="js-edit-button" >Submit</button>      
+    <a id="DeleteThisProspect" href="#" class="form-link js-delete-job-prospect"><img alt="delete job status" src="./images/icon-delete.png"> (Delete this prospect)</a>
+    <a href="*" class="form-link js-render-landing" > Cancel</a> 
+    <h2 tabindex="0">${prospect.what}</h3>
+    <h2 tabindex="0">${prospect.where}</h3>
   </div>
   <div class="responsive-tabs">
     <input class="state" type="radio" title="tab-one" name="tabs-state" id="tab-one" checked />
@@ -149,6 +152,19 @@ function submitProspectUpdates() {
             
 } 
 
+/*
+  Delete this job prospect
+*/
+function submitProspectDelete() {
+  /* submit delete API */
+  const prospectId =  $('#ProspectEditKey').val();  
+
+  setTimeout(deleteCareerStrategyAPI(pathJobProspects, 
+    {}, prospectId, function(data){  
+      renderJobsSummaries();
+    }), 3000);              
+}
+
 /*     
    render job skills
 */
@@ -174,23 +190,23 @@ function generateUserAndJobSkillsForm(prospect, profile) {
     </fieldset>`;
 
 
-  let userSkills = "";       
+    let userSkills = "";       
     // if the user has any skills, format the html to display them
    if (profile.skills) {
      profile.skills.map( function(skill, index) {          
-      userSkills +=  `<span "userSkill${index}" class="skill-span js-edit-user-skill">${skill.skill}</span>`;            
+      userSkills +=  `<span "userSkill${index}" class="skill-span">${skill.skill}</span>`;            
       });  
      } 
    
-     let userSkillsSection = `
+     const userSkillsSection = `
      <div class="flex-item-skills">
-       <div class="section-header"><h3 tabindex="0">Your Skills (go to "My Skills" to edit")</h3></div>             
+       <div class="section-header"><h3 tabindex="0">Your Skills (go to <a href="#" id="menuitem-myskills" class="js-menuitem-myskills-prospect-link" title="My Skills">My Skills"</a> to edit")</h3></div>             
        <div class="items flex-item-skillset">
         ${userSkills}
        </div>
      </div>`;
 
-  let skillsForm =  `  
+     const skillsForm =  `  
     <div class="input-form-body">
       <div>
           <div class="logo">Career Strategy</div>
@@ -219,23 +235,22 @@ function generateContactsForm(prospect) {
     </div>
     <div class="form-field">
         <label  for="prospectContactFirstName-${index}"><span >First name</span></label>
-        <input id="prospectContactFirstName-${index}" type="text" class="form-input  js-input-firstname" placeholder="Contact first name" value="${contact.firstName}" aria-required="true" required>
+        <input id="prospectContactFirstName-${index}" type="text" class="form-input  js-input-contact-firstname" placeholder="Contact first name" value="${contact.firstName}" aria-required="true" required>
     </div>
     <div class="form-field">
         <label for="prospectContactLastName-${index}"><span>Last name</span></label>
-        <input id="prospectContactLastName-${index}" type="text" class="form-input  js-input-lastname" placeholder="Contact last name" value="${contact.lastName}" aria-required="true" required>
+        <input id="prospectContactLastName-${index}" type="text" class="form-input  js-input-contact-lastname" placeholder="Contact last name" value="${contact.lastName}" aria-required="true" required>
     </div>
     <div class="form-field">
         <label for="prospectContactEmail-${index}"><span>Email</span></label>
-        <input id="prospectContactEmail-${index}" type="text" class="form-input  js-input-email" placeholder="Contact email" value="${contact.email}" >
+        <input id="prospectContactEmail-${index}" type="text" class="form-input  js-input-contact-email" placeholder="Contact email" value="${contact.email}" >
     </div>
     <div class="form-field">
         <label for="prospectContactPhone-${index}"><span>Phone</span></label>
-        <input id="prospectContactPhone-${index}" type="text" class="form-input  js-input-phone" placeholder="Contact Phone" value="${contact.phone}">
+        <input id="prospectContactPhone-${index}" type="text" class="form-input  js-input-contact-phone" placeholder="Contact Phone" value="${contact.phone}">
     </div>
     </fieldset> `;
 });
-
 
 let newContactFields = `
 <fieldset class="flex-item js-new-contact-form">  
@@ -278,7 +293,7 @@ function generateStatusHistoryForm(prospect) {
     <fieldset id="statusFieldset-${index}" class="flex-item js-statusFieldset">  
     <div>
       <a id="DeleteStatus-${index}" href="#" class="form-link js-delete-job-status"><img alt="delete job status" src="./images/icon-delete.png">(Delete)</a>
-    </div>
+    </div>    
     <div class="form-field">
         <label  for="prospectStatusDate-${index}">Date</label>
         <input id="prospectStatusDate-${index}" type="text" class="form-input  js-input-status-date" placeholder="Date" value="${formattedDate}" aria-required="true" required>
@@ -341,9 +356,6 @@ function generateProspectSummaryForm(prospect) {
     // Format the input form for job prospect
     let prospectSummary = `  
     <fieldset>  
-    <div>
-      <a id="DeleteStatus" href="#" class="form-link js-delete-job-status"><img alt="delete job status" src="./images/icon-delete.png">(Delete)</a>
-    </div>
     <div class="form-field">
         <label  for="prospectWhat">What</label>
         <input id="prospectWhat" type="text" class="form-input  js-input-whate" placeholder="What" value="${prospect.what}" aria-required="true" required>
@@ -354,7 +366,7 @@ function generateProspectSummaryForm(prospect) {
     </div>
     <div class="form-field">
         <label for="prospectWhen">Date</label>
-        <input id="prospectWhen" type="text" class="form-input  js-input-when" placeholder="Date" value="${status.formattedDate}" aria-required="true" required>
+        <input id="prospectWhen" type="text" class="form-input  js-input-when" placeholder="Date" value="${formattedDate}" aria-required="true" required>
     </div>
     <div class="form-field">
         <label for="prospectStatus">Status</label>
@@ -472,7 +484,7 @@ function addJobSkillProspectForm(e) {
       let index = 0;
       if (skillElements && skillElements.length > 0) {              
         lastSkill = skillElements.last();
-        index = lastSkill[0].id.split('-')[1];
+        index = parseInt(lastSkill[0].id.split('-')[1]);
         index = index + 1;
         newSkill = `<a href="#" id="jobSkill-${index}" class="skill-link js-edit-job-skill">${thisSkill[0].value}</a>`;
         /* insert the newSkill after the last skill in the list of existing skills */
@@ -521,25 +533,36 @@ function addJobStatusForm(event) {
   /* if any errors return */
   if (jQuery.inArray(true, allPassed) !== -1) return;
 
-  const newStatus = `
-  <div id="statusFieldset-${index}" class="flex-item background-color-white js-statusFieldset"> 
-  <fieldset class="edit-form"> 
-     <div>
-       <a id="DeleteStatus-${index}" href="#" class="form-link js-delete-job-status"><img alt="delete job status" src="./images/icon-delete.png">(Delete)</a>
-     </div>
-     <div class="input-block"><label for="prospectStatusDate-${index}"     class="edit-label"><strong>Date: </strong><input type="datetime-local" id="prospectStatusDate-${index}" class="js-input-status-date" value="${thisDate.value}" ></input></div>
-     <div class="input-block"><label for="prospectStatusStatus-${index}"   class="edit-label"><strong>Status: </strong><input type="text" id="prospectStatusStatus-${index}" class="js-input-status-status" value="${thisStatus.value}"></input></div>
-     <div class="input-block"><label for="prospectStatusComment-${index}"  class="edit-label"><strong>Comments: </strong></label>  <textarea   rows="4" cols="50" id="prospectStatusComment-${index}" class="js-input-status-comment"  value="${thisComment.value}">${thisComment.value}</textarea></div>  
-   </fieldset">
-  </div>`;
+  const newStatus =`
+   <div id="statusFieldset-${index}" class="flex-item js-statusFieldset"> 
+    <fieldset id="statusFieldset-${index}" class="flex-item js-statusFieldset">  
+      <div>
+        <a id="DeleteStatus-${index}" href="#" class="form-link js-delete-job-status"><img alt="delete job status" src="./images/icon-delete.png">(Delete)</a>
+      </div>  
+      <div class="form-field">
+          <label  for="prospectStatusDate-${index}">Date</label>
+          <input id="prospectStatusDate-${index}" type="text" class="form-input  js-input-status-date" placeholder="Date" value="${thisDate.value}" aria-required="true" required>
+      </div>
+      <div class="form-field">
+          <label for="prospectStatusStatus-${index}">Status</label>
+          <input id="prospectStatusStatus-${index}" type="text" class="form-input  js-input-status-status" placeholder="Status" value="${thisStatus.value}" aria-required="true" required>
+      </div>
+      <div class="form-field">
+          <label for="prospectStatusComment-${index}">Comment</label>
+          <input id="prospectStatusComment-${index}" type="text" class="form-input  js-input-status-comment" placeholder="Comment" value="${thisComment.value}" >
+      </div>
+    </fieldset> `;
+  
  
   /* add this new status to the list status list */
   $( newStatus ).insertAfter( lastStatus);   
   
     /* clear the input fields */   
+    /* ToDo:  
     thisDate.val('');
     thisStatus.val('');
     thisComment.val(''); 
+    */
 }
 
 function deleteJobContactForm(event) {
@@ -582,19 +605,29 @@ function addJobContactForm(event) {
   /* if any errors return */
   if (jQuery.inArray(true, allPassed) !== -1) return;
 
-  const newContact = `  
-  <div id="contactFieldset-${index}" class="js-contactFieldset">  
-    <fieldset class="edit-form js-contacts-input-form">      
-      <div class="input-block">
+  const newContact = `
+  <fieldset id="contactFieldset-${index}" class="flex-item js-contactFieldset">  
+  <div class="input-block">
         <a id="DeleteContact-${index}" href="#" class="form-link js-delete-job-contact"><img  alt="delete job contact" src="./images/icon-delete.png">(Delete)</a>
-      </div>
-      <p class="input-block"><label for="prospectContactFirstName-${index}"  class="edit-label"><strong>First name: </strong><input type="text"  id="prospectContactFirstName-${index}"  class="js-input-contact-firstname" value="${thisFirstname.value}"></input></p>
-      <p class="input-block"><label for="prospectContactLastName-${index}"   class="edit-label"><strong>Last name: </strong> <input type="text"  id="prospectContactLastName-${index}"   class="js-input-contact-lastname" value="${thisLastname.value}"></input></p> 
-      <p class="input-block"><label for="prospectContactEmail-${index}"      class="edit-label"><strong>Email: </strong>     <input type="email" id="prospectContactEmail-${index}"      class="js-input-contact-email" value="${thisEmail.value}"></input></p>
-      <p class="input-block"><label for="prospectContactPhone-${index}"      class="edit-label"><strong>Phone: </strong>     <input type="tel"   pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" id="prospectContactPhone-${index}"      class="js-input-contact-phone" value="${thisPhone.value}"></input></p>
-    </fieldset">
-  </div>`;
- 
+  </div>
+  <div class="form-field">
+      <label  for="prospectContactFirstName-${index}"><span >First name</span></label>
+      <input id="prospectContactFirstName-${index}" type="text" class="form-input  js-input-contact-firstname" placeholder="Contact first name" value="${thisFirstname.value}" aria-required="true" required>
+  </div>
+  <div class="form-field">
+      <label for="prospectContactLastName-${index}"><span>Last name</span></label>
+      <input id="prospectContactLastName-${index}" type="text" class="form-input  js-input-contact-lastname" placeholder="Contact last name" value="${thisLastname.value}" aria-required="true" required>
+  </div>
+  <div class="form-field">
+      <label for="prospectContactEmail-${index}"><span>Email</span></label>
+      <input id="prospectContactEmail-${index}" type="text" class="form-input  js-input-contact-email" placeholder="Contact email" value="${thisEmail.value}" >
+  </div>
+  <div class="form-field">
+      <label for="prospectContactPhone-${index}"><span>Phone</span></label>
+      <input id="prospectContactPhone-${index}" type="text" class="form-input  js-input-contact-phone" placeholder="Contact Phone" value="${thisPhone.value}">
+  </div>
+  </fieldset> `;
+
   /* add this new contract to the list of contracts */
   $( newContact ).insertAfter(lastContact)  
  

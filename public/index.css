@@ -333,7 +333,7 @@ textarea {
   flex-grow: 1;
   flex-shrink: 1;
   flex-basis: auto;
-  max-width: 80%;
+  max-width: 320px;
   border: 1px white solid;
   margin: 5px;
   width: 350px;
@@ -730,6 +730,10 @@ span {
     vertical-align: middle;
   outline: none;	 
   }
+
+ a { 
+    text-decoration: none;
+ }      
 
 
   .btn a { 
@@ -1138,7 +1142,6 @@ to { opactity: 1; }
   .flex-item { max-width: 260px;  }
   .flex-item-job-prospect { max-width:300px;}
   .flex-item-introduction {  max-width: 500px; }
-  .flex-item-widget {  max-width: 100% }
 }
 
 /* Medium devices (landscape tablets, 320px and up) */
@@ -1149,7 +1152,6 @@ to { opactity: 1; }
   * {font-size: 20px;}
   .flex-item-job-prospect { max-width:300px; border: none}
   .flex-item-introduction {  max-width: 300px; }
-  .flex-item-widget {  max-width: 100% } 
 }
 
 /* Medium devices (landscape tablets, 768px and up) */
@@ -1159,7 +1161,6 @@ to { opactity: 1; }
   .flex-item { max-width: 500px;  }
   * {font-size: 20px;}
   .flex-item-job-prospect { max-width:300px;}
-  .flex-item-introduction {  max-width: 600px; }
 } 
 
 /* Large devices (laptops/desktops, 992px and up) */

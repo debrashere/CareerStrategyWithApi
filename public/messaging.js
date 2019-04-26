@@ -1,5 +1,5 @@
 
-function displayWarning(text, element) {     
+function displayWarning(text, element) {  
     if (text !== undefined) {   
         let warning = `<div class="form-warning" aria-hidden="false" >${text}</div>`;
         $( warning ).insertAfter( $(`.${element}`));
@@ -20,15 +20,24 @@ function displayInformation(text, element) {
 }
 
 function displayPageMessageSuccess(text) {
-    if (text !== undefined) {       
-        let message = `<div class="message-success " aria-hidden="false" >${text}</div>`;   
+    if (!text || text === "") {
+        $( '.js-page-message' ).html(text); 
+        $( '.js-page-message' ).hide();    
+    }
+    else {       
+        let message = `<div class="message-success" aria-hidden="false" >${text}</div>`;   
         $( '.js-page-message' ).html(message);   
         $( '.js-page-message' ).show();   
     }
 }
+
 function displayPageMessageFailure(text) {
-    if (text !== undefined) {       
-        let message = `<div class="form-error" aria-hidden="false" >${text}</div>`;   
+    if (!text || text === "") {
+        $( '.js-page-message' ).html(text); 
+        $( '.js-page-message' ).hide();    
+    }
+    else {       
+        let message = `<div class="message-error" aria-hidden="false" >${text}</div>`;   
         $( '.js-page-message' ).html(message); 
         $( '.js-page-message' ).show();    
     }
