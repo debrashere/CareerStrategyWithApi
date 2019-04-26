@@ -2,15 +2,14 @@
 function renderJobsSummaries() {
     if (!isUserLoggedIn()) return;
     if (!canAccessProfile()) return; 
-    
-      const queryPath = `userId=${props.userId}`;
-      // function displayCareerStrategyResults will save user skills as part of USER_PROFILE
-      setTimeout(findCareerStrategyAPI(pathJobProspects, queryPath, "",  function(data) {
-        props.PROSPECTS = data.prospect;
-        renderJobProspects(data);
+
+    const queryPath = `userId=${props.userId}`;
+    // function displayCareerStrategyResults will save user skills as part of USER_PROFILE
+    setTimeout(findCareerStrategyAPI(pathJobProspects, queryPath, "",  function(data) {
+      props.PROSPECTS = data.prospect;
+      renderJobProspects(data);
     }), 3000);
 }
-
 
 /*
   If user has not entered any job prospect yet display this content
@@ -33,8 +32,8 @@ function generateJobSummaries(prospects) {
 
   prospects.map( function(prospect, index) {
     let dateWhen = new Date(prospect.when);
-    let formattedDate = `${dateWhen.getMonth()}/${dateWhen.getDay()}/${dateWhen.getFullYear()}  - 
-     ${dateWhen.getHours()}:${dateWhen.getMinutes()}:${dateWhen.getSeconds()} `;            
+    let formattedDate =  `${dateWhen.getFullYear()}-${('0' + (dateWhen.getMonth()+1)).slice(-2)}-${('0' + (dateWhen.getDate())).slice(-2)}`; 
+        formattedDate += `T${('0' + (dateWhen.getHours()+1)).slice(-2)}:${('0' + (dateWhen.getMinutes())).slice(-2)}`; 
       
   summaries += `
   <div class="flex-container section-block">  

@@ -123,7 +123,6 @@ function submitProspectUpdates() {
     const jobSkills = JSON.stringify(existingSkills);
     const statusHistory = JSON.stringify(existingStatus);
     const contactsList = JSON.stringify(existingContacts);
-
  
     /* submit new or existing job prospect */
     const prospectId =  $('#ProspectEditKey').val();  
@@ -138,6 +137,14 @@ function submitProspectUpdates() {
 
     setTimeout(postCareerStrategyAPI(pathJobProspects, 
       JSON.parse(jobProspect), props.userProfileId, function(data){  
+        if (apiReturnedErrorOnLogin(data)) {
+          const message =  $('.js-page-message');
+          if (!message || message.length === 0)  {
+             $('.js-page-message').html("Oops something went wrong. Please try again.");
+             $('.js-page-message').show(); 
+             return;   
+          }
+        }        
         renderJobsSummaries();
       }), 3000);      
   }
@@ -145,8 +152,17 @@ function submitProspectUpdates() {
     // Updating existing job prospect
     const jobProspect = `{"id":"${prospectId}","what": "${what}", "when": "${when}", "where": "${where}", "status": "${status}", "userId": "${props.userId}","source":  "${source}", "sourceUrl": "${sourceUrl}","dayToDay":  "${dayToDay}", "contacts":  "${contacts}", "comments":  "${comments}", "details":   "${details}",  "jobSkills": ${jobSkills}, "statusHistory": ${statusHistory}, "contacts": ${contactsList}}`;  
     setTimeout(putCareerStrategyAPI(pathJobProspects, 
-      JSON.parse(jobProspect), prospectId, function(data){       
-        renderJobsSummaries();
+      JSON.parse(jobProspect), prospectId, function(data){ 
+
+        if (apiReturnedErrorOnLogin(data)) {
+          const message =  $('.js-page-message');
+          if (!message || message.length === 0)  {
+             $('.js-page-message').html("Oops something went wrong. Please try again.");
+             $('.js-page-message').show(); 
+             return;   
+          }
+        }       
+        refreshJobProspectDetails(prospectId);
     }), 3000);
   }  
             
@@ -270,11 +286,9 @@ let newContactFields = `
   </fieldset> `;
     
   let contactForms =  `  
-  <div class="input-form-body flex-container">
-    <form action="" method="post" class="form form-element">
+  <div class="input-form-body">
+    <form action="" method="post" class="flex-container form form-element">
       ${newContactFields}     
-    </form>
-    <form action="" method="post" class="form form-edit-element">
       ${contactsList}   
     </form>        
   </div>`;
@@ -284,10 +298,12 @@ let newContactFields = `
   
 function generateStatusHistoryForm(prospect) {  
   let statusList = '';
-   
+  let formattedDate = '';
   prospect.statusHistory.map( function(status, index) {  
+    /* dates must be in format yyyy-MM-ddThh:mm */
     let dateStatus = new Date(status.date);    
-    let formattedDate =  `${dateStatus.getFullYear()}-${('0' + (dateStatus.getMonth()+1)).slice(-2)}-${('0' + (dateStatus.getDate())).slice(-2)}`;
+        formattedDate =  `${dateStatus.getFullYear()}-${('0' + (dateStatus.getMonth()+1)).slice(-2)}-${('0' + (dateStatus.getDate())).slice(-2)}`; 
+        formattedDate += `T${('0' + (dateStatus.getHours()+1)).slice(-2)}:${('0' + (dateStatus.getMinutes())).slice(-2)}`; 
       
      statusList += `
     <fieldset id="statusFieldset-${index}" class="flex-item js-statusFieldset">  
@@ -296,7 +312,7 @@ function generateStatusHistoryForm(prospect) {
     </div>    
     <div class="form-field">
         <label  for="prospectStatusDate-${index}">Date</label>
-        <input id="prospectStatusDate-${index}" type="text" class="form-input  js-input-status-date" placeholder="Date" value="${formattedDate}" aria-required="true" required>
+        <input id="prospectStatusDate-${index}" type="datetime-local" class="form-input  js-input-status-date" placeholder="Date" value="${formattedDate}" aria-required="true" required>
     </div>
     <div class="form-field">
         <label for="prospectStatusStatus-${index}">Status</label>
@@ -310,11 +326,17 @@ function generateStatusHistoryForm(prospect) {
 });
 
 
+    /* dates must be in format yyyy-MM-ddThh:mm */
+    let dateStatus = new Date();    
+        formattedDate =  `${dateStatus.getFullYear()}-${('0' + (dateStatus.getMonth()+1)).slice(-2)}-${('0' + (dateStatus.getDate())).slice(-2)}`; 
+        formattedDate += `T${('0' + (dateStatus.getHours()+1)).slice(-2)}:${('0' + (dateStatus.getMinutes())).slice(-2)}`; 
+      
+
 let newStatusFields = `
 <fieldset id="statusFieldset" class="flex-item js-new-status-form">   
 <a id="AddStatus" href="#" class="form-link js-add-job-status"><img id="addNewSkill" alt="add status" src="./images/icon-add.png">(Add)</a>
 <div class="form-field">
-      <input id="prospectStatusDate" type="text" class="form-input js-prospectStatusDate" placeholder="Status Date" value="" aria-required="true" required>
+      <input id="prospectStatusDate" type="datetime-local" class="form-input js-prospectStatusDate" placeholder="Status Date" value="${formattedDate}" aria-required="true" required>
   </div>
   <div class="form-field">
       <input id="prospectStatusStatus" type="text" class="form-input js-prospectStatusStatus" placeholder="Status" value="" aria-required="true" required>
@@ -324,8 +346,6 @@ let newStatusFields = `
   </div>
   </fieldset> `;
     
-  
-
   let statusForms =  `  
   <div class="input-form-body flex-container">
     <form action="" method="post" class="form form-element">
@@ -344,13 +364,16 @@ function generateProspectSummaryForm(prospect) {
            
   let hiddenProspectId = "";
   let dateStatus = new Date();    
-  let formattedDate =  `${dateStatus.getFullYear()}-${('0' + (dateStatus.getMonth()+1)).slice(-2)}-${('0' + (dateStatus.getDate())).slice(-2)}`;    
- 
+  let formattedDate =  `${dateStatus.getFullYear()}-${('0' + (dateStatus.getMonth()+1)).slice(-2)}-${('0' + (dateStatus.getDate())).slice(-2)}`; 
+      formattedDate += `T${('0' + (dateStatus.getHours()+1)).slice(-2)}:${('0' + (dateStatus.getMinutes())).slice(-2)}`; 
+
   // If user clicked edit for an existing job prospect then save the id for that prospect in hidden form element 
   if (prospect && prospect.id && prospect.id != '') {  
     hiddenProspectId = `<label for="ProspectEditKey" class="edit-label"></label><div class="td" hidden><input id="ProspectEditKey" type="text"value=${prospect.id} hidden></input></div>`;      
     dateStatus = new Date(prospect.when);
-    formattedDate =  `${dateStatus.getFullYear()}-${('0' + (dateStatus.getMonth()+1)).slice(-2)}-${('0' + (dateStatus.getDate())).slice(-2)}`;    
+    formattedDate =  `${dateStatus.getFullYear()}-${('0' + (dateStatus.getMonth()+1)).slice(-2)}-${('0' + (dateStatus.getDate())).slice(-2)}`; 
+    formattedDate += `T${('0' + (dateStatus.getHours()+1)).slice(-2)}:${('0' + (dateStatus.getMinutes())).slice(-2)}`; 
+  
   }  
 
     // Format the input form for job prospect
@@ -366,7 +389,7 @@ function generateProspectSummaryForm(prospect) {
     </div>
     <div class="form-field">
         <label for="prospectWhen">Date</label>
-        <input id="prospectWhen" type="text" class="form-input  js-input-when" placeholder="Date" value="${formattedDate}" aria-required="true" required>
+        <input id="prospectWhen" type="datetime-local" class="form-input  js-input-when" placeholder="Date" value="${formattedDate}" aria-required="true" required>
     </div>
     <div class="form-field">
         <label for="prospectStatus">Status</label>
@@ -557,12 +580,10 @@ function addJobStatusForm(event) {
   /* add this new status to the list status list */
   $( newStatus ).insertAfter( lastStatus);   
   
-    /* clear the input fields */   
-    /* ToDo:  
-    thisDate.val('');
-    thisStatus.val('');
-    thisComment.val(''); 
-    */
+    /* clear the input fields */    
+    thisDate.empty();
+    thisStatus.empty();
+    thisComment.empty(); 
 }
 
 function deleteJobContactForm(event) {
@@ -632,9 +653,9 @@ function addJobContactForm(event) {
   $( newContact ).insertAfter(lastContact)  
  
   /* clear the input fields */ 
-  $('.js-prospectNewContactFirstName').val('');
-  $('.js-prospectNewContactLastName').val('');
-  $('.js-prospectNewContactEmail').val('');
-  $('.js-prospectNewContactPhone').val('');  
+  $('.js-prospectNewContactFirstName').empty();
+  $('.js-prospectNewContactLastName').empty();
+  $('.js-prospectNewContactEmail').empty();
+  $('.js-prospectNewContactPhone').empty();  
 }
  

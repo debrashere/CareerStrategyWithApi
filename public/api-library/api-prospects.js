@@ -53,7 +53,7 @@ function postCareerStrategyAPI(path, query, id, callback) {
   $('.js-page-message').prop("hidden", true);
   let url =  `${CAREER_STRATEGY_URL}/${path}`; 
   const authToken = localStorage.getItem('token');
-
+  
   $.ajax({
     url: url,
     type: 'post',

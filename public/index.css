@@ -977,8 +977,6 @@ to { opactity: 1; }
     margin: 0;
     outline: 0;
     padding: 0;
-    -webkit-transition: background-color .3s;
-    transition: background-color .3s;
   }
   
   .user:before {
@@ -1003,14 +1001,16 @@ to { opactity: 1; }
   .form input[type="text"], 
   .form input[type="datetime-local"], 
   .form input[type="datetime"], 
+  .form input[type="date"], 
   .form input[type="submit"],
   .form textarea {
-    width: 100%;
+   max-width: 350px;
   }
   
   .form-element input[type="text"],
   .form-element input[type="datetime"],
   .form-element input[type="datetime-local"],
+  .form-element input[type="date"], 
   .form-element input[type="password"],
   .form-element input[type="submit"],
   .form-element textarea {    
@@ -1023,6 +1023,7 @@ to { opactity: 1; }
   .form-element input[type="text"], 
   .form-element input[type="datetime-local"],
   .form-element input[type="datetime"],
+  .form-element input[type="date"],
   .form-element input[type="password"],
   .form-element textarea{
     background-color: #ffffff;
@@ -1045,7 +1046,8 @@ to { opactity: 1; }
   .form-element input[type="datetime"]:hover, 
   .form-element input[type="datetime-local"]:focus, 
   .form-element input[type="datetime-local"]:hover,   
-  .form-element input[type="password"]:focus, 
+  .form-element input[type="date"]:hover,   
+  .form-element input[type="date"]:focus, 
   .form-element input[type="password"]:hover,
   .form-element textarea:focus, 
   .form-element textarea:hover {
@@ -1058,6 +1060,8 @@ to { opactity: 1; }
   .form-edit-element input[type="datetime"]:hover, 
   .form-edit-element input[type="datetime-local"]:focus, 
   .form-edit-element input[type="datetime-local"]:hover,   
+  .form-edit-element input[type="date"]:focus, 
+  .form-edit-element input[type="date"]:hover,   
   .form-edit-element input[type="password"]:focus, 
   .form-edit-element input[type="password"]:hover,
   .form-edit-element textarea:focus, 

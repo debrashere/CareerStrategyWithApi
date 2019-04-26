@@ -69,9 +69,9 @@ function generateStatusHistory(prospect) {
 
   prospect.statusHistory.map( function(status, index) {  
     let dateStatus = new Date(status.date);
-    let formattedDate = `${dateStatus.getMonth()}/${dateStatus.getDay()}/${dateStatus.getFullYear()}
-     - ${dateStatus.getHours()}:${dateStatus.getMinutes()}:${dateStatus.getSeconds()} `;     
-
+    let formattedDate =  `${dateStatus.getFullYear()}-${('0' + (dateStatus.getMonth()+1)).slice(-2)}-${('0' + (dateStatus.getDate())).slice(-2)}`; 
+        formattedDate += `T${('0' + (dateStatus.getHours()+1)).slice(-2)}:${('0' + (dateStatus.getMinutes())).slice(-2)}`; 
+  
      statusList += ` 
      <div class="flex-item-widget">  
        <div class="form-field">
@@ -162,9 +162,9 @@ function generateUserSkills(profile) {
 function generateWhatWhereDate(prospect) {      
   let dateWhen = new Date(prospect.when);
 
-  let formattedDate = `${dateWhen.getMonth()}/${dateWhen.getDay()}/${dateWhen.getFullYear()}  - 
-    ${dateWhen.getHours()}:${dateWhen.getMinutes()}:${dateWhen.getSeconds()} `;     
-      
+  let formattedDate =  `${dateWhen.getFullYear()}-${('0' + (dateWhen.getMonth()+1)).slice(-2)}-${('0' + (dateWhen.getDate())).slice(-2)}`; 
+      formattedDate += `T${('0' + (dateWhen.getHours()+1)).slice(-2)}:${('0' + (dateWhen.getMinutes())).slice(-2)}`; 
+
       let summary = `  
       <div class="flex-item-widget">
         <div class="form-field">
@@ -197,19 +197,19 @@ function generateWhatWhereDate(prospect) {
       <div class="flex-item-widget">
         <div class="form-field">
           <div class="widget-label">Day to Day</div>
-          <textarea  rows="4" cols="40" alue="${prospect.dayToDay}" >${prospect.dayToDay}</textarea>
+          <textarea  class="widget-texbox" rows="4" cols="40" alue="${prospect.dayToDay}" >${prospect.dayToDay}</textarea>
         </div>
         <div class="form-field">
           <div>Contact</div>
-          <textarea rows="2" cols="40" value="${prospect.contact}" >${prospect.contact}</textarea>
+          <textarea class="widget-texbox" rows="2" cols="40" value="${prospect.contact}" >${prospect.contact}</textarea>
         </div>
         <div class="form-field">
           <div>Comments</div>
-          <textarea rows="4" cols="40" value="${prospect.comments}" >${prospect.comments}</textarea>
+          <textarea class="widget-texbox" rows="4" cols="40" value="${prospect.comments}" >${prospect.comments}</textarea>
         </div>
         <div class="form-field">
           <div>Details</div>
-          <textarea  rows="4" cols="40"  value="${prospect.details}" >${prospect.details}</textarea>
+          <textarea class="widget-texbox"  rows="4" cols="40"  value="${prospect.details}" >${prospect.details}</textarea>
         </div>
       </div> `; 
 

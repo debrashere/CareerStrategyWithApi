@@ -19,7 +19,7 @@ function apiReturnedErrorOnLogin(data) {
 /*     
   Check if API response returned an error and set error message
 */
-function apiReturnedError(data) {
+function apiReturnedError(data) {  
   if (data && data.status) {
     if (data.status == '400')  { 
       $('.js-page-message').html(data.statusText);
