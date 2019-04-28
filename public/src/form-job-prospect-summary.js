@@ -1,0 +1,73 @@
+
+function generateProspectSummaryForm(prospect) {  
+    $('.js-page-content').html();
+             
+    let hiddenProspectId = "";
+    let formattedDate = toDatetimeStringFormat(new Date());
+  
+    // If user clicked edit for an existing job prospect then save the id for that prospect in hidden form element 
+    if (prospect && prospect.id && prospect.id != '') {  
+      hiddenProspectId = `<label for="ProspectEditKey" class="edit-label"></label><div class="td" hidden><input id="ProspectEditKey" type="text"value=${prospect.id} hidden></input></div>`;      
+      formattedDate = toDatetimeStringFormat(prospect.when)
+    }  
+  
+      // Format the input form for job prospect
+      let prospectSummary = `  
+      <fieldset>  
+      <div class="form-field">
+          <label  for="prospectWhat">What</label>
+          <input id="prospectWhat" type="text" class="form-input  js-input-whate" placeholder="What" value="${prospect.what}" aria-required="true" required>
+      </div>    
+      <div class="form-field">
+          <label  for="prospectWhere">Where</label>
+          <input id="prospectWhere" type="text" class="form-input  js-input-where" placeholder="Where" value="${prospect.where}" aria-required="true" required>
+      </div>
+      <div class="form-field">
+          <label for="prospectWhen">Date</label>
+          <input id="prospectWhen" type="datetime-local" class="form-input  js-input-when" placeholder="Date" value="${formattedDate}" aria-required="true" required>
+      </div>
+      <div class="form-field">
+          <label for="prospectStatus">Status</label>
+          <input id="prospectStatus" type="text" class="form-input  js-input-status" placeholder="Status" value="${prospect.status}" >
+      </div>    
+      <div class="form-field">
+          <label for="prospectSource">Source</label>
+          <input id="prospectSource" type="text" class="form-input js-input-source" placeholder="Source" value="${prospect.source}" >
+      </div>
+      <div class="form-field">
+        <label for="prospectSourceUrl">Source URL</label>
+        <input id="prospectSourceUrl" type="text" class="form-input  js-input-sourceurl" placeholder="Source Url" value="${prospect.sourceUrl}" >
+      </div>
+      <div class="form-field">
+        <label for="prospectDayToDay">Day to Day</label>
+        <textarea id="prospectDayToDay" class="form-input js-input-daytoday"  rows="4" cols="30" placeholder="Day to Day" value="${prospect.dayToDay}" >${prospect.dayToDay}</textarea>
+      </div>
+      <div class="form-field">
+        <label for="prospectContacts">Contact</label>
+        <textarea id="prospectContacts" class="form-input js-input-contacts"  rows="2" cols="30" placeholder="Contacts" value="${prospect.contact}" >${prospect.contact}</textarea>
+      </div>
+      <div class="form-field">
+        <label for="prospectComments">Comments</label>
+        <textarea id="prospectComments" class="form-input js-input-comments"  rows="4" cols="30"  placeholder="Comments" value="${prospect.comments}" >${prospect.comments}</textarea>
+      </div>
+      <div class="form-field">
+        <label for="prospectDetails">Details</label>
+        <textarea id="prospectDetails" class="form-input js-input-details" rows="4" cols="30" placeholder="Details" value="${prospect.details}" >${prospect.details}</textarea>
+      </div>
+      </fieldset> `; 
+      
+      let prospectForm =  `  
+      <div class="input-form-body">
+        <div>
+            <div class="form-item">
+                <form action="" method="post" class="form flex-container js-tab-Summary">
+                ${prospectSummary}
+                ${hiddenProspectId}
+                </form>
+            </div>
+      </div>
+    </div>`;
+  
+    return prospectForm;
+  } 
+  

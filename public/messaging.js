@@ -6,10 +6,14 @@ function displayWarning(text, element) {
     }
         
 }
+
+// element indicates where to place the error text
+// this can be a class or id name
 function displayError(text, element) {
-    if (text !== undefined) {       
+    if (text !== undefined) {  
+        let errorPosition = $(`.${element}`).length > 0 ?  $(`.${element}`) : $(`#${element}`) ;
         let error = `<div class="form-error" aria-hidden="false" >${text}</div>`;   
-        $( error ).insertAfter( $(`.${element}`));   
+        $( error ).insertAfter( errorPosition);   
     }
 }
 function displayInformation(text, element) {

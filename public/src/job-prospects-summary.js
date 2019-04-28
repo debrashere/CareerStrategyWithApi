@@ -31,18 +31,15 @@ function generateJobSummaries(prospects) {
   let summaries =  '';
 
   prospects.map( function(prospect, index) {
-    let dateWhen = new Date(prospect.when);
-    let formattedDate =  `${dateWhen.getFullYear()}-${('0' + (dateWhen.getMonth()+1)).slice(-2)}-${('0' + (dateWhen.getDate())).slice(-2)}`; 
-        formattedDate += `T${('0' + (dateWhen.getHours()+1)).slice(-2)}:${('0' + (dateWhen.getMinutes())).slice(-2)}`; 
-      
-  summaries += `
-  <div class="flex-container section-block">  
-    <div class="flex-item section-sub-header"><a id="prospectId-${index}" href=# class="js-prospect-detail">${prospect.what}</a></div>
-    <div class="flex-item">${prospect.where}</div>   
-    <div class="flex-item">${formattedDate}</div>
-    <div class="flex-item">${prospect.status}</div>
-    <div class="flex-item" hidden><span class="js-prospectId" id="Prospect-${index}" hidden>${prospect.id}</span></div>
-  </div>`;
+    const formattedDate = toDatetimeStringFormat(prospect.when);
+    summaries += `
+    <div class="flex-container section-block">  
+      <div class="flex-item section-sub-header"><a id="prospectId-${index}" href=# class="js-prospect-detail">${prospect.what}</a></div>
+      <div class="flex-item">${prospect.where}</div>   
+      <div class="flex-item">${formattedDate}</div>
+      <div class="flex-item">${prospect.status}</div>
+      <div class="flex-item" hidden><span class="js-prospectId" id="Prospect-${index}" hidden>${prospect.id}</span></div>
+    </div>`;
   });    
 
   return summaries;  

@@ -22,18 +22,15 @@ function apiReturnedErrorOnLogin(data) {
 function apiReturnedError(data) {  
   if (data && data.status) {
     if (data.status == '400')  { 
-      $('.js-page-message').html(data.statusText);
-      $('.js-page-message').show();
+      displayPageMessageFailure(data.statusText);  
       return true;
     } 
-    if (data.responseJSON.error) {
-      $('.js-page-message').html(data.responseJSON.error);
-      $('.js-page-message').prop("hidden", false);
+    if (data.responseJSON && data.responseJSON.error) {
+      displayPageMessageFailure(data.responseJSON.error);  
       return true;
     }
     else {
-      $('.js-page-message').html("Oops something went wrong. Please try again.");
-      $('.js-page-message').prop("hidden", false);
+      displayPageMessageFailure("Oops something went wrong. Please try again.");
       return true;
     }
   }

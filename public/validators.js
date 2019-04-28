@@ -102,4 +102,14 @@ function  validationMatches(value, field, allValues) {
         : 'Does not match';
 }
 
+function isInputValid(value, validations, errorPosition) {
+    // check for validation errors
+    displayError(validateField(value, validations), errorPosition);
+   
+    // check if errors found in form
+    const errors = $('.form-error');
+    return errors.length === 0;
+   } 
+   
+
 

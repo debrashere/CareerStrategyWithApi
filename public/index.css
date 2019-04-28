@@ -103,7 +103,7 @@ fieldset div {
 }
 
 input:focus ~ label, textarea:focus ~ label, select:focus ~ label {
-  color: #933;
+  color: blue;
 }
 
 input:checked ~ label {
