@@ -4,10 +4,12 @@ function isProspectFormValid() {
 
   // clear form of error messages
   $( ".form-error" ).remove();
+
   // check for validation errors
   checkProspectSummaryForErrors();
   checkStatusHistoryForErrors();
   checkContactsListForErrors();
+  
   // check if errors found in form
   const errors = $('.form-error');
   if (errors.length > 0)

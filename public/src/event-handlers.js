@@ -10,8 +10,8 @@ let props = {"route":"home",
  "PROSPECTS" : {},
  "prospect" : {},
  "prospectId" : ""};
- 
-   /* appending event listeners to dynamic content */
+
+ /* appending event listeners to dynamic content */
  function  executeHandlers() {  
     /* Menu functions */ 
     $(document).on('click','.js-menuitem-myskills',function(e){e.preventDefault(); setMenuItem(e); });      
