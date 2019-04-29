@@ -16,7 +16,7 @@ function generateProspectSummaryForm(prospect) {
       <fieldset>  
       <div class="form-field">
           <label  for="prospectWhat">What</label>
-          <input id="prospectWhat" type="text" class="form-input  js-input-whate" placeholder="What" value="${prospect.what}" aria-required="true" required>
+          <input id="prospectWhat" type="text" class="form-input  js-input-what" placeholder="What" value="${prospect.what}" aria-required="true" required>
       </div>    
       <div class="form-field">
           <label  for="prospectWhere">Where</label>
@@ -71,3 +71,17 @@ function generateProspectSummaryForm(prospect) {
     return prospectForm;
   } 
   
+  
+ function checkProspectSummaryForErrors() {
+ // check for validation errors
+ displayError(validateField($("#prospectWhat").val(), ['required', 'nonEmpty', 'isTrimmed']), 'js-input-what');
+ displayError(validateField($("#prospectWhen").val(), ['required', 'nonEmpty', 'isTrimmed']), 'js-input-when');
+ displayError(validateField($("#prospectWhere").val(), ['required', 'nonEmpty', 'isTrimmed']), 'js-input-where');
+ displayError(validateField($("#prospectStatus").val(), [ 'isTrimmed']), 'js-input-status'); 
+ displayError(validateField($("#prospectSource").val(), [ 'isTrimmed']), 'js-input-source'); 
+ displayError(validateField($("#prospectSourceUrl").val(), ['isUrlFormatValid', 'isTrimmed']), 'js-input-sourceurl'); 
+ displayError(validateField($("#prospectDayToDay").val(), [ 'isTrimmed']), 'js-input-daytoday'); 
+ displayError(validateField($("#prospectContacts").val(), [ 'isTrimmed']), 'js-input-contacts'); 
+ displayError(validateField($("#prospectComments").val(), [ 'isTrimmed']), 'js-input-comments'); 
+ displayError(validateField($("#prospectDetails").val(), [ 'isTrimmed']), 'js-input-details'); 
+}

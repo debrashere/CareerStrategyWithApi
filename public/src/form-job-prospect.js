@@ -2,50 +2,41 @@
  
 function isProspectFormValid() {
 
- // clear form of error messages
- $( ".form-error" ).remove();
- // check for validation errors
- displayError(validateField($("#prospectWhat").val(), ['required', 'nonEmpty', 'isTrimmed']), 'js-input-what');
- displayError(validateField($("#prospectWhen").val(), ['required', 'nonEmpty', 'isTrimmed']), 'js-input-when');
- displayError(validateField($("#prospectWhere").val(), ['required', 'nonEmpty', 'isTrimmed']), 'js-input-where');
- displayError(validateField($("#prospectStatus").val(), [ 'isTrimmed']), 'js-input-status'); 
- displayError(validateField($("#prospectSource").val(), [ 'isTrimmed']), 'js-input-source'); 
- displayError(validateField($("#prospectSourceUrl").val(), ['isUrlFormatValid', 'isTrimmed']), 'js-input-sourceurl'); 
- displayError(validateField($("#prospectDayToDay").val(), [ 'isTrimmed']), 'js-input-daytoday'); 
- displayError(validateField($("#prospectContacts").val(), [ 'isTrimmed']), 'js-input-contacts'); 
- displayError(validateField($("#prospectComments").val(), [ 'isTrimmed']), 'js-input-comments'); 
- displayError(validateField($("#prospectDetails").val(), [ 'isTrimmed']), 'js-input-details'); 
- checkStatusHistoryForErrors();
- checkContactsListForErrors();
- // check if errors found in form
- const errors = $('.form-error');
- if (errors.length > 0)
- {
-   /*
-    Since content is tabbed, display page level message 
-    for each tab that has errors
-  */
-    let errorList = '';
-    for (let index=0; index < errors.length; index++) 
-    {
-      // get form fieldSet that this error will display in 
-        let tabName = '';
-        let form = $(errors[index]).parents('form');    
-        let classList = $(form[0])[0].classList;  
-        for ( let idx=0; idx<classList.length; idx++) {
-            if (classList[idx].indexOf("js-tab") > -1) {
-              tabName = classList[idx].split('-')[2];
-            }
-        }
-        if (errorList.indexOf(`Click ${tabName}`) === -1)
-         errorList += `<div>Click ${tabName} to view errors found in this section</div>`
-    };
-    displayPageMessageFailure(errorList);
-    return false;
- }
+  // clear form of error messages
+  $( ".form-error" ).remove();
+  // check for validation errors
+  checkProspectSummaryForErrors();
+  checkStatusHistoryForErrors();
+  checkContactsListForErrors();
+  // check if errors found in form
+  const errors = $('.form-error');
+  if (errors.length > 0)
+  {
+    /*
+      Since content is tabbed, display page level message 
+      for each tab that has errors
+    */
+      let errorList = '';
+      for (let index=0; index < errors.length; index++) 
+      {
+        // get form fieldSet that this error will display in 
+          let tabName = '';
+          let form = $(errors[index]).parents('form');    
+          let classList = $(form[0])[0].classList;  
+          for ( let idx=0; idx<classList.length; idx++) {
+              if (classList[idx].indexOf("js-tab") > -1) {
+                tabName = classList[idx].split('-')[2];
+              }
+          }
+          if (errorList.indexOf(`Click ${tabName}`) === -1)
+          errorList += `<div>Click ${tabName} to view errors found in this section</div>`
+      };
+      displayPageMessageFailure(errorList);
+      return false;
+  }
 
- // no errors found return true
- return true;
+  // no errors found return true
+  return true;
 }
 
  function generateProspectForms(prospect, profile) {
