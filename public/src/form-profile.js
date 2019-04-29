@@ -27,7 +27,7 @@ function validateProfileForm(profileId) {
   const phone =  $('#profilePhone').val(); 
   let userProfile = ""; 
 
-  if (profileId && profileId != undefined) {
+  if (profileId && profileId != undefined && profileId != "") {
     // update the user profile document for this user
     userProfile = `{"id": "${profileId}", "firstName": "${firstName}", "lastName": "${lastName}", "email": "${email}", "phone": "${phone}"}`; 
     setTimeout(putCareerStrategyAPI(pathUserProfile, 
@@ -79,7 +79,8 @@ function renderUserProfileForm() {
   $('.js-page-content').html('');
   
     // set user profile json variable with default empty values
-    let hiddenProfileId = "";
+    let hiddenProfileId = `<span id="profileEditKey" class="js-profileEditKey" value="" hidden></span>`;       
+    ;
     let profile = {      
       "firstName": "",
       "lastName": "",      
@@ -90,7 +91,7 @@ function renderUserProfileForm() {
 
     if (props.USER_PROFILE && props.USER_PROFILE.userId ) {
       profile = props.USER_PROFILE;
-      hiddenProfileId = `<span id="profileEditKey" class="js-profileEditKey" value=${profile.id} hidden>${profile.id}</span>`;       
+      hiddenProfileId = `<span id="profileEditKey" class="js-profileEditKey" value="${profile.id}" hidden>${profile.id}</span>`;       
     }
 
     // format the form html
