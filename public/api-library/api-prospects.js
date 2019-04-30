@@ -31,9 +31,13 @@ function findCareerStrategyAPI(path, query, id,  callbackFn) {
       return response.json();
     }
     else if (response.status == 401) {
-      // Redirect the to the login page.
-      //location.href = "./login.html";
-      renderLoginForm();
+      // Redirect to the login page.           
+      localStorage.removeItem('token'); 
+      localStorage.removeItem('userId');  
+      setHasProfile(false);
+      displayPageMessageFailure("User name and/or password failed");
+      renderLoginForm(response.status);
+      return;
     }  
     throw new Error(response.statusText);
   })

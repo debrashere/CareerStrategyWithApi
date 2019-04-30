@@ -18,14 +18,21 @@ function userHasProfile() {
     return false;
   }
   let userProfileFound = false;
-  if (!props.userProfileId || props.userProfileId === "" ) {  
+  if (!props.userProfileId || props.userProfileId === "" ) { 
+
     const queryPath = `userId=${props.userId}`;
+
     setTimeout(findCareerStrategyAPI(pathUserProfile, queryPath, "" , function(data) {
-      const userProfile = (data && data.userProfile && data.userProfile.length > 0) ? data.userProfile[0]  : {};
+      
+      const userProfile = 
+      (data && data.userProfile && data.userProfile.length > 0) 
+        ? data.userProfile[0]  
+        : {};
+
       const userProfileId = userProfile ? userProfile.id : "";
       userProfileFound = userProfileId !== "";     
 
-      if (userProfileFound === true) {
+      if (userProfileFound === true) 
         props = {
         "route":"home", 
         "isLoggedIn": true, 
@@ -35,9 +42,9 @@ function userHasProfile() {
         "USER_PROFILE" : userProfile,
         "JOB_SKILLS" : [],
         "MASTER_SKILLS" : [],
-        "PROSPECTS" : {} };
-      }
-      else {
+        "PROSPECTS" : {} 
+        };
+      else 
         props = {
         "route":"home", 
         "isLoggedIn": false, 
@@ -49,7 +56,7 @@ function userHasProfile() {
         "MASTER_SKILLS" : [],
         "PROSPECTS" : {}
         };    
-      }
+
       renderLanding(props.USER_PROFILE); 
     }), 3000); 
   } 

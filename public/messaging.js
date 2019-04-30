@@ -35,6 +35,18 @@ function displayPageMessageSuccess(text) {
     }
 }
 
+function displayPageMessageWarning(text) {
+    if (!text || text === "") {
+        $( '.js-page-message' ).html(text); 
+        $( '.js-page-message' ).hide();    
+    }
+    else {       
+        let message = `<div class="message-warning" aria-hidden="false" >${text}</div>`;   
+        $( '.js-page-message' ).html(message); 
+        $( '.js-page-message' ).show();    
+    }
+}
+
 function displayPageMessageFailure(text) {
     if (!text || text === "") {
         $( '.js-page-message' ).html(text); 

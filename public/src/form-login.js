@@ -59,7 +59,7 @@ function renderLoginForm() {
     </div>
     <div class="form-field">
       <button type="submit" id="submitLogin" class="js-edit-event js-edit-button" >Login</button>  
-      <a href="#" id="menuItem-register" class="js-login-register-link" >Register</a> 
+      <a class="form-link" href="#" id="menuItem-register" class="js-login-register-link" >Register</a> 
     </div>       
   </fieldset> `;
   

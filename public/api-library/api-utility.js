@@ -3,13 +3,11 @@ function apiReturnedErrorOnLogin(data) {
       if (data && data.userAuth) return false;
       if (data.status == 401)
       {
-        $('.js-login-response').html("Invalid username and/or password");
-        $('.js-login-response').prop("hidden", false);
+        displayPageMessageFailure("Invalid username and/or password");    
         return true;
       }
       else {
-        $('.js-login-response').html("Oops something went wrong. Please try again.");
-        $('.js-login-response').prop("hidden", false);
+        displayPageMessageFailure("Oops something went wrong. Please try again.");       
         return true;
       }
     }

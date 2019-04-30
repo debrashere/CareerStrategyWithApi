@@ -181,8 +181,8 @@ function generateWhatWhereDate(prospect) {
             <div class="widget-texbox">${prospect.source}</div>
         </div>
         <div class="form-field">
-          <div class="widget-label">Source URL</div>
-          <div class="widget-texbox">${prospect.sourceUrl}</div>
+          <div class="widget-label">Source URL <a class="form-link" href="${prospect.sourceUrl}" target="_blank" title="Source Url">Click to view</a></div>
+          <textarea  class="widget-texbox" rows="4" cols="50" value="${prospect.sourceUrl}" readonly >${prospect.sourceUrl}</textarea>
         </div>
       </div>`;
 
@@ -190,15 +190,15 @@ function generateWhatWhereDate(prospect) {
       <div class="flex-item-widget">
         <div class="form-field">
           <div class="widget-label">Day to Day</div>
-          <textarea  class="widget-texbox" rows="4" cols="50" alue="${prospect.dayToDay}" >${prospect.dayToDay}</textarea>
+          <textarea  class="widget-texbox" rows="4" cols="50" value="${prospect.dayToDay}" readonly>${prospect.dayToDay}</textarea>
         </div>
         <div class="form-field">
           <div>Contact</div>
-          <textarea class="widget-texbox" rows="2" cols="50" value="${prospect.contact}" >${prospect.contact}</textarea>
+          <textarea class="widget-texbox" rows="2" cols="50" value="${prospect.contact}" readonly>${prospect.contact}</textarea>
         </div>
         <div class="form-field">
           <div>Comments</div>
-          <textarea class="widget-texbox" rows="4" cols="50" value="${prospect.comments}" >${prospect.comments}</textarea>
+          <textarea class="widget-texbox" rows="4" cols="50" value="${prospect.comments}" readonly>${prospect.comments}</textarea>
         </div>
         <div class="form-field">
           <div>Details</div>

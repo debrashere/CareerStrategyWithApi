@@ -32,12 +32,12 @@ function generateProspectSummaryForm(prospect) {
       </div>    
       <div class="form-field">
           <label for="prospectSource">Source</label>
-          <input id="prospectSource" type="text" class="form-input js-input-source" placeholder="Source" value="${prospect.source}" >
+          <text id="prospectSource" type="text" class="form-input js-input-source" placeholder="Source" value="${prospect.source}" >
       </div>
       <div class="form-field">
         <label for="prospectSourceUrl">Source URL</label>
-        <input id="prospectSourceUrl" type="text" class="form-input  js-input-sourceurl" placeholder="Source Url" value="${prospect.sourceUrl}" >
-      </div>
+        <textarea id="prospectSourceUrl" class="form-input js-input-sourceurl"  rows="4" cols="30" placeholder="Source Url" value="${prospect.sourceUrl}" >${prospect.sourceUrl}</textarea>   
+        </div>
       <div class="form-field">
         <label for="prospectDayToDay">Day to Day</label>
         <textarea id="prospectDayToDay" class="form-input js-input-daytoday"  rows="4" cols="30" placeholder="Day to Day" value="${prospect.dayToDay}" >${prospect.dayToDay}</textarea>

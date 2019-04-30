@@ -6,9 +6,10 @@ function renderLandingPage(id) {
             const queryPath = `userId=${props.userId}`;
             // function displayCareerStrategyResults will save user skills as part of variable USER_PROFILE  
             setTimeout(findCareerStrategyAPI(pathJobProspects, queryPath, "",  function(data) {
-            props.PROSPECTS = data.prospect;
-            if (apiReturnedError(data)) return;
-            generateSecureData(props.PROSPECTS);
+              if (apiReturnedError(data)) return;
+
+              props.PROSPECTS = (data && data.prospect) ? data.prospect : [];        
+              generateSecureData(props.PROSPECTS);
             }), 3000);
         }
         else
@@ -36,7 +37,7 @@ function generateStatusList(prospects) {
     if (prospects) {
         statusList = groupBy(prospects, function(thisProspect)
         {
-            return [thisProspect.status];
+            return [thisProspect.status.trim()];
         });  
     }
      
@@ -113,16 +114,14 @@ function generateContactList(prospects) {
       
     return message;  
   }
-
  
 /*     
    render profile information (user name, email address, phone number)
 */
 function generateSecureData(prospects) {         
-    $( ".js-page-content" ).html('');
     if (!prospects || prospects.length === 0) {
-        $('.js-page-content').append(generateNoProspectsMessage());
-        return;
+      displayPageMessageWarning(generateNoProspectsMessage());
+      return;
     }
 
     let statusList = generateStatusList(prospects);
