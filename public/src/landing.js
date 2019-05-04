@@ -4,7 +4,7 @@ function renderLandingPage(id) {
     if (props.isLoggedIn === true && props.hasProfile === true) {
         if (jQuery.isEmptyObject(props.PROSPECTS)) {  
             const queryPath = `userId=${props.userId}`;
-            // function displayCareerStrategyResults will save user skills as part of variable USER_PROFILE  
+ 
             setTimeout(findCareerStrategyAPI(pathJobProspects, queryPath, "",  function(data) {
               if (apiReturnedError(data)) return;
 
@@ -43,10 +43,10 @@ function generateStatusList(prospects) {
      
     let uniqueStatuses =  ''; 
     statusList.map( function(prospect, index) {       
-        uniqueStatuses += `<span id="${prospect[0].status}" class='user-skill js-prospects-by-status'>
+        uniqueStatuses += `<span id="${prospect[0].status}" class='widget-button-one js-prospects-by-status'>
         <a href="#" title='prospect status'>${prospect[0].status} : ${prospect.length}</a></span> ` 
     });   
-    return `<div class="section-header"><h3 tabindex="0">Prospect Status</h3></div><div>${uniqueStatuses}</div>`;
+    return `<div class="section-header"><h2 tabindex="0">Prospect Status</h2></div><div>${uniqueStatuses}</div>`;
 }
 
 function generateCompanyList(prospects) { 
@@ -61,9 +61,9 @@ function generateCompanyList(prospects) {
     let uniqueCompanies =  ''; 
     whereList.map( function(prospect, index) {       
         let plength = (prospect.length === 1) ? '' : `: ${prospect.length}`;
-        uniqueCompanies += `<span class='user-skill js-prospects-by-company'>
+        uniqueCompanies += `<span class='widget-button-one js-prospects-by-company'>
         <a href="#" title='prospect company'>${prospect[0].where}${plength}</a></span> `         });      
-         return `<div class="section-header"><h3 tabindex="0">Companies</h3></div><div>${uniqueCompanies}</div>`;
+         return `<div class="section-header"><h2 tabindex="0">Companies</h2></div><div>${uniqueCompanies}</div>`;
 }
 
 function generateContactList(prospects) {
@@ -92,7 +92,7 @@ function generateContactList(prospects) {
   });
     
   let contactDetails =  `  
-  <div class="section-header"><h3>Contacts</h3></div>
+  <div class="section-header"><h2>Contacts</h2></div>
   <div class="input-form-body">
     <div class="flex-container">
       ${contacts}   
@@ -121,6 +121,7 @@ function generateContactList(prospects) {
 function generateSecureData(prospects) {         
     if (!prospects || prospects.length === 0) {
       displayPageMessageWarning(generateNoProspectsMessage());
+      generateOverview()
       return;
     }
 
@@ -139,12 +140,21 @@ function generateSecureData(prospects) {
 function generateNonSecureData() {   
     $( ".js-page-content" ).html('');
     let landing =  
-      `<div class="sidesection w3-light-grey" style="margin-left:auto;margin-right:auto;max-width:230px">
-            <div class="w3-container w3-dark-grey">
-                <h1>Careeer Strategy and Planning</h1>
-            </div>     
+      `<div class="site-title">   
+          <h1>Career Strategy and Planning</h1>          
         </div>
        `;   
       
     $('.js-page-content').append(`${landing}`);                 
   } 
+
+function generateOverview() {   
+  $( ".js-page-content" ).html('');
+  let overview =  
+    `<div>
+      <h3>Example Summary of Job Prospects</h3>
+      <img id="Prospect summary image" alt="login image" src="./images/CS_landingPageWithProspects.jpg">
+    </div> `;   
+    
+  $('.js-page-content').append(`${overview}`); 
+} 

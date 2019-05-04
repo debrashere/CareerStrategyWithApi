@@ -5,9 +5,9 @@ function generatePropectDetails(prospect) {
     return `
     <div class="header">
       <h1>Career Strategy</h1>
-      <h3 tabindex="0">Job Prospects <img  class="js-edit-this-job-prospect" alt="edit job prospect" src="./images/icon-add.png">(Edit)</a></h3>
-      <h2 tabindex="0">${prospect.what}</h3>
-      <h2 tabindex="0">${prospect.where}</h3>
+      <h2 tabindex="0">Job Prospects <img  class="js-edit-this-job-prospect" alt="edit job prospect" src="./images/icon-add.png">(Edit)</a></h2>
+      <h3 tabindex="0">${prospect.what}</h3>
+      <h3 tabindex="0">${prospect.where}</h3>
     </div>
     <div class="responsive-tabs">
       <input class="state" type="radio" title="tab-one" name="tabs-state" id="tab-one" checked />
@@ -118,7 +118,7 @@ function generateJobSkills(prospect) {
   if (prospect && prospect.jobSkills && prospect.jobSkills.length > 0) {
     skills += '<p class="items flex-item-skillset">';
     prospect.jobSkills.map( function(skill, index) {          
-      skills +=  `<a href="#" id="jobSkill${index}" class="skill-link js-edit-job-skill">${skill.skill}</a>`;            
+      skills +=  `<a href="#" id="jobSkill${index}" class="widget-button-one js-edit-job-skill">${skill.skill}</a>`;            
       });  
     skills += '</p>';   
   }  
@@ -141,7 +141,7 @@ function generateUserSkills(profile) {
    // if the user has any skills, format the html to display them
   if (profile.skills) {
     profile.skills.map( function(skill, index) {          
-      skills +=  `<span "userSkill${index}" class="skill-span">${skill.skill}</span>`;            
+      skills +=  `<span "userSkill${index}" class="widget-button-one">${skill.skill}</span>`;            
      });  
     } 
   
@@ -169,6 +169,10 @@ function generateWhatWhereDate(prospect) {
             <div class="widget-texbox">${prospect.where}</div>
         </div>
         <div class="form-field">
+          <div class="widget-label">Company URL <a class="form-link" href="${prospect.companyUrl}" target="_blank" title="Company Url">Click to view</a></div>
+          <textarea  class="widget-texbox" rows="4" cols="50" value="${prospect.companyUrl}" readonly >${prospect.companyUrl}</textarea>          
+        </div>           
+        <div class="form-field">
             <div class="widget-label">Date</div>
             <div class="widget-texbox">${formattedDate}</div>
         </div>
@@ -183,7 +187,11 @@ function generateWhatWhereDate(prospect) {
         <div class="form-field">
           <div class="widget-label">Source URL <a class="form-link" href="${prospect.sourceUrl}" target="_blank" title="Source Url">Click to view</a></div>
           <textarea  class="widget-texbox" rows="4" cols="50" value="${prospect.sourceUrl}" readonly >${prospect.sourceUrl}</textarea>
-        </div>
+        </div>   
+        <div class="form-field">
+          <div class="widget-label">Company URL <a class="form-link" href="${prospect.companyUrl}" target="_blank" title="Company Url">Click to view</a></div>
+          <textarea  class="widget-texbox" rows="4" cols="50" value="${prospect.companyUrl}" readonly >${prospect.companyUrl}</textarea>
+        </div>            
       </div>`;
 
       summary += `

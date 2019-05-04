@@ -27,14 +27,13 @@ function findCareerStrategyAPI(path, query, id,  callbackFn) {
     if (response.ok) {  
       if (response.status == 204) {
          return null;
-      }   
+      }    
       return response.json();
     }
     else if (response.status == 401) {
+      // reset any logged in user data
+      removeUserData();
       // Redirect to the login page.           
-      localStorage.removeItem('token'); 
-      localStorage.removeItem('userId');  
-      setHasProfile(false);
       displayPageMessageFailure("User name and/or password failed");
       renderLoginForm(response.status);
       return;

@@ -42,17 +42,14 @@ function validateProfileForm(profileId) {
           props.USER_PROFILE = data;
           props.userProfileId = props.USER_PROFILE && props.USER_PROFILE.userId ? props.USER_PROFILE._id : "";                        
           props.userProfileId === "" ? setHasProfile(false) : setHasProfile(true);
-          $('.js-page-message').html("Update was successful");
-          $('.js-page-message').show();
+          displayPageMessageSuccess("Update was successful");
         }
         else if (data.responseJSON.error)
         {
-          $('.js-page-message').html(data.responseJSON.error);
-          $('.js-page-message').show();
+          displayPageMessageFailure(ata.responseJSON.error);    
         }
         else {
-          $('.js-page-message').html("Oops something went wrong. Please try again.");
-          $('.js-page-message').show();
+          displayPageMessageFailure("Oops something went wrong. Please try again.");        
         }
           
     }), 3000);
@@ -114,8 +111,8 @@ function renderUserProfileForm() {
           <input id="profilePhone" type="text" class="form-input  js-profilePhone" placeholder="Phone" value="${profile.phone}">
       </div>
       <div class="form-field">
-        <button type="submit" id="submitProfile" class="js-edit-event js-edit-button  js-form-profile-update" >Submit</button>            
-        <a  href="*" class="form-link js-render-landing" >cancel</a>  
+        <button type="submit" id="submitProfile" class="btn js-edit-event js-edit-button  js-form-profile-update" >Submit</button>            
+        <a  href="*" class="form-link js-render-landing" >Cancel</a>  
       </div>         
     </fieldset> `;
     

@@ -38,6 +38,10 @@ function generateProspectSummaryForm(prospect) {
         <label for="prospectSourceUrl">Source URL</label>
         <textarea id="prospectSourceUrl" class="form-input js-input-sourceurl"  rows="4" cols="30" placeholder="Source Url" value="${prospect.sourceUrl}" >${prospect.sourceUrl}</textarea>   
         </div>
+        <div class="form-field">
+        <label for="prospectCompanyUrl">Company URL</label>
+        <textarea id="prospectCompanyUrl" class="form-input js-input-companyurl"  rows="4" cols="30" placeholder="Company Url" value="${prospect.companyUrl}" >${prospect.companyUrl}</textarea>   
+        </div>        
       <div class="form-field">
         <label for="prospectDayToDay">Day to Day</label>
         <textarea id="prospectDayToDay" class="form-input js-input-daytoday"  rows="4" cols="30" placeholder="Day to Day" value="${prospect.dayToDay}" >${prospect.dayToDay}</textarea>
@@ -80,6 +84,7 @@ function generateProspectSummaryForm(prospect) {
  displayError(validateField($("#prospectStatus").val(), [ 'isTrimmed']), 'js-input-status'); 
  displayError(validateField($("#prospectSource").val(), [ 'isTrimmed']), 'js-input-source'); 
  displayError(validateField($("#prospectSourceUrl").val(), ['isUrlFormatValid', 'isTrimmed']), 'js-input-sourceurl'); 
+ displayError(validateField($("#prospectCompanyUrl").val(), ['isUrlFormatValid', 'isTrimmed']), 'js-input-companyurl'); 
  displayError(validateField($("#prospectDayToDay").val(), [ 'isTrimmed']), 'js-input-daytoday'); 
  displayError(validateField($("#prospectContacts").val(), [ 'isTrimmed']), 'js-input-contacts'); 
  displayError(validateField($("#prospectComments").val(), [ 'isTrimmed']), 'js-input-comments'); 

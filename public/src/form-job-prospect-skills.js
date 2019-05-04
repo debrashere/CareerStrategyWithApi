@@ -8,7 +8,7 @@ function generateUserAndJobSkillsForm(prospect, profile) {
     /* formats links for the existing job skills */
     if (prospect && prospect.jobSkills && prospect.jobSkills.length > 0) { 
         prospect.jobSkills.map( function(skill, index) {          
-          skills +=  `<a href="#" id="jobSkill-${index}" class="skill-link js-edit-job-skill">${skill.skill}</a>`;            
+          skills +=  `<a href="#" id="jobSkill-${index}" class="widget-button-one js-edit-job-skill">${skill.skill}</a>`;            
         });    
     }  
     const jobSkills = `
@@ -28,7 +28,7 @@ function generateUserAndJobSkillsForm(prospect, profile) {
       // if the user has any skills, format the html to display them
      if (profile.skills) {
        profile.skills.map( function(skill, index) {          
-        userSkills +=  `<span "userSkill${index}" class="skill-span">${skill.skill}</span>`;            
+        userSkills +=  `<span "userSkill${index}" class="widget-button-one">${skill.skill}</span>`;            
         });  
        } 
      
@@ -64,7 +64,7 @@ function deleteJobSkillProspectForm(e) {
     
     /* find the skill in the list of job skills */
     if (thisSkill) {
-      const skillElements = $('.skill-link');
+      const skillElements = $('.widget-button-one');
       const skillToRemove = $.grep(skillElements, function(e){ return e.text === thisSkill[0].value; });
       /* remove the skill from the list of job skills */
       if (skillToRemove && skillToRemove.length > 0) 
@@ -78,7 +78,7 @@ function addJobSkillProspectForm(e) {
     
     /* find the skill in the list of job skills */
     if (thisSkill) {
-      const skillElements = $('.skill-link');
+      const skillElements = $('.widget-button-one');
   
       /* check if the skill already exists in the list of skills before adding it */
       const skillInList = $.grep(skillElements, function(e){ return e.text === thisSkill[0].value; });    
@@ -90,12 +90,12 @@ function addJobSkillProspectForm(e) {
           lastSkill = skillElements.last();
           index = parseInt(lastSkill[0].id.split('-')[1]);
           index = index + 1;
-          newSkill = `<a href="#" id="jobSkill-${index}" class="skill-link js-edit-job-skill">${thisSkill[0].value}</a>`;
+          newSkill = `<a href="#" id="jobSkill-${index}" class="widget-button-one js-edit-job-skill">${thisSkill[0].value}</a>`;
           /* insert the newSkill after the last skill in the list of existing skills */
           $( newSkill ).insertAfter( lastSkill);  
         }
         else {      
-          newSkill = `<a href="#" id="jobSkill-0" class="skill-link js-edit-job-skill">${thisSkill[0].value}</a>`;    
+          newSkill = `<a href="#" id="jobSkill-0" class="widget-button-one js-edit-job-skill">${thisSkill[0].value}</a>`;    
           /*  add newSkill in the job skills div*/
           $('.js-job-skills-list').html( newSkill );  
         }     

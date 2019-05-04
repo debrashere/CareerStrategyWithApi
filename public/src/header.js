@@ -23,7 +23,7 @@ function renderUserProfile(userProfile) {
   if (!userProfile || userProfile === {}) return "";
   
  let userInfo =
-    `<div class="section-header user-header">
+    `<div class="section-header">
         <em><span  tabindex="0">${userProfile.firstName} ${userProfile.lastName}</span></em>   
     </div>  `;  
     

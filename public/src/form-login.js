@@ -13,7 +13,8 @@ function isLoginFormValid() {
  return errors.length === 0;
 } 
 
-function loginThisUser() {     
+function loginThisUser() { 
+    removeUserData();    
     // check if inputs are valid
     if (!isLoginFormValid()) return;
 
@@ -22,7 +23,7 @@ function loginThisUser() {
     const loginJson = JSON.parse(`{"username": "${userName}","password": "${password}"}`);        
     props.isLoggedIn = false;
     setTimeout(loginUserAPI(pathAuth, loginJson, function(data) {
-    if (!apiReturnedErrorOnLogin(data)) {
+    if (!apiReturnedErrorOnLogin(data)) {    
       localStorage.setItem('token', data.userAuth.authToken);
       localStorage.setItem('userId', data.userAuth.id);
       props.userId = localStorage.getItem('userId');
@@ -58,7 +59,7 @@ function renderLoginForm() {
         <input id="userPassword" type="password" class="form-input   js-input-password" placeholder="Password" value="" aria-required="true" required>
     </div>
     <div class="form-field">
-      <button type="submit" id="submitLogin" class="js-edit-event js-edit-button" >Login</button>  
+      <button type="submit" id="submitLogin" class="btn js-edit-event js-edit-button" >Login</button>  
       <a class="form-link" href="#" id="menuItem-register" class="js-login-register-link" >Register</a> 
     </div>       
   </fieldset> `;

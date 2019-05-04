@@ -1,15 +1,18 @@
 'use strict';
-let props = {"route":"home", 
- "isLoggedIn": false, 
- "hasProfile": false, 
- "userId" : "",
- "userProfileId" : "",
- "USER_PROFILE" : {},
- "JOB_SKILLS" : [],
- "MASTER_SKILLS" : [],
- "PROSPECTS" : {},
- "prospect" : {},
- "prospectId" : ""};
+
+/* initialize props object */
+props = {"route":"home", 
+    "isLoggedIn": false, 
+    "hasProfile": false, 
+    "userId" : "",
+    "userProfileId" : "",
+    "USER_PROFILE" : {},
+    "JOB_SKILLS" : [],
+    "MASTER_SKILLS" : [],
+    "PROSPECTS" : {},
+    "prospect" : {},
+    "prospectId" : ""
+    };
 
  /* appending event listeners to dynamic content */
  function  executeHandlers() {  
@@ -53,9 +56,9 @@ let props = {"route":"home",
     $(document).on('click','.js-edit-prospect',function(e){e.preventDefault(); editJobProspect(); });   
     $(document).on('click','.js-edit-this-job-prospect',function(e){e.preventDefault(); editProspectForm(props.prospect); });   
    /* manage user skills */
-    $(document).on('click','.js-edit-user-skill',function(e){e.preventDefault(); selectSkillFromUserSkills(e); });
-    $(document).on('click','.js-add-user-skill',function(e){e.preventDefault(); addUserSkill(e); });
-    $(document).on('click','.js-delete-user-skill',function(e){e.preventDefault(); deleteUserSkill(e); });
+    $(document).on('click','.js-edit-widget-button-one',function(e){e.preventDefault(); selectSkillFromUserSkills(e); });
+    $(document).on('click','.js-add-widget-button-one',function(e){e.preventDefault(); addUserSkill(e); });
+    $(document).on('click','.js-delete-widget-button-one',function(e){e.preventDefault(); deleteUserSkill(e); });
     $(document).on('click','.js-add-master-skill-to-user',function(e){e.preventDefault(); addMasterSkillToMySkills(e); });      
 
     /* manage master list of skills */                 
@@ -67,34 +70,4 @@ let props = {"route":"home",
     $(document).on('click','.js-prospects-by-company',function(e){e.preventDefault(); renderJobsSummariesByCompany(e); });
     $(document).on('click','.js-prospects-by-contact',function(e){e.preventDefault(); renderJobsSummariesByContact(e); });           
 }
-   
-function setHasProfile(value) {
-    props.hasProfile = value;
-    if (props.hasProfile === true)
-      props.isLoggedIn = true;
-  }
   
-// Called from secure pages
-// If user is not logged in redirect them to the login or profile page
-function isUserLoggedIn() { 
-  let continueToPage = false;
-  props.isLoggedIn === true 
-    ? props.hasProfile === true
-      ? continueToPage = true
-      : renderUserProfileForm()    
-    :
-    renderLoginForm()
-
-    return continueToPage;
-}
-
-function canAccessProfile() {
-  let continueToPage = false;
-  props.isLoggedIn === true  
-    ? props.hasProfile === true 
-        ? continueToPage = true 
-        : renderUserProfileForm()
-    : renderLoginForm() 
-
-    return continueToPage;
-}

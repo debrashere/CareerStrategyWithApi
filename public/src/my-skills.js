@@ -7,7 +7,7 @@ function generateMyUserSkills(profile) {
      // if the user has any skills, format the html to display them
     if (profile.skills) {
         profile.skills.map( function(skill, index) {          
-        skillsList +=  `<a href=# id="userSkill${index}" class="skill-link js-edit-user-skill">${skill.skill}</a>`;            
+        skillsList +=  `<a href=# id="userSkill${index}" class="widget-button-one js-edit-user-skill">${skill.skill}</a>`;            
        });       
       } 
       
@@ -121,12 +121,12 @@ function displayMasterSkills(data) {
 
   let skillDetailsHeader = `
   <div flex-item>
-    <div class="skills-header"><h3 tabindex="0">Master list of skills</h3> <em> (click on a skill to add it to your skills)</em></div>   
+    <div class="section-header"><h3 tabindex="0">Master list of skills</h3> <em> (click on a skill to add it to your skills)</em></div>   
     <p flex-item-skills">`;
   let skills = skillDetailsHeader;
            
   data.skill.map( function(skill, index) {           
-      skills +=  `<a href=# id="masterSkill${index}" class="skill-link js-add-master-skill-to-user">${skill.skill}</a>`;     
+      skills +=  `<a href=# id="masterSkill${index}" class="widget-button-one js-add-master-skill-to-user">${skill.skill}</a>`;     
      });
      skills += '</p>';           
   

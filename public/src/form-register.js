@@ -26,17 +26,16 @@ function submitRegistion() {
     
     const loginJson = JSON.parse(`{"username": "${userName}","password": "${password}","firstName": "${firstName}", "lastName": "${lastName}"}`);    
     setTimeout(registerUserAPI(pathUsers, loginJson, function(data){
-      $('.js-page-message').prop("hidden", false);
       if (!data.responseJSON)
       {
-        $('.js-page-message').html('Registration was successful. Please <a href="#" class="js-menuitem-login">login</a>.');
+        displayPageMessageSuccess('Registration was successful. Please <a href="#" id="menuItemLink-login" class="js-menuitem-login">login</a>.');
       }
       else if (data.responseJSON && data.responseJSON.message)
       {
-        $('.js-page-message').html(`Registration failed.  ${data.responseJSON.location} ${data.responseJSON.message}`);
+        displayPageMessageFailure(`Registration failed.  ${data.responseJSON.location} ${data.responseJSON.message}`);
       }
       else {
-        $('.js-page-message').html("Oops something went wrong. Please try again.");
+        displayPageMessageFailure("Oops something went wrong. Please try again.");
       }  
     }), 3000);  
   }
@@ -55,7 +54,7 @@ function renderRegistrationForm(data) {
           <input id="lastName" type="text" class="form-input  js-input-lastname" placeholder="Your last name" value="" aria-required="true" required>
       </div>
       <div class="form-field">
-          <label for="userName"><span>Email</span></label>
+          <label for="userName"><span>User name</span></label>
           <input id="userName" type="text" class="form-input  js-input-usernam" placeholder="User name" value="" aria-required="true" required>
       </div>
       <div class="form-field">
@@ -63,7 +62,7 @@ function renderRegistrationForm(data) {
           <input id="password" type="password" class="form-input   js-input-password" placeholder="Password"value="" aria-required="true" required>
       </div>
       <div class="form-field">
-      <button type="submit" id="submitReg" class="js-edit-event js-edit-button  js-form-register-user" >Register</button>            
+      <button type="submit" id="submitReg" class="btn js-edit-event js-edit-button  js-form-register-user" >Register</button>            
       <a class="form-link" href="#" id="menuItem-login" class="js-register-login-link">Login</a>  
    </div>        
     </fieldset> `;

@@ -122,10 +122,10 @@ function addJobContactForm(event) {
   $( newContact ).insertAfter(lastContact)  
  
   /* clear the input fields */ 
-  $('.js-prospectNewContactFirstName').empty();
-  $('.js-prospectNewContactLastName').empty();
-  $('.js-prospectNewContactEmail').empty();
-  $('.js-prospectNewContactPhone').empty();  
+  $('#prospectNewContactFirstName').val("");
+  $('#prospectNewContactLastName').val("");
+  $('#prospectNewContactEmail').val("");
+  $('#prospectNewContactPhone').val("");  
 }
  
 

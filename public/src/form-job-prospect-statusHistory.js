@@ -1,37 +1,37 @@
 'use strict'  
  
 function generateStatusHistoryForm(prospect) {  
+ const currentDate = toDatetimeStringFormat(new Date());
+
     let statusList = '';
-    prospect.statusHistory.map( function(status, index) {    
+    
+    prospect.statusHistory.map( function(status, index) { 
       const formattedDate = toDatetimeStringFormat(status.date);
-        
-       statusList += `
+      statusList += ` 
       <fieldset id="statusFieldset-${index}" class="flex-item js-statusFieldset">  
-      <div>
-        <a id="DeleteStatus-${index}" href="#" class="form-link js-delete-job-status"><img alt="delete job status" src="./images/icon-delete.png">(Delete)</a>
-      </div>    
-      <div class="form-field">
-          <label  for="prospectStatusDate-${index}">Date</label>
-          <input id="prospectStatusDate-${index}" type="datetime-local" class="form-input  js-input-status-date" placeholder="Date" value="${formattedDate}" aria-required="true" required>
+      <div class="input-block">
+            <a id="DeleteStatus-${index}" href="#" class="form-link js-delete-job-status"><img  alt="delete job status" src="./images/icon-delete.png">(Delete)</a>
       </div>
       <div class="form-field">
-          <label for="prospectStatusStatus-${index}">Status</label>
+          <label for="prospectStatusDate-${index}">Date</label>
+          <input id="prospectStatusDate-${index}" type="datetime-local" class="form-input  js-input-status-date" placeholder="Date" value="${formattedDate}" aria-required="true" required>
+      </div>      
+      <div class="form-field">
+          <label for="prospectStatusStatus-${index}"><span>Status</span></label>
           <input id="prospectStatusStatus-${index}" type="text" class="form-input  js-input-status-status" placeholder="Status" value="${status.status}" aria-required="true" required>
       </div>
       <div class="form-field">
-          <label for="prospectStatusComment-${index}">Comment</label>
-          <input id="prospectStatusComment-${index}" type="textarea" rows="30" cols="30" class="form-input  js-input-status-comment" placeholder="Comment" value="${status.comment}" >
+          <label for="prospectStatusComment-${index}"><span>Comment</span></label>
+          <textarea id="prospectStatusComment-${index}" class="form-input  js-input-status-comment"  rows="4" cols="30" placeholder="Comment"" value="${status.comment}" >${status.comment}</textarea>    
       </div>
       </fieldset> `;
-    });
-  
-    const formattedDate = toDatetimeStringFormat(new Date());
+  });
    
     let newStatusFields = `
     <fieldset id="statusFieldset" class="flex-item js-new-status-form">   
     <a id="AddStatus" href="#" class="form-link js-add-job-status"><img id="addNewSkill" alt="add status" src="./images/icon-add.png">(Add)</a>
     <div class="form-field">
-            <input id="prospectStatusDate" type="datetime-local" class="form-input js-prospectStatusDate" placeholder="Status Date" value="${formattedDate}" aria-required="true" required>
+            <input id="prospectStatusDate" type="datetime-local" class="form-input js-prospectStatusDate" placeholder="Status Date" value="${currentDate}" aria-required="true" required>
         </div>
         <div class="form-field">
             <input id="prospectStatusStatus" type="text" class="form-input js-prospectStatusStatus" placeholder="Status" value="" aria-required="true" required>
@@ -41,15 +41,15 @@ function generateStatusHistoryForm(prospect) {
         </div>
         </fieldset> `;
         
+
         let statusForms =  `  
-        <div class="input-form-body flex-container">
-        <form action="" method="post" class="form form-element">
+        <div class="input-form-body">
+          <form action="" method="post" class="form form-element flex-container js-tab-status">
             ${newStatusFields}     
-        </form>
-        <form action="" method="post" class="form form-edit-element js-tab-StatusHistory">
             ${statusList}   
-        </form>        
+          </form>        
         </div>`;
+       
     
     return statusForms;
 }
@@ -112,10 +112,11 @@ function deleteJobStatusForm(event) {
     /* add this new status to the list status list */
     $( newStatus ).insertAfter( lastStatus);   
     
-      /* clear the input fields */    
-      thisDate.empty();
-      thisStatus.empty();
-      thisComment.empty(); 
+    /* clear the input fields */ 
+    const formattedDate = toDatetimeStringFormat(new Date());
+    $('#prospectStatusDate').val(formattedDate);
+    $('#prospectStatusStatus').val("");
+    $('#prospectStatusComment').val("");
 }
 
 

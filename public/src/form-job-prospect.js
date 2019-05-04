@@ -47,9 +47,9 @@ function isProspectFormValid() {
   <div class="header">
     <h1>Career Strategy</h1>
     <h3>Select each tab to enter all information. After you are done click "Submit" to complete your edits or new job prospect entry.</h3>
-    <button type="submit" id="submitProspect" class="js-edit-button" >Submit</button>      
-    <a id="DeleteThisProspect" href="#" class="form-link js-delete-job-prospect"><img alt="delete job status" src="./images/icon-delete.png"> (Delete this prospect)</a>
-    <a href="*" class="form-link js-render-landing" > Cancel</a> 
+    <button type="submit" id="submitProspect" class="btn js-edit-button" >Submit</button>      
+    <a id="DeleteThisProspect" href="#" class="form-link-black js-delete-job-prospect"><img alt="delete job status" src="./images/icon-delete.png"> (Delete this prospect)</a>
+    <a href="*" class="form-link-black js-render-landing" > Cancel</a> 
     <h2 tabindex="0">${prospect.what}</h3>
     <h2 tabindex="0">${prospect.where}</h3>
   </div>
@@ -85,6 +85,7 @@ function submitProspectUpdates() {
     const status =  $('#prospectStatus').val();  
     const source =  $('#prospectSource').val(); 
     const sourceUrl =  $('#prospectSourceUrl').val();
+    const companyUrl =  $('#prospectCompanyUrl').val();
     const dayToDay =  $('#prospectDayToDay').val();
     const contacts =  $('#prospectContacts').val();
     const comments =  $('#prospectComments').val();
@@ -93,7 +94,7 @@ function submitProspectUpdates() {
 
     /* retrieve list of skills */
     const existingSkills = [];
-    $('.js-job-skills-list').children('.skill-link').each(function(skill) { 
+    $('.js-job-skills-list').children('.widget-button-one').each(function(skill) { 
       let testSkill = $(this)[0].text;         
       existingSkills.push({
         "skill":  $(this)[0].text,
@@ -140,7 +141,7 @@ function submitProspectUpdates() {
     // Creating new job prospect
     if (!prospectId || prospectId == undefined) {
     const jobProspect = `{"what": "${what}", "when": "${when}", "where": "${where}", "status": "${status}", 
-    "userId": "${props.userId}","source":  "${source}", "sourceUrl": "${sourceUrl}",
+    "userId": "${props.userId}","source":  "${source}", "sourceUrl": "${sourceUrl}", "companyUrl": "${companyUrl}",
     "dayToDay":  "${dayToDay}", "contact":  "${contacts}", "comments":  "${comments}", 
     "details":   "${details}",  "jobSkills": ${jobSkills}, 
     "statusHistory": ${statusHistory}, 
@@ -154,7 +155,7 @@ function submitProspectUpdates() {
   }
   else{ 
     // Updating existing job prospect
-    const jobProspect = `{"id":"${prospectId}","what": "${what}", "when": "${when}", "where": "${where}", "status": "${status}", "userId": "${props.userId}","source":  "${source}", "sourceUrl": "${sourceUrl}","dayToDay":  "${dayToDay}", "contacts":  "${contacts}", "comments":  "${comments}", "details":   "${details}",  "jobSkills": ${jobSkills}, "statusHistory": ${statusHistory}, "contacts": ${contactsList}}`;  
+    const jobProspect = `{"id":"${prospectId}","what": "${what}", "when": "${when}", "where": "${where}", "status": "${status}", "userId": "${props.userId}","source":  "${source}", "sourceUrl": "${sourceUrl}", "companyUrl": "${companyUrl}", "dayToDay":  "${dayToDay}", "contacts":  "${contacts}", "comments":  "${comments}", "details":   "${details}",  "jobSkills": ${jobSkills}, "statusHistory": ${statusHistory}, "contacts": ${contactsList}}`;  
     setTimeout(putCareerStrategyAPI(pathJobProspects, 
       JSON.parse(jobProspect), prospectId, function(data){ 
         if (apiReturnedError(data)) return;
@@ -186,6 +187,7 @@ function renderProspectForm(event, options) {
   if (!isUserLoggedIn()) return;
   if (!canAccessProfile()) return; 
 
+    $('.js-page-message').html();
     $('.js-page-content').html();
    
       // create json variable with default empty values for creating a new job prospect
@@ -198,6 +200,7 @@ function renderProspectForm(event, options) {
         "status": "",
         "source": "",
         "sourceUrl": "",
+        "companyUrl": "",
         "dayToDay": "",
         "contact": "",
         "comments": "",

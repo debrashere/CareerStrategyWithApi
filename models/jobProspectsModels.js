@@ -32,13 +32,14 @@ const jobProspectSchema = mongoose.Schema({
     status: { type: String},
     source:   { type: String},
     sourceUrl:  { type: String},
+    companyUrl:  { type: String},
     dayToDay: { type: String},    
     contact: { type: String},   
     comments: { type: String},
     details:  { type: String },
     jobSkills: [jobSkillsSchema],
     statusHistory: [statusHistorySchema],
-    contacts: [contactsSchema]
+    contacts: [contactsSchema],
 });
 
 jobProspectSchema.methods.serialize = function() {
@@ -51,6 +52,7 @@ jobProspectSchema.methods.serialize = function() {
     status: this.status || '',
     source: this.source || '',
     sourceUrl: this.sourceUrl || '',
+    companyUrl: this.sourceUrl || '',    
     dayToDay:this.dayToDay || '',
     contact:this.contact || [],
     comments:this.comments || '',

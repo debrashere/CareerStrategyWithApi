@@ -62,7 +62,7 @@ function displaySkillsMasterList(data) {
   if (data && data.skill) {
     skills += '<p class="items flex-item-skillset">';
     data.skill.map( function(skill, index) {          
-      skills +=  `<a href="#" id="masterSkill${index}" class="skill-link js-edit-master-skill">${skill.skill}</a>`;            
+      skills +=  `<a href="#" id="masterSkill${index}" class="widget-button-one js-edit-master-skill">${skill.skill}</a>`;            
       });  
     skills += '</p>';   
   }  

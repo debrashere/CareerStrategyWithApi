@@ -1,118 +1,46 @@
-@import url('https://netdna.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.css');
-@import url(https://fonts.googleapis.com/css?family=Lato:400,300,700);
-
-/* todo: 
-* {
-  box-sizing: border-box;
-  font-size: 18px;  
-}
-*/
-
-body, html {
+html {
   padding:0;
-  margin:0;
-  background:darkgray;   
-  font-size: 18px;  
+  margin: 8px; 
 }
- 
+
+body {
+  padding:0;
+  background: whitesmoke;
+  font-family: 'ariel', sans-serif;
+  font-size: 16px;  
+}
+
+
+h1, h2, h3, address {
+  margin: 10px;
+  display: block;
+}
+
+h1 {
+  font-size: 22px;
+}
+h2 {
+  font-size: 20px;
+}
+h3 {
+  font-size: 18px;
+}
+
+.site-title {  
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 350px;
+}
+
 p {
   word-break: break-all;
   white-space: normal;
 }
 
-main .row {
-  font-family: 'IBM Plex Sans', sans-serif;
-  max-width: 90%;
-  margin: 0 auto; 
-  background: beige;  
-  padding-bottom: 5px; 
-  margin-bottom: 20px; 
-  text-align: right
-}
 
-.nav-link:link, .nav-link:visited {
-  background-color: beige;
-  color: black;
-  padding:  5px;
-  margin: 20px;
-  text-align: center; 
-  display: inline-block;
-  text-decoration: none;
-  border-radius: 10px;
-  border:  solid black;
-  border-width: 2px;
-}
-
-.nav-link:hover, .nav-link:active {
-  background-color:lightgray;
-  border-radius: 10px; 
-  border: solid black;
-  border-width: 2px;
-}
-
-.user-profile-heading {
-  display:block;
-  margin: 1px;
-  width:250px;
-  word-wrap:break-word;
-}
-
-.user-profile {
-  width: 100%;
-}
-.section-block{
-  margin: 5px; 
-  border-top: solid black;
-  border-width: 1px;
-  background-color: lightgray;
-  width: 95%;
-}
-
-.section-header{ 
-  border:  solid black;
-  border-width: 1px;
-  background-color: lightgray;
-  width: 100%;
-}
-.section-sub-header{ 
-  border: solid black;
-  border-width: 1px;
-  background-color: beige;
-  width: 100%;
-}
-
-.header {  
-  text-align: center;
-  vertical-align: top;
-  width: 100%;
-  max-width:100%;
-  color:black;
-  font-size:8px;
-  /* height: 280px; */
-  margin-top: 5px;
-}
-
-
-fieldset div {
-  display: flex;
-  align-items: center;
-}
-
-.input-block {
-  display: block;
-}
-
-input:focus ~ label, textarea:focus ~ label, select:focus ~ label {
-  color: blue;
-}
-
-input:checked ~ label {
-  font-weight: bold;
-}
-
-input {
-  display: inline-block;
-  float: left;
+/* Messaging Styles Start */
+.message {
+  padding: 12px 6px;
 }
 
 .error-message {
@@ -120,73 +48,6 @@ input {
   border: red;
   border-color: red;
   border-style: solid;    
-}
-
-h1, h2, h3, address {
-  margin: 10px;
-  display: block;
-}
-
-.background-color-white {
-  background-color: whitesmoke;
-}
-.skill {
-  width:  150px;
-}
-.experience {
-  width:  25px;
-}
- 
-
-.flex-multiline { 
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.items {
-  display: flex;
-  flex-wrap: wrap;
-  list-style: none;
-  background-color: lightgray;
-}
-.items .item {
-  flex: 1 0 25%;
-  box-sizing: border-box;
-  color: #171e42;
-  padding: 10px;
-}
-
-.skill-link:link{
-  background-color: beige;
-  color: black;
-  padding: 5px 5px;
-  text-align: center; 
-  display: inline-block;
-  text-decoration: none;
-  border-radius: 15px;
-  border: solid black ;
-  border-width: 2px;
-  margin: 3px;  
-}
-
-.skill-span{
-  background-color: beige;
-  color: black;
-  padding: 5px 5px;
-  text-align: center; 
-  display: inline-block;
-  text-decoration: none;
-  border-radius: 15px;
-  border: solid black ;
-  border-width: 2px;
-  margin: 3px;  
-}
-
-/*
-	Messages and Errors
-*/
-.message {
-  padding: 12px 6px;
 }
 
 .message-success {
@@ -209,433 +70,9 @@ h1, h2, h3, address {
   padding: 6px;
   display: inline-block;
 }
+/* Messaging Styles End */
 
-.edit-form {
-  max-width: 340px;
-  text-align: left;
-
-  border-width: 2px;
-  border-style: none;
-  border-color: black;
-  border-image: none;
-}
-
-textarea {
-  max-width: 335px;
-}
-
-.border-solid {
-  border-style: solid;
-  border-color: black;
-}
-
-.background-color-sub-heading {
-  background-color: rgb(177, 177, 226);
-}
-
-.background-color-content {
-  background-color: #f2f2f2;
-}
-
-.job-skill, .user-skill {
-  background-color: beige;
-  color: black;
-  padding: 5px 5px;
-  text-align: center; 
-  display: inline-block;
-  text-decoration: none;
-  border-radius: 15px;
-  border: solid black;
-  border-width: 1px;
-  margin: 3px;
-}
-
-.user-skill-matched {
-  background-color: lightgreen;
-}
- 
- 
-/*
-  FLEX Container
-*/
-.flex-container {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: flex-start;   
-  align-items: flex-start;  
-  max-width: 100%; 
-  border: black solid;  
-  border-width: 2px;
-  margin: 5px;
-}
-
-.flex-item {  
- flex-grow: 1;
- flex-shrink: 1;
- flex-basis: auto;
- min-width: 320px;
- margin: 5px; 
-}
-
-.flex-container-introduction {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: space-evenly;   
-  align-items: center;
-  max-width: 100%; 
-  border: none; 
-}
-
-.flex-item-introduction {
-  flex-grow: 1;
-  flex-shrink: 1;
-  flex-basis: auto;
-  margin-bottom: 5px; 
-  max-width: 300px;
- }
-
-.flex-container-profile {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: space-evenly;  
-  align-items: center;
-  max-width: 95%; 
-  vertical-align: top;
-  color: black;
-}
-
-.flex-item-profile {
-  flex-grow: 1;
-  flex-shrink: 1;
-  flex-basis: auto;
-  margin-bottom: 5px; 
-  max-width: 300px;
-  border: black solid;
-  border-width: 2px;
- }
- 
-.flex-item-skills {
-  flex-grow: 1;
-  flex-shrink: 1;
-  flex-basis: auto;
-  max-width: 90%;
-  margin-bottom: 5px;
-  border: black solid;
-  border-width: 2px;
-  background: lightgray;
- }
-
- 
- .flex-item-widget {
-  flex-grow: 1;
-  flex-shrink: 1;
-  flex-basis: auto;
-  max-width: 320px;
-  border: 1px white solid;
-  margin: 5px;
-  width: 350px;
- }
-
- .flex-item-skillset {
-  flex-grow: 1;
-  flex-shrink: 1;
-  flex-basis: auto;
-  max-width: 100%;
-  margin-bottom: 5px;
- }
-
-.inline-title {
-  display: inline;
-  font-weight: bold;
-  padding: 5px;   
-}
-
-.title {
-    clear: left;
-    display:block;
-    padding: 10px;    
-}
-
-.col-6 {
-  text-align: center;
-  width: 100%;
-}
-
-.content{
-  border-radius: 20px;
-  width: 100%;
-}
-
-.tc-link {
-  width: 100%;
-}
-
-.tc-img{
-  height: 300px;
-  width: 100%;
-  object-fit: cover;
-  border: solid blue;
-  border-width: 2px;
-  text-decoration: none;
-}   
-
-.noBullitLink {
-  text-align: left;
-  text-decoration: none;
-}
-
-.menuitem::before { 
-  content: " | ";
-  color: blue;
-}
-
-.add-prospect-to:link, .add-prospect-to:visited,
-.edit-link:link, .edit-link:visited,
-.show-menu:link, .show-menu:visited {
-  text-decoration: none;
-  color: black;
-  display: inline-block;
-}
-
-.add-prospect-to:hover, .add-prospect-to:active, 
-.edit-link:hover, .edit-link:active,
-.show-menu:hover, .show-menu:visited {
-  background-color:darkgrey;
-}
-
-.table {
-  display: flex;
-  flex-flow: column nowrap;
-  font-size: .8rem;
-  margin: 0.5rem;
-  line-height: 1.5;
-  border-bottom: 1px solid #d0d0d0;
-  flex: 1 1 auto;
-}
-
-.th {
-  display: none;
-  font-weight: 700;
-  background-color: #f2f2f2;
-}
-
-.th > .td {
-  white-space: normal;
-  /* todo justify-content: left; */
-  justify-content: flex-start;
-  width: 100%;
-}
-
-.tr {
-  width: 100%;
-  display: flex;
-  flex-flow: row wrap;
-}
-
-.tr:nth-of-type(even) {
-  background-color: #f2f2f2;
-}
-
-.tr:nth-of-type(odd) {
-  background-color: #ffffff;
-}
-
-.td {
-  display: flex;
-  flex-flow: row wrap;
-  flex-grow: 1;
-  flex-basis: 0;
-  padding: 0.5em;
-  /* word-break: break-word; */
-  word-break: normal;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  min-width: 0;
-  max-width: 100%;
-  white-space: nowrap;
-  border-bottom: 1px solid #d0d0d0; 
-}
-
-.td-with-borders {
-  border: black solid;
-  border-width: 1px;
-}
-
-.td-what {
-  display: flex;
-  flex-flow: row wrap;
-  flex-grow: 1;
-  flex-basis: 0;
-  padding: 0.5em;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  min-width: 0;
-  max-width: 300px;
-  white-space: nowrap;
-  border-bottom: 1px solid #d0d0d0;
-}
-
-.td-where {
-  display: flex;
-  flex-flow: row wrap;
-  flex-grow: 1;
-  flex-basis: 0;
-  padding: 0.5em;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  min-width: 0;
-  max-width: 300px;
-  white-space: nowrap;
-  border-bottom: 1px solid #d0d0d0;
-}
-.td-when {
-  display: flex;
-  flex-flow: row wrap;
-  flex-grow: 1;
-  flex-basis: 0;
-  padding: 0.5em;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  min-width: 0;
-  max-width: 150px;
-  white-space: nowrap;
-  border-bottom: 1px solid #d0d0d0;
-}
-.td-status {
-  display: flex;
-  flex-flow: row wrap;
-  flex-grow: 1;
-  flex-basis: 0;
-  padding: 0.5em;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  min-width: 0;
-  max-width: 150px;
-  white-space: nowrap;
-  border-bottom: 1px solid #d0d0d0;
-}
-
-.td-jobSkill {
-  display: flex;
-  flex-flow: row wrap;
-  flex-grow: 1;
-  flex-basis: 0;
-  padding: 0.5em;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  min-width: 0;
-  max-width: 300px;
-  white-space: nowrap;
-  border-bottom: 1px solid #d0d0d0;
-}
-
-.td-skillRequired {
-  display: flex;
-  flex-flow: row wrap;
-  flex-grow: 1;
-  flex-basis: 0;
-  padding: 0.5em;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  min-width: 0;
-  max-width: 50px;
-  white-space: nowrap;
-  border-bottom: 1px solid #d0d0d0;
-}
-
-.td-commentDate {
-  display: flex;
-  flex-flow: row wrap;
-  flex-grow: 1;
-  flex-basis: 0;
-  padding: 0.5em;
-  min-width: 0;
-  max-width: 150px;
-}
-
-.td-commentText {
-  display: flex;
-  flex-flow: row wrap;
-  flex-grow: 1;
-  flex-basis: 0;
-  padding: 0.5em;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  min-width: 0;
-  white-space: nowrap;
-  border-bottom: 1px solid #d0d0d0;
-}
-
-.td-commentEdit {
-  display: flex;
-  flex-flow: row wrap;
-  flex-grow: 1;
-  flex-basis: 0;
-  padding: 0.5em;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  min-width: 0;
-  max-width: 50px;
-  white-space: nowrap;
-  border-bottom: 1px solid #d0d0d0;
-}
-.td-commentDelete {
-  display: flex;
-  flex-flow: row wrap;
-  flex-grow: 1;
-  flex-basis: 0;
-  padding: 0.5em;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  min-width: 0;
-  max-width: 50px;
-  white-space: nowrap;
-  border-bottom: 1px solid #d0d0d0;
-}
-
-.flex-item-job-prospect {
-  max-width:300px; 
-  border: black solid; 
-  border-width: 2px;
-  background-color: whitesmoke;
-  margin-top: 5px;
-}
-
-.flex-item-job-summaries {
-  max-width:90%; 
-  border: black solid; 
-  border-width: 2px;
-  background-color: whitesmoke;
-  margin-top: 5px;
-}
-
-.div-skills{
-  position:absolute;
-	height:50px;
-	width:auto;
-	background:#1a5f8c;
-	border:1px solid #14496d;
-  display:inline-block;
-}
-.span-skill{
-	top:0;
-	left:0;
-	height:100%;
-	width:100%;
-	text-align: left;
-  font-size:14px;
-  font-weight:500;
-  font-family: arial, sans-serif;
-  border-collapse: collapse;
-  box-sizing:border-box;
-  padding: 10px;
-  color:#ddd;
-}
-
-	
+/* Navigation Start */
 	/* Add a black background color to the top navigation */
 	.topnav {
 		background-color: #333;
@@ -650,7 +87,7 @@ textarea {
 		text-align: center;
 		padding: 14px 16px;
 		text-decoration: none;
-		font-size: 17px;
+		font-size: 16px;
 	}
 	
 	/* Change the color of links on hover */
@@ -671,6 +108,10 @@ textarea {
     display: none;
   }
 
+  .menuitem::before { 
+    content: " | ";
+    color: white;
+  }
   
 /* Icon */
 
@@ -696,14 +137,10 @@ textarea {
 
 		.icon > .label {
 			display: none;
-		}
+    }
+/*  Navigation End */  
 
-span {
-  display: flex;
-  position: relative;
-  z-index: 1;
-}
-
+/*  Buttons Start */
 .btn {
   position: relative;
   display: inline-flex;
@@ -745,27 +182,93 @@ span {
   background-color: lightblue; 		
 }
  
+/*  Buttons End */
 
-/* Tabbed Divs */
 
-@-webkit-keyframes 
-fake {  from {
- opacity: 1;
+/*  Page Sections Start */  
+.section-block{
+  margin: 5px; 
+  border-top: solid black;
+  border-width: 1px;
+  background-color: lightgray;
+  width: 95%;
 }
 
-to { opactity: 1; }
+.section-header{ 
+  border:  solid black;
+  border-width: 1px;
+  background-color: lightgray;
+  width: 100%;
 }
-@keyframes 
-fake {  from {
- opacity: 1;
+.section-sub-header{ 
+  border: solid black;
+  border-width: 1px;
+  background-color: beige;
+  width: 100%;
 }
 
-to { opactity: 1; }
+.header {  
+  text-align: center;
+  vertical-align: top;
+  width: 100%;
+  max-width:100%;
+  color:black;
+  font-size: 18px;
+  margin-top: 5px;
+}
+/*  Page Sections End */
+
+/* Widget Styles Start */
+
+.widget-button-one {
+  background-color: beige;
+  color: black;
+  padding: 5px 5px;
+  text-align: center; 
+  display: inline-block;
+  text-decoration: none;
+  border-radius: 15px;
+  border: solid black;
+  border-width: 1px;
+  margin: 3px;
 }
 
 
-/* Tabbed form */
+/* Style the links inside the widget button */
+.widget-button-one a  {
+  float: left;
+  display: block;
+  color: black;
+  text-align: center;
+  padding: 5px 5px;
+  text-decoration: none;
+  font-size: 17px;
+}
+	
+.widget-label {
+  color: white;
+  margin-left: 5px;   
+}
 
+.widget-texbox {
+  margin-left: 5px; 
+  margin-right: 5px; 
+  padding: 5px;  
+  background: #fff;
+  border-radius: 5px;
+  box-shadow: 0 1.5px 0 0 rgba(0,0,0,0.1);
+  display: flex; 
+  color: black;
+}
+
+.user-skill-matched {
+  background-color: lightgreen;
+}
+
+/* Widget Styles End */
+ 
+
+/* Tabbed Form Start */
 .responsive-tabs {
   margin: 20px;
   width: 80%;
@@ -905,33 +408,64 @@ to { opactity: 1; }
 
 #tab-one:checked ~ .tabs #tab-one-panel,  #tab-two:checked ~ .tabs #tab-two-panel,  #tab-three:checked ~ .tabs #tab-three-panel,  #tab-four:checked ~ .tabs #tab-four-panel { border-bottom: 1px solid #ccc; }
 }
+/* Tabbed Form  End */
 
-/* Widget */
 
-.widget-label {
-  color: white;
-  margin-left: 5px;   
+/*  FLEX Container Start */
+.flex-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;   
+  align-items: flex-start;  
+  max-width: 100%; 
+  border: black solid;  
+  border-width: 2px;
+  margin: 5px;
 }
 
-.widget-texbox {
-  margin-left: 5px; 
-  margin-right: 5px; 
-  padding: 5px;  
-  background: #fff;
-  border-radius: 5px;
-  box-shadow: 0 1.5px 0 0 rgba(0,0,0,0.1);
-  display: flex; 
-  color: black;
-}
+.flex-item {  
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: auto;
+  min-width: 320px;
+  margin: 5px; 
+ }
 
-/* Forms */
+.flex-item-widget {
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: auto;
+  max-width: 320px;
+  border: 1px white solid;
+  margin: 5px;
+  width: 350px;
+ }
+
+  
+.flex-item-skills {
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: auto;
+  max-width: 90%;
+  margin-bottom: 5px;
+  border: black solid;
+  border-width: 2px;
+  background: lightgray;
+ }
+
+ 
+
+/*  FLEX Container End */
+
+/* Form Styles Start */
+
 .input-form-body {
   /* Remember to use the other versions for IE 10 and older browsers! */
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100%;
-  font-family: 'lato', sans-serif;
   color: #fff;
   background: #222222;
   background: #16222A; /* fallback for old browsers */
@@ -951,9 +485,8 @@ to { opactity: 1; }
     flex-direction: column;
   }
   
-  .logo{
-    font-family: "museo-slab";  
-    font-size:20px;
+  .logo{  
+    font-size: 20px;
     text-align: center;
     padding: 20px 20px 0;
     margin:0;
@@ -995,6 +528,12 @@ to { opactity: 1; }
     margin: 5px; 
     padding: 5px;
     color: #ffffff;  
+  }
+
+  .form-link-black { 
+    margin: 5px; 
+    padding: 5px;
+    color: #000000;  
   }
   
   .form input[type="password"], 
@@ -1085,7 +624,10 @@ to { opactity: 1; }
     margin-bottom: 1rem;
     flex-direction: column;
   }
-  
+  .form-field label {
+    max-width: 350px;
+  }
+
   .hidden {
     border: 0;
     clip: rect(0 0 0 0);
@@ -1100,96 +642,65 @@ to { opactity: 1; }
   .text--center {
     text-align: center;
   }
+
+  /* Form Styles End */
+
   
 /* media queries  */
-
   /* When the screen is less than 600 pixels wide, hide all links, except for the first one ("Home"). Show the link that contains should open and close the topnav (.icon) */
-@media screen and (max-width: 600px) {
-    .topnav a:not(:first-child) {display: none;}
-    .topnav a.icon {
-      float: right;
-      display: block;
+  @media screen and (max-width: 600px) {
+    .topnav a:not(:first-child) {display: none;} 
+    .topnav a.icon {  float: right;  display: block;
     }    
   }
   
   /* The "responsive" class is added to the topnav with JavaScript when the user clicks on the icon. This class makes the topnav look good on small screens (display the links vertically instead of horizontally) */
   @media screen and (max-width: 600px) {
     .topnav.responsive {position: relative;}
-    .topnav.responsive a.icon {
-      position: absolute;
-      right: 0;
-      top: 0;
-    }
-    .topnav.responsive a {
-      float: none;
-      display: block;
-      text-align: left;
-    }
+    .topnav.responsive a.icon {    position: absolute;  right: 0;  top: 0;  }
+    .topnav.responsive a {  float: none;  display: block;  text-align: left;  }
   }
   
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
-  .edit-form {max-width: 340px;}  
-  textarea {max-width: 335px;} 
-  .flex-item { max-width: 260px;  } 
-  * {font-size: 16px;}
-  .flex-item-job-prospect { max-width:300px; border: none}
-  .flex-item-introduction {  max-width: 300px; }
-  .flex-item-widget {  max-width: 100% }
-  .flex-container {  flex-direction: column;  }
+  body, html { font-size: 16px; }
+   textarea {max-width: 495px;} 
+  .flex-item { max-width: 500px;  }
 }
 
 /* Small devices (portrait tablets and large phones, 600px and up) */
 @media only screen and (min-width: 600px) {
-  .edit-form{max-width: 500px;}  
-  textarea {max-width: 495px;} 
-  .flex-item { max-width: 260px;  }
-  .flex-item-job-prospect { max-width:300px;}
-  .flex-item-introduction {  max-width: 500px; }
+  body, html { font-size:  16px; }
+   textarea {max-width: 495px;} 
+  .flex-item { max-width: 500px;  }
 }
 
 /* Medium devices (landscape tablets, 320px and up) */
 @media only screen and (min-width: 320px) {
-  .edit-form{max-width: 310px;}  
-  textarea {max-width: 305px;} 
+  body, html { font-size: 18px; }
+   textarea {max-width: 495px;} 
   .flex-item { max-width: 500px;  }
-  * {font-size: 20px;}
-  .flex-item-job-prospect { max-width:300px; border: none}
-  .flex-item-introduction {  max-width: 300px; }
 }
 
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 768px) {
-  .edit-form{max-width: 500px;}  
-  textarea {max-width: 495px;} 
+  body, html { font-size: 18px; }
+   textarea {max-width: 495px;} 
   .flex-item { max-width: 500px;  }
-  * {font-size: 20px;}
-  .flex-item-job-prospect { max-width:300px;}
 } 
 
 /* Large devices (laptops/desktops, 992px and up) */
 @media only screen and (min-width: 992px) {
-  .edit-form{max-width: 500px;}  
-  textarea {max-width: 495px;} 
+  body, html { font-size: 20px; }
+   textarea {max-width: 495px;} 
   .flex-item { max-width: 500px;  }
-  * {font-size: 20px;}
-  .add-prospect-to { font-size: 20px;}
-  .flex-item-job-prospect { max-width:350px;}
-  .flex-item-introduction {  max-width: 800px; }
-  .container-direction-width { width:975px; flex-direction: row; }
 } 
 
 /* Extra large devices (large laptops and desktops, 1200px and up) */
 @media only screen and (min-width: 1200px) {
-  /* .header {height: 200px;} */
-  .edit-form {max-width: 500px;}  
-  textarea {max-width: 495px;} 
+   body, html { font-size: 20px; }
+   textarea {max-width: 495px;} 
   .flex-item { max-width: 500px;  }
-  * {font-size: 20px;}
-  .add-prospect-to { font-size: 20px;}
-  .flex-item-job-prospect { max-width:350px;}
-  .flex-item-introduction {  max-width: 1000px; }
-  .container-direction-width { width:1100px; flex-direction: row; }
 }
 
  

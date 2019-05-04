@@ -4,11 +4,8 @@ let currentRoute = "/home";
   
 function  logoutThisUser() {        
     //Clear auth token and settings
-    localStorage.removeItem('token'); 
-    localStorage.removeItem('userId'); 
+    removeUserData();
     // Redirect the to the landing page.
-    props.isLoggedIn = false;   
-    props.hasProfile = false; 
     renderLanding(); 
 }       
   
@@ -72,7 +69,7 @@ function  menuFunction() {
     $('#menuButtonIcon').addClass(barsOrX); 
 }
  
-function setMenuItem(event){
+function setMenuItem(event){   
     const id = `#${event.currentTarget.id}`;       
     props.route = id.split('-')[1];
     $('.menuitem').removeClass("active");
