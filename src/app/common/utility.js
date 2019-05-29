@@ -2,7 +2,7 @@
 let props = {};
 
 function currentDateTimeLocal() {
-    d = new Date();
+  const d = new Date();
     let formattedDate = new Date();
     formattedDate.setUTCFullYear(d.getFullYear());
     formattedDate.setUTCMonth(d.getMonth());
@@ -29,11 +29,11 @@ function initializeProps() {
   "USER_PROFILE" : {},
   "JOB_SKILLS" : [],
   "MASTER_SKILLS" : [],
+  "challenges" : [],
   "PROSPECTS" : {},
   "prospect" : {},
   "prospectId" : ""};
 }
-
  
 function removeUserData() {
   localStorage.removeItem('token'); 
@@ -73,4 +73,20 @@ function canAccessProfile() {
     : renderLoginForm(); 
 
   return continueToPage;
+}
+
+  
+function groupBy( array , f )
+{
+  var groups = {};
+  array.forEach( function( o )
+  {
+    var group = JSON.stringify( f(o) );
+    groups[group] = groups[group] || [];
+    groups[group].push( o );  
+  });
+  return Object.keys(groups).map( function( group )
+  {
+    return groups[group]; 
+  })
 }

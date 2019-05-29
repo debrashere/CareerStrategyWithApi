@@ -324,13 +324,15 @@ p {
 
 .responsive-tabs .tab:hover { background-color: #fff; }
 
-#tab-one:checked ~ .tabs #tab-one-label, #tab-two:checked ~ .tabs #tab-two-label, #tab-three:checked ~ .tabs #tab-three-label, #tab-four:checked ~ .tabs #tab-four-label {
+#tab-one:checked ~ .tabs #tab-one-label, #tab-two:checked ~ .tabs #tab-two-label, #tab-three:checked ~ .tabs #tab-three-label,
+ #tab-four:checked ~ .tabs #tab-four-label, #tab-five:checked ~ .tabs #tab-five-label {
   background-color: #fff;
   cursor: default;
   border-left-color: #69be28;
 }
 
-#tab-one:checked ~ .tabs #tab-one-panel, #tab-two:checked ~ .tabs #tab-two-panel, #tab-three:checked ~ .tabs #tab-three-panel, #tab-four:checked ~ .tabs #tab-four-panel { display: block; }
+#tab-one:checked ~ .tabs #tab-one-panel, #tab-two:checked ~ .tabs #tab-two-panel, #tab-three:checked ~ .tabs #tab-three-panel, 
+#tab-four:checked ~ .tabs #tab-four-panel, #tab-five:checked ~ .tabs #tab-five-panel { display: block; }
 @media (max-width: 600px) {
 
 .flex-tabs {
@@ -376,6 +378,13 @@ p {
   order: 7;
 }
 
+.flex-tabs #tab-five-label {
+  -webkit-box-ordinal-group: 10;
+  -webkit-order: 9;
+  -ms-flex-order: 9;
+  order: 9;
+}
+
 .flex-tabs #tab-one-panel {
   -webkit-box-ordinal-group: 3;
   -webkit-order: 2;
@@ -404,9 +413,18 @@ p {
   order: 8;
 }
 
-#tab-one:checked ~ .tabs #tab-one-label,  #tab-two:checked ~ .tabs #tab-two-label,  #tab-three:checked ~ .tabs #tab-three-label,  #tab-four:checked ~ .tabs #tab-four-label { border-bottom: none; }
+.flex-tabs #tab-five-panel {
+  -webkit-box-ordinal-group: 11;
+  -webkit-order: 10;
+  -ms-flex-order: 10;
+  order: 10;
+}
 
-#tab-one:checked ~ .tabs #tab-one-panel,  #tab-two:checked ~ .tabs #tab-two-panel,  #tab-three:checked ~ .tabs #tab-three-panel,  #tab-four:checked ~ .tabs #tab-four-panel { border-bottom: 1px solid #ccc; }
+#tab-one:checked ~ .tabs #tab-one-label,  #tab-two:checked ~ .tabs #tab-two-label,  #tab-three:checked ~ .tabs #tab-three-label,  
+#tab-four:checked ~ .tabs #tab-four-label, #tab-five:checked ~ .tabs #tab-five-label { border-bottom: none; }
+
+#tab-one:checked ~ .tabs #tab-one-panel,  #tab-two:checked ~ .tabs #tab-two-panel,  #tab-three:checked ~ .tabs #tab-three-panel, 
+ #tab-four:checked ~ .tabs #tab-four-panel, #tab-five:checked ~ .tabs #tab-five-panel { border-bottom: 1px solid #ccc; }
 }
 /* Tabbed Form  End */
 

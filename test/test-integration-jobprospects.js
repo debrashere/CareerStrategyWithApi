@@ -102,11 +102,9 @@ function generateJobProspectData() {
     where: faker.company.companyName(),
     when: faker.date.recent(),
     userId: getUserId(),
-    status: generateStatus(),
     source: generateSource(),
     sourceUrl: "test@test.com",
     dayToDay:faker.name.jobDescriptor(),
-    contact: faker.name.findName(),
     comments:faker.lorem.paragraph(),
     details:faker.random.words(),
     jobSkills: generateJobSkills()

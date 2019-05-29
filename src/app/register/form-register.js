@@ -76,3 +76,10 @@ function renderRegistrationForm(data) {
  
   $(".js-page-content").html(profileForm); 
 } 
+
+function setupRegisterHandlers() {
+  $(document).on('click','.js-form-register-user',function(e){e.preventDefault(); submitRegistion(); });        
+   
+}
+
+$(setupRegisterHandlers);

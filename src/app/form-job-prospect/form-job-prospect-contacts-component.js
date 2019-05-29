@@ -1,13 +1,12 @@
-'use strict'  
- 
-function generateContactsForm(prospect) {  
+'use strict';
+ function generateContactsForm(prospect) {  
     let contactsList = '';
   
     prospect.contacts.map( function(contact, index) { 
       contactsList += ` 
       <fieldset id="contactFieldset-${index}" class="flex-item js-contactFieldset">  
       <div class="input-block">
-            <a id="DeleteContact-${index}" href="#" class="form-link js-delete-job-contact"><img  alt="delete job contact" src="./images/icon-delete.png">(Delete)</a>
+            <a id="DeleteContact-${index}" href="#" class="form-link js-delete-job-contact"><img  alt="delete job contact" src="../src/app/common/images/icon-delete.png">(Delete)</a>
       </div>
       <div class="form-field">
           <label  for="prospectContactFirstName-${index}"><span >First name</span></label>
@@ -30,7 +29,7 @@ function generateContactsForm(prospect) {
   
   let newContactFields = `
   <fieldset class="flex-item js-new-contact-form">  
-    <a id="AddContact" href="#" class="form-link js-add-job-contact"><img id="addNewContact" alt="add status" src="./images/icon-add.png">(Add)</a>           
+    <a id="AddContact" href="#" class="form-link js-add-job-contact"><img id="addNewContact" alt="add status" src="../src/app/common/images/icon-add.png">(Add)</a>           
     <div class="form-field">
          <input id="prospectNewContactFirstName" type="text" class="form-input  js-prospectNewContactFirstName" placeholder="Contact first name" value="" aria-required="true" required>
     </div>
@@ -98,7 +97,7 @@ function addJobContactForm(event) {
   const newContact = `
   <fieldset id="contactFieldset-${index}" class="flex-item js-contactFieldset">  
   <div class="input-block">
-        <a id="DeleteContact-${index}" href="#" class="form-link js-delete-job-contact"><img  alt="delete job contact" src="./images/icon-delete.png">(Delete)</a>
+        <a id="DeleteContact-${index}" href="#" class="form-link js-delete-job-contact"><img  alt="delete job contact" src="../src/app/common/images/icon-delete.png">(Delete)</a>
   </div>
   <div class="form-field">
       <label  for="prospectContactFirstName-${index}"><span >First name</span></label>
@@ -127,21 +126,25 @@ function addJobContactForm(event) {
   $('#prospectNewContactEmail').val("");
   $('#prospectNewContactPhone').val("");  
 }
- 
 
-function checkStatusHistoryForErrors() { 
+function checkContactsListForErrors() { 
   /* retrive the input fields for existing status */
- const thisFirstname = $('.js-input-contact-firstname');
- const thisLastname = $('.js-input-contact-lastname');
- const thisEmail = $('.js-input-contact-email');
- const thisPhone = $('.js-input-contact-phone');
+ const thisDate = $('.js-input-status-date');
+ const thisStatus = $('.js-input-status-status');
+ const thisComment = $('.js-input-status-comment');
 
  /* check each input field for errors */
- for (let index=0; index< thisFirstname.length; index++) {
-   isInputValid(thisFirstname[index].value, ['required', 'nonEmpty', 'isTrimmed'], thisFirstname[index].id);
-   isInputValid(thisLastname[index].value, ['required', 'nonEmpty', 'isTrimmed'], thisLastname[index].id);
-   isInputValid(thisEmail[index].value, ['isTrimmed', 'validationIsEmailFormatValid'], thisEmail[index].id);
-   isInputValid(thisPhone[index].value, ['isTrimmed', 'validationIsPhoneFormatValid'], thisPhone[index].id);
+ for (let index=0; index< thisDate.length; index++) {
+   isInputValid(thisDate[index].value, ['required', 'nonEmpty', 'isTrimmed'], thisDate[index].id);
+   isInputValid(thisStatus[index].value, ['required', 'nonEmpty', 'isTrimmed'], thisStatus[index].id);
+   isInputValid(thisComment[index].value, ['isTrimmed'], thisComment[index].id);
    
  }
 }
+
+function setupContactsHandlers() {
+  $(document).on('click','.js-delete-job-contact',function(e){e.preventDefault(); deleteJobContactForm(e); });   
+  $(document).on('click','.js-add-job-contact',function(e){e.preventDefault(); addJobContactForm(e); });   
+}
+
+$(setupContactsHandlers);

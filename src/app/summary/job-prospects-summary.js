@@ -18,10 +18,18 @@ function generateNoProspectsMessage() {
   let message =  `
   <div class="flex-container section-block">  
     <div class="flex-item section-sub-header">Welcome to Career Strategy</div>
-    <div> You have not entered any job prospects yet. You can do so now by going to <a href=# class="js-add-new-job-prospect"> new job prospect</a>.</div>   
+    <div> You have not entered any job prospects yet. You can do so now by going to <a href=# class="js-add-new-job-prospects"> new job prospect</a>.</div>   
   </div>`;
     
   return message;  
+}
+
+function getCurrentStatus(prospect) {
+  if (!prospect || !prospect.statusHistory) return "";
+  let sortedDates = prospect.statusHistory.sort(function(a,b) {
+    return new Date(b.date) - new Date(a.date);
+  });
+  return sortedDates.length == 0 ? "" : sortedDates[0].status;
 }
 
 function generateJobSummaries(prospects) {
@@ -37,7 +45,7 @@ function generateJobSummaries(prospects) {
       <div class="flex-item section-sub-header"><a id="prospectId-${index}" href=# class="js-prospect-detail">${prospect.what}</a></div>
       <div class="flex-item">${prospect.where}</div>   
       <div class="flex-item">${formattedDate}</div>
-      <div class="flex-item">${prospect.status}</div>
+      <div class="flex-item">${getCurrentStatus(prospect)}</div>
       <div class="flex-item" hidden><span class="js-prospectId" id="Prospect-${index}" hidden>${prospect.id}</span></div>
     </div>`;
   });    
@@ -92,4 +100,11 @@ function renderJobProspects(data) {
     $('.js-page-content').html(`${generateJobSummaries(data.prospect)}`);  
     $('.js-prospectId').hide();
 }
+
+function setupProspectSummaryHandlers() {
+  $(document).on('click','.js-add-new-job-prospects',function(e){e.preventDefault(); renderProspectForm(); });    
+  $(document).on('click','.js-prospect-detail',function(e){renderJobProspectDetails(e); });      
+}
+
+$(setupProspectSummaryHandlers);
  

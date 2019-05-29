@@ -5,8 +5,8 @@ let currentRoute = "/home";
 function  logoutThisUser() {        
     //Clear auth token and settings
     removeUserData();
-    // Redirect the to the landing page.
-    renderLanding(); 
+    // Redirect the to the dashboard page.
+    renderDashboard(); 
 }       
   
 function setClassForMenuItem(menuItem, className)  {    
@@ -25,7 +25,7 @@ function setClassForMenuItem(menuItem, className)  {
             { name: "home", isSecure: false, page: "home"},
             { name: "home", isSecure: false, page: "default"},
             { name: "home", isSecure: false, page: "dashboard"},
-            { name: "home", isSecure: false, page: "landingpage"},
+            { name: "home", isSecure: false, page: "dashboardpage"},
             { name: "tools", isSecure: true, page: "toolsform"},
             { name: "tools", isSecure: true, page: "toolseditform"},
             { name: "login", isSecure: false, page: "login"},
@@ -79,11 +79,11 @@ function setMenuItem(event){
     } 
     
     switch (props.route) {
-        case "myskills":
+        case "myskills":     
             renderUserSkills();
             break;
         case "home":
-            renderLanding();
+            renderDashboard();
             break;
         case "login":
             renderLoginForm();
@@ -161,5 +161,40 @@ function Navigation(props) {
         );        
     }
 }
+
+function registerMenuHandlers() {
+    /* Menu functions */ 
+    /*
+    $(document).on('click','.js-menuitem-myskills',function(e){e.preventDefault(); setMenuItem(e); });      
+    $(document).on('click','.js-menuitem-home',function(e){e.preventDefault(); setMenuItem(e); });      
+    $(document).on('click','.js-menuitem-login',function(e){e.preventDefault(); setMenuItem(e); });       
+    $(document).on('click','.js-menuitem-prospect',function(e){e.preventDefault(); setMenuItem(e); });     
+    $(document).on('click','.js-menuitem-register',function(e){e.preventDefault(); setMenuItem(e); });     
+    $(document).on('click','.js-menuitem-profile',function(e){e.preventDefault(); setMenuItem(e); }) 
+    $(document).on('click','.js-menuitem-skills',function(e){e.preventDefault(); setMenuItem(e); })     
+    $(document).on('click','.js-menuitem-logout',function(e){e.preventDefault(); setMenuItem(e); });        
+    $(document).on('click','.js-menuitem-summary',function(e){e.preventDefault(); setMenuItem(e); });       
+    $(document).on('click','.js-menuButton',function(e){e.preventDefault(); menuFunction(); });          
+    $(document).on('click','.js-render-dashboard',function(e){e.preventDefault(); renderDashboard(); });          
+*/
+        /* Menu functions */ 
+$(document).on('click','.js-menuitem-myskills',function(e){e.preventDefault(); setMenuItem(e); });      
+$(document).on('click','.js-menuitem-home',function(e){e.preventDefault(); setMenuItem(e); });      
+$(document).on('click','.js-menuitem-login',function(e){e.preventDefault(); setMenuItem(e); });       
+$(document).on('click','.js-menuitem-prospect',function(e){e.preventDefault(); setMenuItem(e); });     
+$(document).on('click','.js-menuitem-register',function(e){e.preventDefault(); setMenuItem(e); });     
+$(document).on('click','.js-menuitem-profile',function(e){e.preventDefault(); setMenuItem(e); }); 
+$(document).on('click','.js-menuitem-skills',function(e){e.preventDefault(); setMenuItem(e); });     
+$(document).on('click','.js-menuitem-logout',function(e){e.preventDefault(); setMenuItem(e); });        
+$(document).on('click','.js-menuitem-summary',function(e){e.preventDefault(); setMenuItem(e); });       
+$(document).on('click','.js-menuButton',function(e){e.preventDefault(); menuFunction(); });          
+$(document).on('click','.js-register-login-link',function(e){e.preventDefault(); setMenuItem(e); }); 
+$(document).on('click','.js-login-register-link',function(e){e.preventDefault(); setMenuItem(e); }); 
+$(document).on('click','.js-menuitem-myskills-prospect-link',function(e){e.preventDefault(); setMenuItem(e); });     
+$(document).on('click','.js-menuitem-myskills-details-link',function(e){e.preventDefault(); setMenuItem(e); });    
+   
+}
+
+$(registerMenuHandlers);
  
  

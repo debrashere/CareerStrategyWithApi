@@ -77,8 +77,8 @@ function displaySkillsMasterList(data) {
         </div>
         <div class="tr">  
           <div class="td" data-header="Skill"><input type="text" id="newMasterSkill"></input></div>
-          <div class="td" data-header=""><a id="AddMasterSkill" href="#" class="js-add-master-skill"><img id="addNewSkill" alt="add skill" src="./images/icon-add.png">(Add/Edit)</a>
-          <a id="DeleteMasterSkill" href="#" class="js-delete-master-skill"><img id="deleteThisSkill" alt="delete skill" src="./images/icon-delete.png">(Delete)</a></div>
+          <div class="td" data-header=""><a id="AddMasterSkill" href="#" class="js-add-master-skill"><img id="addNewSkill" alt="add skill" src="../src/app/common/images/icon-add.png">(Add/Edit)</a>
+          <a id="DeleteMasterSkill" href="#" class="js-delete-master-skill"><img id="deleteThisSkill" alt="delete skill" src="../src/app/common/images/icon-delete.png">(Delete)</a></div>
         </div>
       </div>
       ${skills}
@@ -90,3 +90,12 @@ function displaySkillsMasterList(data) {
   if (masterSkills === [])     
       displayInformation("Master list of skills is empty", 'js-page-message'); 
 }
+
+function setupMasterSkillsHandlers() {
+      /* manage master list of skills */                 
+      $(document).on('click','.js-add-master-skill',function(e){e.preventDefault(); addMasterSkill(e); });      
+      $(document).on('click','.js-delete-master-skill',function(e){e.preventDefault(); deleteMasterSkill(); }); 
+      $(document).on('click','.js-edit-master-skill',function(e){e.preventDefault(); editMasterSkill(e); });
+}
+
+$(setupMasterSkillsHandlers);

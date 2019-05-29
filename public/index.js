@@ -1,10 +1,10 @@
-'use strict'  
+;  
 const pathSkills = "skills";
 
-function renderLanding(data) { 
+function renderDashboard(data) { 
   renderHeader(data);
   renderBanner();
-  renderLandingPage(); 
+  renderDashboardPage(); 
 }
 
 function isUserLoggedIn() {
@@ -57,7 +57,7 @@ function userHasProfile() {
         "PROSPECTS" : {}
         };    
 
-      renderLanding(props.USER_PROFILE); 
+      renderDashboard(props.USER_PROFILE); 
     }), 3000); 
   } 
 }
@@ -66,12 +66,12 @@ function renderContent() {
   if (isUserLoggedIn())
       userHasProfile() 
   else
-    renderLanding();  
+    renderDashboard();  
 }
 
 function setupHandleEvents() {  
-  renderContent(); 
-  executeHandlers();    
+   renderContent(); 
+  initializeProps();   
 }
 
 $(setupHandleEvents);

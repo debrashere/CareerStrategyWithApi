@@ -24,23 +24,49 @@ const statusHistorySchema = mongoose.Schema({
   comment:{ type: String }
 });
 
+const challengeSchema = mongoose.Schema({
+  challengeType: {type: String, require: true},
+  dateRequested: {type: Date, required: true},
+  dateCompleted: {type: Date, required: false},
+  comments: { type: String, required: false},
+  url: { type: String, required: false},
+  results: {type: String, required: false},
+  langquage: {type: String, required: false},
+  companyUrl: {type: String, required: false}
+});
+
 const jobProspectSchema = mongoose.Schema({
     what:  { type: String, required: true},
     where: { type: String, required: true },
     when:  { type: String, required: true},
     userId: {type: String, required: true},
-    status: { type: String},
     source:   { type: String},
     sourceUrl:  { type: String},
     companyUrl:  { type: String},
-    dayToDay: { type: String},    
-    contact: { type: String},   
+    dayToDay: { type: String},     
     comments: { type: String},
     details:  { type: String },
     jobSkills: [jobSkillsSchema],
     statusHistory: [statusHistorySchema],
     contacts: [contactsSchema],
+    challenges: [challengeSchema]
 });
+
+challengeSchema.methods.serialize = function() {
+  return {
+    id: this._id,
+    challengetype: this.challengetype,
+    userId: this.userId,   
+    prospectId: this.prospectId,
+    dateRequested: this.dateRequested,
+    dateCompleted: this.dateCompleted,
+    comments: this.comments ||  '', 
+    url: this.url || '',
+    results: this.results || '',
+    langquage: this.langquage || '',
+    companyUrl: this.companyUrl || ''
+  };
+};
 
 jobProspectSchema.methods.serialize = function() {
   return {
@@ -49,18 +75,17 @@ jobProspectSchema.methods.serialize = function() {
     where: this.where ||  {}, 
     when: this.when,
     userId: this.userId,
-    status: this.status || '',
     source: this.source || '',
     sourceUrl: this.sourceUrl || '',
     companyUrl: this.sourceUrl || '',    
     dayToDay:this.dayToDay || '',
-    contact:this.contact || [],
     comments:this.comments || '',
     details:this.details || '',
     jobSkills:this.jobSkills || [],
     statusHistory: this.statusHistory ||  [],
-    contacts:this.contacts || []
-    };
+    contacts:this.contacts || [],
+    challenges: this.challenges || []
+  };
 };
 
 const JobProspect = mongoose.model('JobProspect', jobProspectSchema);

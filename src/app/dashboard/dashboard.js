@@ -1,10 +1,9 @@
 'use strict';
-function renderLandingPage(id) {  
+function renderDashboardPage(id) {  
     generateNonSecureData();
     if (props.isLoggedIn === true && props.hasProfile === true) {
         if (jQuery.isEmptyObject(props.PROSPECTS)) {  
-            const queryPath = `userId=${props.userId}`;
- 
+            const queryPath = `userId=${props.userId}`; 
             setTimeout(findCareerStrategyAPI(pathJobProspects, queryPath, "",  function(data) {
               if (apiReturnedError(data)) return;
 
@@ -17,27 +16,30 @@ function renderLandingPage(id) {
     }       
 }
   
-function groupBy( array , f )
-{
-  var groups = {};
-  array.forEach( function( o )
-  {
-    var group = JSON.stringify( f(o) );
-    groups[group] = groups[group] || [];
-    groups[group].push( o );  
-  });
-  return Object.keys(groups).map( function( group )
-  {
-    return groups[group]; 
-  })
+function updateCurrentStatusForEachProspect(prospects) {
+  if (!prospects) return "";
+
+  prospects.forEach(function (prospect) {
+    let currentStatus = null;
+    if (!prospect.statusHistory) prospect.statusHistory = [];
+    prospect.statusHistory.forEach(function (status) {
+      if (currentStatus == null)  
+          currentStatus = status;
+      else if (currentStatus.date < status.date)
+        currentStatus = status;
+      });
+
+      prospect.status = currentStatus == null ? "NoStatus" : currentStatus.status;            
+    });  
 }
 
 function generateStatusList(prospects) {
     let statusList = [];
     if (prospects) {
+       updateCurrentStatusForEachProspect(prospects);
         statusList = groupBy(prospects, function(thisProspect)
         {
-            return [thisProspect.status.trim()];
+            return [thisProspect.status == null ? "" : thisProspect.status.trim()];         
         });  
     }
      
@@ -75,7 +77,7 @@ function generateContactList(prospects) {
       contacts += ` 
     <div class="flex-item-widget">  
       <div class="form-field">
-          <div class="widget-label">First name: </div>
+          <div class="widget-label">Name: </div>
           <div class="widget-texbox"  tabindex="0"><a href='#' title='Contact Name' id="ContactLink-${index}"  class='js-prospects-by-contact'>${contact.firstName} ${contact.lastName}</a></div>
       </div>
       <div class="form-field">
@@ -139,13 +141,13 @@ function generateSecureData(prospects) {
 */
 function generateNonSecureData() {   
     $( ".js-page-content" ).html('');
-    let landing =  
+    let dashboard =  
       `<div class="site-title">   
           <h1>Career Strategy and Planning</h1>          
         </div>
        `;   
       
-    $('.js-page-content').append(`${landing}`);                 
+    $('.js-page-content').append(`${dashboard}`);                 
   } 
 
 function generateOverview() {   
@@ -153,8 +155,18 @@ function generateOverview() {
   let overview =  
     `<div>
       <h3>Example Summary of Job Prospects</h3>
-      <img id="Prospect summary image" alt="login image" src="./images/CS_landingPageWithProspects.jpg">
+      <img id="Prospect summary image" alt="login image" src="../src/app/common/images/CS_landingPageWithProspects.jpg">
     </div> `;   
     
   $('.js-page-content').append(`${overview}`); 
 } 
+
+function setupDashboardHandlers() {
+    /* presentational only functions */
+    $(document).on('click','.js-prospects-by-status',function(e){e.preventDefault(); renderJobsSummariesByStatus(e); }); 
+    $(document).on('click','.js-prospects-by-company',function(e){e.preventDefault(); renderJobsSummariesByCompany(e); });
+    $(document).on('click','.js-prospects-by-contact',function(e){e.preventDefault(); renderJobsSummariesByContact(e); });
+    $(document).on('click','.js-add-new-job-prospect',function(e){e.preventDefault(); renderProspectForm(); });         
+}
+
+$(setupDashboardHandlers);

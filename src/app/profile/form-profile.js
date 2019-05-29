@@ -46,7 +46,7 @@ function validateProfileForm(profileId) {
         }
         else if (data.responseJSON.error)
         {
-          displayPageMessageFailure(ata.responseJSON.error);    
+          displayPageMessageFailure(data.responseJSON.error);    
         }
         else {
           displayPageMessageFailure("Oops something went wrong. Please try again.");        
@@ -112,7 +112,7 @@ function renderUserProfileForm() {
       </div>
       <div class="form-field">
         <button type="submit" id="submitProfile" class="btn js-edit-event js-edit-button  js-form-profile-update" >Submit</button>            
-        <a  href="*" class="form-link js-render-landing" >Cancel</a>  
+        <a  href="*" class="form-link js-render-dashboard" >Cancel</a>  
       </div>         
     </fieldset> `;
     
@@ -142,4 +142,11 @@ function refreshUserProfile(data) {
     renderUserProfileForm();
   }), 3000); 
 } 
+
+function setupUserProfileHandlers() {
+  $(document).on('click','.js-render-dashboard',function(e){e.preventDefault(); renderDashboard(); });             
+  $(document).on('click','#submitProfile',function(e){e.preventDefault(); submitProfileUpdates(); });    
+}
+
+$(setupUserProfileHandlers);
  

@@ -41,8 +41,8 @@ You are able to save information about your job prospects such as:
 ### API How to use live demo:
 
 Login or Register
-After login you will be taken to the landing page.
-If you have not entered your profile infomation the input form for profile will display. Upon completing this information, the screen will refresh and you will be taken to the landing page.
+After login you will be taken to the dashboard page.
+If you have not entered your profile infomation the input form for profile will display. Upon completing this information, the screen will refresh and you will be taken to the dashboard page.
 
 ### Test logins:
 

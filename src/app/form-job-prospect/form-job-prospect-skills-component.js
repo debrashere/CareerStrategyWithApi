@@ -15,8 +15,8 @@ function generateUserAndJobSkillsForm(prospect, profile) {
       <fieldset id="skillsFieldset" class="flex-item js-skillsFieldset">  
         <div class="form-field">
             <label for="newJobSkill">
-              <a id="AddJobSkill" href="#" class="form-link js-prospect-add-job-skill"><img id="addNewSkill" alt="add skill" src="./images/icon-add.png">(Add/Edit)</a>
-              <a id="DeleteMasterSkill" href="#" class="form-link js-prospect-delete-job-skill"><img id="deleteThisJobSkill" alt="delete job skill" src="./images/icon-delete.png">(Delete)</a>      
+              <a id="AddJobSkill" href="#" class="form-link js-prospect-add-job-skill"><img id="addNewSkill" alt="add skill" src="../src/app/common/images/icon-add.png">(Add/Edit)</a>
+              <a id="DeleteMasterSkill" href="#" class="form-link js-prospect-delete-job-skill"><img id="deleteThisJobSkill" alt="delete job skill" src="../src/app/common/images/icon-delete.png">(Delete)</a>      
             </label>
             <input id="newJobSkill" type="text" class="form-input  js-input-skill" placeholder="skill" value="" >
             <div class="input-block"><p class="js-job-skills-list">${skills}</p></div>  
@@ -34,7 +34,7 @@ function generateUserAndJobSkillsForm(prospect, profile) {
      
        const userSkillsSection = `
        <div class="flex-item-skills">
-         <div class="section-header"><h3 tabindex="0">Your Skills (go to <a href="#" id="menuitem-myskills" class="js-menuitem-myskills-prospect-link" title="My Skills">My Skills"</a> to edit")</h3></div>             
+         <div class="section-header"><h3 tabindex="0">Your Skills (go to <a href="#" id="menuitem-myskills" class="js-menuitem-myskills-prospect-link" title="My Skills">My Skills</a> to edit")</h3></div>             
          <div class="items flex-item-skillset">
           ${userSkills}
          </div>
@@ -103,3 +103,9 @@ function addJobSkillProspectForm(e) {
     }
 }
   
+function setupFormSkillsHanders() {
+  $(document).on('click','.js-prospect-add-job-skill',function(e){e.preventDefault(); addJobSkillProspectForm(e); });       
+  $(document).on('click','.js-prospect-delete-job-skill',function(e){e.preventDefault(); deleteJobSkillProspectForm(e); });            
+}
+
+$(setupFormSkillsHanders);

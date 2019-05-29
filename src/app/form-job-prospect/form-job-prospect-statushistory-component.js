@@ -1,4 +1,4 @@
-'use strict'  
+'use strict'; 
  
 function generateStatusHistoryForm(prospect) {  
  const currentDate = toDatetimeStringFormat(new Date());
@@ -10,7 +10,7 @@ function generateStatusHistoryForm(prospect) {
       statusList += ` 
       <fieldset id="statusFieldset-${index}" class="flex-item js-statusFieldset">  
       <div class="input-block">
-            <a id="DeleteStatus-${index}" href="#" class="form-link js-delete-job-status"><img  alt="delete job status" src="./images/icon-delete.png">(Delete)</a>
+            <a id="DeleteStatus-${index}" href="#" class="form-link js-delete-job-status"><img  alt="delete job status" src="../src/app/common/images/icon-delete.png">(Delete)</a>
       </div>
       <div class="form-field">
           <label for="prospectStatusDate-${index}">Date</label>
@@ -29,7 +29,7 @@ function generateStatusHistoryForm(prospect) {
    
     let newStatusFields = `
     <fieldset id="statusFieldset" class="flex-item js-new-status-form">   
-    <a id="AddStatus" href="#" class="form-link js-add-job-status"><img id="addNewSkill" alt="add status" src="./images/icon-add.png">(Add)</a>
+    <a id="AddStatus" href="#" class="form-link js-add-job-status"><img id="addNewSkill" alt="add status" src="../src/app/common/images/icon-add.png">(Add)</a>
     <div class="form-field">
             <input id="prospectStatusDate" type="datetime-local" class="form-input js-prospectStatusDate" placeholder="Status Date" value="${currentDate}" aria-required="true" required>
         </div>
@@ -92,7 +92,7 @@ function deleteJobStatusForm(event) {
      <div id="statusFieldset-${index}" class="flex-item js-statusFieldset"> 
       <fieldset id="statusFieldset-${index}" class="flex-item js-statusFieldset">  
         <div>
-          <a id="DeleteStatus-${index}" href="#" class="form-link js-delete-job-status"><img alt="delete job status" src="./images/icon-delete.png">(Delete)</a>
+          <a id="DeleteStatus-${index}" href="#" class="form-link js-delete-job-status"><img alt="delete job status" src="../src/app/common/images/icon-delete.png">(Delete)</a>
         </div>  
         <div class="form-field">
             <label  for="prospectStatusDate-${index}">Date</label>
@@ -118,21 +118,28 @@ function deleteJobStatusForm(event) {
     $('#prospectStatusStatus').val("");
     $('#prospectStatusComment').val("");
 }
+ 
 
+function checkStatusHistoryForErrors() { 
+  /* retrive the input fields for existing status */
+ const thisFirstname = $('.js-input-contact-firstname');
+ const thisLastname = $('.js-input-contact-lastname');
+ const thisEmail = $('.js-input-contact-email');
+ const thisPhone = $('.js-input-contact-phone');
 
-function checkContactsListForErrors() { 
-   /* retrive the input fields for existing status */
-  const thisDate = $('.js-input-status-date');
-  const thisStatus = $('.js-input-status-status');
-  const thisComment = $('.js-input-status-comment');
-
-  /* check each input field for errors */
-  for (let index=0; index< thisDate.length; index++) {
-    isInputValid(thisDate[index].value, ['required', 'nonEmpty', 'isTrimmed'], thisDate[index].id);
-    isInputValid(thisStatus[index].value, ['required', 'nonEmpty', 'isTrimmed'], thisStatus[index].id);
-    isInputValid(thisComment[index].value, ['isTrimmed'], thisComment[index].id);
-    
-  }
-}
+ /* check each input field for errors */
+ for (let index=0; index< thisFirstname.length; index++) {
+   isInputValid(thisFirstname[index].value, ['required', 'nonEmpty', 'isTrimmed'], thisFirstname[index].id);
+   isInputValid(thisLastname[index].value, ['required', 'nonEmpty', 'isTrimmed'], thisLastname[index].id);
+   isInputValid(thisEmail[index].value, ['isTrimmed', 'validationIsEmailFormatValid'], thisEmail[index].id);
+   isInputValid(thisPhone[index].value, ['isTrimmed', 'validationIsPhoneFormatValid'], thisPhone[index].id);
    
-  
+ }
+}
+
+function setupStatusHistoryHandlers() {
+  $(document).on('click','.js-delete-job-status',function(e){e.preventDefault(); deleteJobStatusForm(e); });            
+  $(document).on('click','.js-add-job-status',function(e){e.preventDefault(); addJobStatusForm(e); });  
+}
+
+$(setupStatusHistoryHandlers);

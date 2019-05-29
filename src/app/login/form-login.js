@@ -1,5 +1,4 @@
 'use strict';
-/* import { PromiseProvider } from "mongoose"; */
 function isLoginFormValid() {
 
  // clear form of error messages
@@ -32,6 +31,22 @@ function loginThisUser() {
     }
     }), 3000);
 }
+
+function loginThisDemoUser() { 
+  removeUserData();    
+  
+  const loginJson = JSON.parse(`{"username": "jjobs","password": "Jobbers1234"}`);        
+  props.isLoggedIn = false;
+  setTimeout(loginUserAPI(pathAuth, loginJson, function(data) {
+  if (!apiReturnedErrorOnLogin(data)) {    
+    localStorage.setItem('token', data.userAuth.authToken);
+    localStorage.setItem('userId', data.userAuth.id);
+    props.userId = localStorage.getItem('userId');
+    props.isLoggedIn = true; 
+    getUserProfile();      
+  }
+  }), 3000);
+}
   
 function getUserProfile() {
   if (!props.userId || props.userId === "") return ;
@@ -42,7 +57,7 @@ function getUserProfile() {
     props.USER_PROFILE = data && data.userProfile ? data.userProfile[0] : {};
     props.userProfileId = props.USER_PROFILE && props.USER_PROFILE.userId ? props.USER_PROFILE.id : "";  
     props.userProfileId === "" ? setHasProfile(false) : setHasProfile(true);
-    props.hasProfile === true ? renderLanding(props.USER_PROFILE) : renderUserProfileForm();
+    props.hasProfile === true ? renderDashboard(props.USER_PROFILE) : renderUserProfileForm();
   }), 3000);   
 }
 
@@ -52,14 +67,15 @@ function renderLoginForm() {
   <fieldset class="flex-item">  
     <div class="form-field">
         <label  for="UserId"><span >User name</span></label>
-        <input id="UserId" type="text" class="form-input  js-input-username" placeholder="User name" value="" aria-required="true" required>
+        <input id="UserId" type="text" class="form-input  js-input-username" placeholder="User name" value="" aria-required="false">
     </div>
     <div class="form-field">
         <label for="userPassword"><span>Password</span></label>
-        <input id="userPassword" type="password" class="form-input   js-input-password" placeholder="Password" value="" aria-required="true" required>
+        <input id="userPassword" type="password" class="form-input   js-input-password" placeholder="Password" value="" aria-required="false">
     </div>
     <div class="form-field">
-      <button type="submit" id="submitLogin" class="btn js-edit-event js-edit-button" >Login</button>  
+      <button type="submit" id="submitLogin" class="btn js-submit-login js-edit-event js-edit-button" >Login</button>  
+      <button type="submit" id="submitDemoLogin" class="btn js-submit-demo-login js-edit-event js-edit-button" >Demo Login</button>  
       <a class="form-link" href="#" id="menuItem-register" class="js-login-register-link" >Register</a> 
     </div>       
   </fieldset> `;
@@ -73,3 +89,10 @@ let loginForm =  `
 
 $(".js-page-content").html(loginForm); 
 } 
+
+function setupLoginHandlers() {
+  $(document).on('click','.js-submit-login',function(e){e.preventDefault(); loginThisUser(); });   
+  $(document).on('click','.js-submit-demo-login',function(e){e.preventDefault(); loginThisDemoUser(); }); 
+}
+
+$(setupLoginHandlers);

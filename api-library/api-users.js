@@ -1,5 +1,6 @@
-'use strict'
-const CAREER_STRATEGY_URL_USERS ='https://sheltered-gorge-50174.herokuapp.com/api';
+'use strict';
+const CAREER_STRATEGY_URL_USERS = 'https://sheltered-gorge-50174.herokuapp.com/api';
+//const CAREER_STRATEGY_URL_USERS = 'http://localhost:27017/api';
 const pathUsers = "users";
 const pathAuth = "auth/login";
 
