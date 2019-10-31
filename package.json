@@ -30,7 +30,7 @@
     "dotenv": "^4.0.0",
     "express": "^4.14.0",
     "jsonwebtoken": "^8.5.0",
-    "mongoose": "^4.7.4",
+    "mongoose": "^5.7.5",
     "morgan": "^1.7.0",
     "node-powershell": "^4.0.0",
     "passport": "^0.3.2",
